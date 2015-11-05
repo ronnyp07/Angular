@@ -1,0 +1,341 @@
+@media screen {
+    #printSection {
+        display: none;
+}
+
+textarea { display: block }
+
+.maringTop{
+        margin-top: 10px;
+        margin-bottom: 10px;
+ }
+   
+ .headerdiv{
+    	border-style: solid;
+      border-width: 1px;
+      -moz-border-radius: 5px;
+		  -webkit-border-radius: 5px;
+		  border-radius: 5px
+		  margin-left: 10px;
+		  margin-top: 8px;
+		  margin-bottom: 10px;
+		  font-size: 14px;
+}
+.footdir {
+	 font-size: 9px;
+}
+
+.resultBody{
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.reportbody{
+    margin-top: 0px;
+}
+
+.md-checkbox1 {
+  display: block;
+  margin: 5px;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
+.title-containert{
+        float: left;
+}
+
+.details-containert{
+        float: right;
+        padding: 0px;
+}
+
+.details-containert h1{
+       font-size: 25px;
+       font-weight: bold;
+}
+
+.resultContainer {
+	  margin-top: 30px;
+	  padding: 15px;
+}
+
+.resultItem {
+	 margin: 10px;
+}
+
+.bottonMarginRight{
+  margin-right: 15px;
+}
+
+.papMargin {
+     margin-top: 15px;
+}
+
+#btnPatientOrderCreate{
+  width: 190px;
+  height: 50px;
+}
+#btnDoctorOrderCreate{
+  width: 240px;
+  height: 50px;
+}
+
+#btnpatientCliente{
+  width: 311px;
+  height: 50px;
+}
+
+.titlecontainer{
+  width: 100%;
+	text-align: center;
+  margin-left:  0px
+}
+
+.buttonPadding{
+    padding:15px;
+}
+
+.footerB {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top-width: 1px;
+    border-top-style: double;
+}
+
+.resultContainer{
+	margin-left: 20px;
+}
+.title-reportName{
+	text-align: center;
+}
+
+.headercontainer{
+	margin-left: 10px;
+}
+}
+@media print {
+    body * {
+        visibility:hidden;
+    }
+
+   html, body { 
+    height: 99%;
+    margin: 0px 0px 0px 0px;  
+   }
+
+
+  /* .print{
+    height: 700px;
+    }
+*/
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+
+    .stepLine{
+        white-space: pre-wrap;
+    }
+    
+     .title-container {
+        width: 360px;
+        float: left;
+    }
+   
+   .footdir {
+	 font-size: 13px;
+	 margin-top: 0px;
+}
+    .details-container {
+        width: 300px;
+        float: right;
+    }
+
+    .title-containert {
+        width: 130px;
+        float: left;
+    }
+
+    .details-containert {
+        width: 660px;
+        padding-top: 20px;
+        padding-left: 0px;
+        text-align: center;
+        margin-left:  0px;
+
+    }
+    
+    .col-padding{
+    margin-left: 10px;
+    }
+    .headerdiv{
+    	border-style: solid;
+        border-width: 1px;
+        -moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		  border-radius: 5px
+		  margin-left: 10px;
+		  margin-top: 8px;
+		  margin-bottom: 10px;
+		  font-size: 14px;
+    }
+
+    .headerdiv p {
+    	width: 100%;
+    }
+
+    .labelPrint{
+        font-size: 15px;
+    }
+
+    .labelHeader{
+        font-size: 20px;
+    }
+   
+   .maringTopPap{
+    margin-top: 8px;
+
+    }
+
+    .papDiag{
+      height: 130px;
+    }
+
+    .resultContainer {
+	  margin-left: 15px;
+	  margin-top: 10px;
+	  padding: 10px;
+	}
+
+	.resultItem {
+		margin: 10px;
+    width: 400px;
+	}
+
+    .Sresult{
+         width: 100%;
+         height: 110px;
+    }
+
+	.details-containert h1{
+       font-size: 16px;
+       font-weight: bold;
+    }
+    .details-containert h2{
+       font-size: 12px;
+       font-weight: bold;
+    }
+    .titlecontainer h1,h2 {
+    	margin-top: 0px;
+    }
+
+    .title-reportName{
+	text-align: center;
+}
+.titlecontainer{
+	text-align: center;
+	margin-top: 40px;
+	
+}
+.tecnicaRow{
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.rTecnica{
+ margin-left: 100px; 
+ height: 60px;
+}
+.resultMargin{
+    margin-top: 40px;
+}
+
+.diagResult{
+    height: 210px;
+}
+
+.floatLeft{
+    float: left;
+}
+
+.diagBResult{
+   height: 260px; 
+   margin-top: 20px;
+}
+
+.diagBResultNota{
+   height: 320px; 
+   margin-top: 30px; 
+}
+
+.diagtext{
+font-size: 16px;
+}
+
+.notaMargin{
+  height: 50px;   
+}
+
+.resultULhight{
+  height: 240px;
+  width: 400px;
+}
+
+.footerB {
+    margin-top: 10px;
+    bottom: 0;
+    width: 680px;
+    border-top-width: 1px;
+    border-top-style: dotted;
+    text-align: center;
+    height: 50px;
+}
+
+.margingdiv{
+    width: 50%;
+}
+
+.margindiv3 {
+    width: 33.33333333%;
+}
+
+.papDiagnosisResult{
+    height: 15px;
+    width: 100%;
+}
+
+.margindivFull {
+    width: 100%;
+}
+
+.diagMargin{
+    margin-top: 10px;
+}
+
+.col-md-6{
+   width: 50%; 
+}
+
+
+.heckLine{
+    border: 1px solid black;
+}
+
+    
+}
+}

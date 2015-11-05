@@ -1,0 +1,38 @@
+<div class="row resultMargin">
+  <div class="col-xs-12">
+        <div class="row ">
+           <div class="col-xs-12"> 
+                 <div class= "Sresult stepLine"> {{resultDetails.resultado}} </div>
+            </div>
+           </div>
+    </div>
+  </div> 
+  <div class="row tecnicaRow">
+  <div class="col-xs-12"> 
+      <label>Tecnica: </label></br> 
+      <div class="rTecnica stepLine">{{resultDetails.tecnica}}</div>
+  </div>
+  </div>
+  <div class="row" ng-if="resultDetails.nota">
+  <div class="col-xs-12" >
+     <div class="notaMargin stepLine"> Nota: {{resultDetails.nota}} </div>
+  </div>
+  </div>
+  <div class="row  diagMargin">
+  <div class="col-xs-12">
+   
+    <div class="row">
+       <div class="col-xs-12">
+       <div ng-class="{'diagBResult' : resultDetails.nota, 'diagBResultNota' : !resultDetails.nota}"> 
+        <label class="diagtext">Diagnóstico:</label>
+          <div class="stepLine"> {{resultDetails.diagnostico}} </div>
+       </div>
+        </div>
+       </div>
+    </div>
+  </div> 
+<div class=" row footerB">
+<div class="col-xs-12">
+ <div class="footdir">Av. Coronel Juan Maria Lor Fernandez #189 los Rios, Tels: Ofic. 809-732-0995, Santo Domingo </div>
+ </div>
+</div>

@@ -1,0 +1,315 @@
+<div class="resultBody">               
+  <div class="row">
+      <div class="col-sm-6">
+      <div class="row">
+        <div class="col-md-12">
+       	<label>MUESTRA:</label>
+       	</div>
+       </div>
+          <div class="row">
+          	  <div class="col-md-4">
+          	      <input type="checkbox"  ng-model="muestra.Saticatoria" aria-label="Saticatoria">
+          	            Saticatoria
+		      </div>
+		  </div>
+		  <div class="row">
+		      <div class="col-md-4">
+		              <input type="checkbox"  ng-model="muestra.ConLimitaciones" aria-label="Con Limitaciones">
+                        Con Limitaciones
+		      </div>     
+         </div>
+         <div class="row">
+         <div class="col-md-4">
+              <input type="checkbox"  ng-model="muestra.CitologicoNormal" aria-label="CitológicoNormal"> Citológico Normal
+              </div>
+          </div>
+      </div>
+        <div class="col-sm-6">
+        <div class="row">
+        <div class="col-md-12">
+       	<label>FROTIS:</label>
+       	</div>
+       </div>
+           <div class="row">
+          	  <div class="col-md-4">
+          	      <input type="checkbox" ng-model="muestra.Negativo" aria-label="Negativo">
+          	            Negativo
+		      </div>
+		      <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.Inflamatorio" aria-label="Inflamatorio">
+          	           Inflamatorio
+		          
+		      </div>
+		       <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.Hemorragico" aria-label="Hemorragico">
+          	            Hemorrágico
+		          
+		      </div>
+		  </div>
+		  <div class="row">
+		      <div class="col-md-4">
+		          <input type="checkbox" ng-model="muestra.Citolitico" aria-label="Citolitico">
+          	            Citolitico
+		          
+		      </div>
+		      <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.Purulento" aria-label="Purulento">
+          	            Purulento
+		          
+          	  </div>
+          	  <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.Atrofico" aria-label="Atrofico">
+          	            Atrófico
+		          
+          	  </div>
+         </div>
+      </div>
+  </div>
+
+
+  <div class="row papMargin">
+      <div class="col-sm-6">
+       <div class="row">
+        <div class="col-md-12">
+       	<label>INFLAMACION</label>
+       	</div>
+       </div>
+          <div class="row">
+          <label></label>
+          	  <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.Leve" aria-label="Leve">
+          	            Leve
+		          
+		      </div>
+		      <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.Moderada" aria-label="Moderada">
+          	            Moderada
+		          
+		      </div>
+
+		      <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.Severa" aria-label="Severa">
+          	            Severa
+		          
+		      </div>
+		  </div>
+      </div>
+      <div class="col-sm-6">
+      <div class="row">
+        <div class="col-md-12">
+       	<label>CELULAS ESCAMOSAS PREDOMINANTES </label>
+       	</div>
+       </div>
+           <div class="row">
+          	 	  <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.Superficiales" aria-label="Superficiales">
+          	           Superficiales
+		          
+		      </div>
+		      <div class="col-md-4">
+              <input type="checkbox" ng-model="muestra.Parabasales" aria-label="Parabasales">
+              Parabasales 
+		      </div>
+
+		      <div class="col-md-4">
+		          <input type="checkbox" ng-model="muestra.Intermedias" aria-label="Intermedias">
+              Intermedias	          
+		      </div>
+		  </div>
+      </div>
+  </div>
+ <div class="row papMargin">
+      <div class="col-sm-6">
+      <div class="row">
+        <div class="col-md-12">
+       	<label>CAMBIOS INFECCIOSOS</label>
+       	</div>
+       </div>
+         <div class="row title-container">
+              <div class="col-md-4">
+		    <input type="checkbox" ng-model="muestra.BV" aria-label="BV">
+                         Bacilos Vaginales    
+		          
+		      </div>
+          	  <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.TV" aria-label="TV">
+          	            Tricomonas Vaginales
+		          
+		      </div>
+		      
+		  </div>
+		  <div class="row details-container">
+          	  <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.VHS" aria-label="VHS">
+          	           Virus Herpes Simple    
+		          
+		      </div>
+		      <div class="col-md-4">
+		           <input type="checkbox" ng-model="muestra.Gardnerella" aria-label="Gardnerella">
+                        Gardnerella vaginales
+		          
+		      </div>
+
+		  </div>
+		   <div class="row">
+          	  <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.Hongos" aria-label="Hongos">
+          	            Hongos
+		          
+		      </div>
+		      <div class="col-md-4">
+		         <input type="checkbox" ng-model="muestra.FloraMixta" aria-label="FloraMixta">
+          	            Flora Mixta        
+		          
+		      </div>
+		  </div>
+
+      <div class="row">
+         <div class="col-md-4">
+      <input type="checkbox" ng-model="muestra.Neutrofilos" aria-label="Neutrofilos">
+                        Neutrofilos
+
+       </div>
+
+       <div class="col-md-4">
+             <input type="checkbox" ng-model="muestra.BCocoides" aria-label="BCocoides">
+                        Bacterias Cocoides
+              
+          </div>
+       </div>
+
+     <div class="row">
+        <div class="col-md-4">
+                <input type="checkbox" ng-model="muestra.Linfocitos" aria-label="Linfocitos">
+                        Linfocitos
+              
+          </div>
+          
+          <div class="col-md-4">
+             <input type="checkbox" ng-model="muestra.Clamidias" aria-label="Clamidias">
+                        Clamidias
+              
+          </div>
+       </div>
+        <div class="row">
+          <div class="col-md-4">
+             <input type="checkbox" ng-model="muestra.CP" aria-label="Plena">
+                        Celulas Plasmaticas
+              
+          </div>
+        </div>
+
+
+
+
+      </div>
+      <div class="col-sm-6">
+      <div class="row">
+        <div class="col-md-12">
+          	<label>CAMBIOS ANORMALES</label>
+       	</div>
+       </div>
+           <div class="row">
+          	 	  <div class="col-md-6">
+          	     <input type="checkbox" ng-model="muestra.Cambios_Asociados" aria-label="Cambios_Asociados">
+          	           Cambios Asociados a HPV
+		          
+		      </div>
+		      <div class="col-md-6">
+		         <input type="checkbox" ng-model="muestra.ASI" aria-label="Intermedias">
+          	            Atipicas de Significado indeterminado (Ascus)
+		          
+		      </div>
+		  </div>
+		   <div class="row">
+          	 	  <div class="col-md-6">
+          	     <input type="checkbox" ng-model="muestra.LEIB" aria-label="LEIB">
+          	           Lesión Escamosa Intraepitelial de Bajo Grado SIL (Displasia Leve)
+		          
+		      </div>
+		      <div class="col-md-6">
+		         <input type="checkbox" ng-model="muestra.LEIA" aria-label="LEIA">
+          	            Lesión Escamosa Intraepitelial de Alto Grado SIL (Displasia Severa)
+		          
+		      </div>
+		  </div>
+		   <div class="row">
+          	 	  <div class="col-md-6">
+          	     <input type="checkbox" ng-model="muestra.CIS" aria-label="CIS">
+          	           Carcinoma In Situ 
+		          
+		      </div>
+		      <div class="col-md-6">
+		         <input type="checkbox" ng-model="muestra.CE" aria-label="CE">
+          	            Carcinoma Epidermoide
+		          
+		      </div>
+		  </div>
+      </div>
+  </div>
+
+    <div class="row papMargin">
+      <div class="col-sm-6">
+       <div class="row">
+        <div class="col-md-12">
+       	</div>
+       </div>
+      <div class="row">
+          <label></label>
+          	 
+		  </div>
+      </div>
+      <div class="col-sm-6">
+      <div class="row">
+        <div class="col-md-12">
+       	<label>CELULAS GLANDULARES:</label>
+       	</div>
+       </div>
+           <div class="row">
+          	 	  <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.Endocervicales" aria-label="Endocervicales">
+          	            Endocervicales
+		          
+		      </div>
+		      <div class="col-md-8">
+		         <input type="checkbox" ng-model="muestra.Endometriales" aria-label="Endometriales">
+          	            Endometriales
+		          
+		      </div>
+		  </div>
+           <div class="row">
+             <div class="col-md-4">
+          	     <input type="checkbox" ng-model="muestra.ME" aria-label="Superficiales">
+          	           Metaplasia Escamosa 
+		          
+		      </div>
+            <div class="col-md-8">
+		         <input type="checkbox" ng-model="muestra.EA" aria-label="EA">
+          	            Endocervicales Atípicas
+		          
+		      </div>
+           </div>
+           		     
+		  <div class="row">
+		      <div class="col-md-12">
+		         <input type="checkbox" ng-model="muestra.MEF" aria-label="MEF">
+          	            Metaplasia Escamosa Florida
+		          
+		      </div>
+		  </div>
+      </div>
+  </div>
+
+  <div class="row">
+  	<div class="col-md-6">
+  		 <div class="form-group">
+            <label class="control-label" for="">OBSERVACIONES</label>
+              <div class="controls">
+                <textarea rows="4" ng-trim="false" ng-model="resultDetails.diagnostico" name = "diagnostico" id="Diagnostico" maxlength="100" class="form-control">
+                </textarea>
+              </div>
+         </div>
+  	</div>
+  </div>
+
+</div>

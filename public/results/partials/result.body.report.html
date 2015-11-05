@@ -1,0 +1,45 @@
+<div class="resultBody">
+                 
+                <div class="row">
+                   <div class="col-sm-6">
+                   <div class="form-group">
+                     <label class="control-label" for="">Resultado</label>
+                     <div class="controls">
+                        <textarea rows="7" ng-trim="false" ng-model="resultDetails.resultado" name= "restultado" id="Resultado" maxlength="500" class="form-control" placeholder="Nota">
+                     </textarea>
+                      </div>
+                      </div>
+                    </div>
+                       <div class="col-sm-6">
+                   <div class="form-group">
+                     <label class="control-label" for="">Diagnostico</label>
+                     <div class="controls">
+                        <textarea rows="7" ng-trim="false" ng-model="resultDetails.diagnostico" name = "diagnostico" id="Diagnostico" maxlength="500" class="form-control" placeholder="Nota">
+                     </textarea>
+                      </div>
+                      </div>
+                    </div>
+                </div>
+
+                 <div class="row" ng-if="resultDetails.tipomuestra == 'B'">
+                   <div class="col-sm-6">
+                   <div class="form-group">
+                     <label class="control-label" for="">Tecnica</label>
+                     <div class="controls">
+                        <textarea rows="7" ng-trim="false" ng-model="resultDetails.tecnica" name = "tecnica" id="Resultado" maxlength="500" class="form-control" placeholder="Nota">
+                     </textarea>
+                      </div>
+                      </div>
+                    </div>
+                       <div class="col-sm-6">
+                   <div class="form-group">
+                     <label class="control-label" for="">Nota</label>
+                     <div class="controls">
+                        <textarea rows="7" ng-trim="false" ng-model="resultDetails.nota" name= "note" id="nota" maxlength="500" class="form-control" placeholder="Nota">
+                     </textarea>
+                      </div>
+                      </div>
+                    </div>
+                </div>
+
+</div>

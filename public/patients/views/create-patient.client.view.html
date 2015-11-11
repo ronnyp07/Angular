@@ -1,9 +1,10 @@
 <section data-ng-controller="PatientsCreateController as createCtrl" >
     <div class="modal-header">
         <h3 class="modal-title">Nuevo Paciente</h3>
+        <h5>Elementos con <span class="requiredIcon">*</span> son requeridos</h5>
     </div>
     <div class="modal-body">
-        <form name="createPatientForm" id="createPatientForm">
+        <form name="createPatientForm" id="createPatientForm" novalidate>
             <fieldset>
                 <div class="row">
                     <div class="form-group">
@@ -46,15 +47,15 @@
                             
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="patientFirstName">Nombres</label>
+                            <label class="control-label" for="patientFirstName">Nombres <span class="requiredIcon">*</span></label>
                             <div class="controls">
-                            <input type="text" data-ng-model="createCtrl.patientFirstName" id="patientFirstName" name="patientFirstName" autocomplete="false" class="form-control">
+                            <input type="text" data-ng-model="createCtrl.patientFirstName" id="patientFirstName" name="patientFirstName" autocomplete="false" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="patientLastName">Apellidos</label>
+                            <label class="control-label" for="patientLastName">Apellidos <span class="requiredIcon">*</span></label>
                             <div class="controls">
-                             <input type="text" data-ng-model="createCtrl.patientLastName" data-ng-change="createCtrl.calculateAge" id="patientLastName" name="patientLastName" class="form-control">
+                             <input type="text" data-ng-model="createCtrl.patientLastName" data-ng-change="createCtrl.calculateAge" id="patientLastName" name="patientLastName" class="form-control" required>
                             </div>
                         </div>
                          <div class="form-group">
@@ -119,9 +120,10 @@
                             </div>
                     </div>
                     <div class="form-group">
-                          <label class="control-label" for="patientTelefono">Telefono</label>
+                          <label class="control-label"  for="patientTelefono">Telefono</label>
                             <div class="controls">
-                            <input type="text" data-ng-model="createCtrl.patientTelefono" id="Telefono" name="patientTelefono" class="form-control">
+                            <input type="text" name="telefono" data-ng-model="createCtrl.patientTelefono" ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/" class="form-control">
+                             <span class="requiredIcon" ng-show="createPatientForm.telefono.$dirty && createPatientForm.telefono.$invalid">Numero de teléfono inválido</span>  
                             </div>
                     </div>
                     </div>
@@ -182,8 +184,8 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success btn-lg"  ng-click="createCtrl.create(); ok();" ng-disabled="createPatientForm.$invalid">Save &amp; Close</button>
-        <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-success btn-lg"  ng-click="createCtrl.create(); ok();" ng-disabled="createPatientForm.$invalid">Guardar &amp; Cerrar</button>
+        <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancelar</button>
     </div>
 
 </section>

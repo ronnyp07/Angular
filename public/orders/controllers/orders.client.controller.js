@@ -193,6 +193,7 @@ ordersModule.controller('ordersController', [
      NotifyPatient.getMsg('patientsaved', function(event, data){ 
      	 getPatientList();
      	 createCtrl.patient = data.patientSavedInfo._id;
+     	 createCtrl.setPatientDetail(createCtrl.patient);
          $scope.rpaciente.aseguradora = data.patientSavedInfo.DoctorTelefono;
          $scope.rpaciente.polisa = data.patientSavedInfo.patientPolisa;
          $scope.rpaciente.telefono = data.patientSavedInfo.patientTelefono;
@@ -202,11 +203,10 @@ ordersModule.controller('ordersController', [
 
      NotifyPatient.getMsg('doctorsaved', function(event, data ){
      	getDoctorList();
-
-     	$scope.setDoctorDetail(data.doctorSavedInfo._id);
      	$scope.doctorName = data.doctorSavedInfo.firstName + ' ' + data.doctorSavedInfo.lastName;
 		$scope.rdoctor.ID = data.doctorSavedInfo.DoctorId;
 		createCtrl.doctors = data.doctorSavedInfo._id;
+		createCtrl.setDoctorDetail(createCtrl.doctors);
 		$scope.rdoctor.telefono = data.doctorSavedInfo.DoctorTelefono;
 		alertify.success('Acción realizada exitosamente!! !!');
      });
@@ -214,6 +214,7 @@ ordersModule.controller('ordersController', [
       NotifyPatient.getMsg('clientesaved', function(event, data ){
      	getClienteList();
      	createCtrl.clientes = data.clienteSavedInfo._id;
+     	createCtrl.setClienteDetail(createCtrl.clientes);
 		$scope.rcliente.ID = data.clienteSavedInfo.ClienteId;
 		$scope.rcliente.IC = data.clienteSavedInfo.clienteRNC;
 		$scope.rcliente.telefono = data.clienteSavedInfo.clienteTelefono;
@@ -342,13 +343,14 @@ ordersModule.controller('ordersController', [
  		
  	};
 
-    this.setClienteDetail = function(){
-    var sCliente = $scope.clientes;
+    this.setClienteDetail = function(vCliente){
+    var sCliente = vCliente;
     $scope.getCliente(sCliente);
     };
 
     $scope.getCliente = function(cliente){
-    	Cliente.get({ clienteId: createCtrl.patient }, function(clienteResult){
+    	var vCliente = cliente;
+    	Cliente.get({ clienteId: vCliente}, function(clienteResult){
     	$scope.rcliente._id = clienteResult._id;
 		$scope.rcliente.ID = clienteResult.clienteId;
 	    $scope.rcliente.name = clienteResult.name;		
@@ -362,8 +364,8 @@ ordersModule.controller('ordersController', [
     	$scope.rcliente = {};
     };
 
-    this.setPatientDetail = function(){
-        var sPatient = createCtrl.patient;
+    this.setPatientDetail = function(patientParam){
+        var sPatient = patientParam;
         Patients.get({ patientId: sPatient }, function(patientResult){
 		$scope.rpaciente.FullName = patientResult.patientFirstName + ' ' + patientResult.patientLastName;
 		$scope.rpaciente._id = patientResult._id;
@@ -377,9 +379,9 @@ ordersModule.controller('ordersController', [
 	    });
     };
 
-     $scope.setDoctorDetail = function(doctorparamId){
+     this.setDoctorDetail = function(doctorparamId){
         var sDoctor = doctorparamId;
-        Doctors.get({ doctorId: createCtrl.doctors }, function(doctorResult){
+        Doctors.get({ doctorId: sDoctor }, function(doctorResult){
           $scope.doctorName = doctorResult.firstName + ' ' + doctorResult.lastName;
 		  $scope.rdoctor.ID = doctorResult.DoctorId;
 		  $scope.rdoctor._id = doctorResult._id;

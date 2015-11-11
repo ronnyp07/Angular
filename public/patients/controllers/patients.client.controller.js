@@ -396,6 +396,30 @@ patientModule.controller('patientDeleteController', ['$scope', 'Authentication',
   }
 ]);
 
+patientModule.directive('phone', function() {
+    return {
+        restrice: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ctrl) {
+          var PHONE_REGEXP = /^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/;
+            angular.element(element).bind('blur', function() {
+                var value = this.value;
+                if(PHONE_REGEXP.test(value)) {
+                    // Valid input
+                    console.log("valid phone number");
+                    angular.element(this).next().next().css('display','none');  
+                    console.log(element.next());
+                } else {
+                    // Invalid input  
+                    console.log("invalid phone number");
+                     console.log(angular.element(this).next().next());
+                    angular.element(this).next().next().css('display','block');                 
+                }
+            });              
+        }            
+    };      
+});
+
 
 patientModule.directive('patientList', ['Patients', 'NotifyPatient', function(Cliente, NotifyPatient){
     return {

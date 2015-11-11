@@ -44,15 +44,15 @@
                             <label class="control-label" for="patientDOB"> Fecha de Nacimiento</label>
 
                             <div class="controls">
-                            	<input ui-date="dateOptions" data-ng-model="patient.patientDOB" name="DateOfBirth" class="form-control">
+                            	<input ui-date="dateOptions" data-ng-model="patient.patientDOB" name="DateOfBirth" class="form-control" >
+                                 <span class="requiredIcon" ng-show="createPatientForm.DateOfBirth.$dirty && createPatientForm.DateOfBirth.$invalid">Fecha invalida favor verificar</span>  
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="patientEdad" > Edad</label>
                             <div class="controls">
-                             <input type="text" data-ng-model="patient.patientEdad" id="patientEdad" name="patientEdad" class="form-control">
-                               <!--  <input type="text" data-ng-model="patient.patientEdad" id="patientEdad" name="patientEdad" class="form-control" min="0" max="99" required> -->
-
+                             <input type="text" data-ng-model="patient.patientEdad" id="patientEdad" name="patientEdad" class="form-control" ng-pattern="/^\d+$/">
+                                <span class="requiredIcon" ng-show="createPatientForm.patientEdad.$dirty &&createPatientForm.patientEdad.$invalid">Edad invalida</span> 
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,8 @@
                     <div class="form-group">
                           <label class="control-label" for="patientTelefono">Telefono</label>
                             <div class="controls">
-                            <input type="text" data-ng-model="patient.patientTelefono" id="Telefono" name="patientTelefono" class="form-control">
+                            <input type="text" name="telefono" data-ng-model="patient.patientTelefono" ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/" class="form-control">
+                             <span class="requiredIcon" ng-show="createPatientForm.telefono.$dirty && createPatientForm.telefono.$invalid">Numero de teléfono inválido</span>  
                             </div>
                     </div>
                     </div>

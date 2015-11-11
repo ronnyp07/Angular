@@ -93,9 +93,10 @@ body {
 .homeBtnOrder i {
    font-size: 30px;
 }
-
-
-
+.requiredIcon{
+    font-weight: bold;
+    color: red;
+}
 
 #patientRefresh{
   width: 30px;

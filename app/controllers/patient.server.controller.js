@@ -65,18 +65,18 @@ exports.list = function(req, res) {
      			contains: req.query.filter
      		}
      	}
-     }
+     };
 
      var pagination = {
      	start : (page - 1) * count,
      	count : count
-     }
+     };
 
      var sort = {
      	sort: {
      		desc: '_id'
      	}
-     }
+     };
 
     Patients
     .find()
@@ -129,12 +129,13 @@ exports.update = function(req, res) {
     patient.pais = req.body.pais;
     patient.ciudad = req.body.ciudad;
     patient.sector = req.body.sector;
+    // console.log(patient);
 
+	
 	patient.save(function(err) {
 		if (err) {
-			//console.log(err);
 			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+				message: err
 			});
 		} else {
 			res.jsonp(patient);

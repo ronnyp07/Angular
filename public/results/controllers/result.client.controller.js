@@ -239,10 +239,9 @@ resultModule.controller('resultController', [
 
     $scope.getDate = function(){
     	console.log($scope.date);
-    }
+    };
 
-   
-
+  
    $scope.getDatecurrentPage = 1;
    $scope.pageSize = 10;
    
@@ -268,44 +267,27 @@ resultModule.controller('resultController', [
     	console.log($scope.cPage);
     	 var startDate = new Date($scope.date.startDate);
     	 var endDate = new Date($scope.date.endDate);
-
-    	// var startDateMonth = moment($scope.date.startDate).month();
-    	// var startDateYear = moment($scope.date.startDate).year();
-    	// var startDateDays = startDate.getDate();
     
         var dateFilter = {
         	startDate: startDate,
-        	endDate: endDate
-        	
-        }
-
+        	endDate: endDate      	
+        };
         getResultsPage(newPage, filter, setDateVariables());
-
     };
 
     function setDateVariables(){
       var startDate = new Date($scope.date.startDate);
     	 var endDate = new Date($scope.date.endDate);
-    	// var startDateMonth = moment($scope.date.startDate).month();
-    	// var startDateYear = moment($scope.date.startDate).year();
-    	// var startDateDays = startDate.getDate();
-    
         var dateFilter = {
         	startDate: startDate,
         	endDate: endDate
         	
-        }
-
-        console.log(startDate + '  ' + endDate);
-        console.log(dateFilter);
-
+        };
     	return dateFilter;
     }
 
  	function getResultsPage(pageNumber, filterLetter, dateFilter) {
- 		console.log('fecha' + ' ' + dateFilter.startDate);
      var startDate = dateFilter.startDate;
-
       $http.get('/api/result',  {
         params: {
         page: pageNumber,
@@ -319,27 +301,18 @@ resultModule.controller('resultController', [
       .then(function(result) {
                 $scope.users = result.data.results;
                 $scope.totalUsers = result.data.total
-                console.log(result);  
     });
     }
     
      $scope.setResult = function(result){
              $location.path('/result/:' + result._id);
      };
-    
-   //Auto Cierre
-
-
      } 
  ]);
 
 
 resultModule.directive('ngPrint', function(){
  var printSection = document.getElementById('printSection');
- // var result = document.getElementById('resultValue');
- // printSection.appendChild(result);
- //$('#resultValue').append("this text was appended");
- //var resultValue = document.getElementById('resultValue').value;
         // if there is no printing section, create one
         if (!printSection) {
             printSection = document.createElement('div');
@@ -357,7 +330,7 @@ resultModule.directive('ngPrint', function(){
             window.onafterprint = function () {
                 // clean the print section before adding new content
                 printSection.innerHTML = '';
-            }
+            };
         }
         function printElement(elem) {
             // clones the element you want to print
@@ -380,35 +353,35 @@ resultModule.directive('printCitologia', function(){
     return {
           restrict: 'E',
           templateUrl: 'results/partials/print-citology.report.html'
-     }
+     };
 });
 
 resultModule.directive('printBiopsia', function(){
     return {
           restrict: 'E',
           templateUrl: 'results/partials/print-biop.report.html'
-     }
+     };
 });
 
 resultModule.directive('resultBody', function(){
     return {
           restrict: 'E',
           templateUrl: 'results/partials/result.body.report.html'
-     }
+     };
 });
 
 resultModule.directive('resultBodypop', function(){
     return {
           restrict: 'E',
           templateUrl: 'results/partials/result.body.pap.report.html'
-     }
+     };
 });
 
 resultModule.directive('resultPrintpop', function(){
     return {
           restrict: 'E',
           templateUrl: 'results/partials/result.body.pap.print.report.html'
-     }
+     };
 });
 
 

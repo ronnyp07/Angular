@@ -34,7 +34,7 @@ var PatientSchema = new Schema({
     trim: true
   },
    patientEdad: {
-    type: Number,
+    type: String,
     trim: true
   },
 
@@ -49,7 +49,7 @@ var PatientSchema = new Schema({
   },
 
   patientTelefono: {
-    type: Number,
+    type: String,
     trim: true
   },
 

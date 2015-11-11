@@ -21,16 +21,16 @@ angular.module('patients').factory('Patients', ['$resource', function($resource)
       this.msg = mgs;
       this.broadCast();
       console.log(this.mgs);
-    }
+    };
 
     notify.broadCast = function(){
         $rootScope.$broadcast('noError');
-    }
+    };
 
     notify.sendMsg = function(msg, data){
        data = data || {};
        $rootScope.$emit(msg, data);
-    }
+    };
 
     notify.getMsg = function(msg, func, scope){
      var unbind = $rootScope.$on(msg, func);
@@ -43,4 +43,32 @@ angular.module('patients').factory('Patients', ['$resource', function($resource)
     return notify;
     // Usar el service '$resource' para devolver un objeto '$resource' Patients
  
-}])
+}]).service('PatientServices',['$http', '$q', function($http, $q){
+  var obj = {
+      results: [],
+      load: function(){
+        var defer = $q.defer();
+        $http.post('patient/getList').
+        success(function(data){
+
+          if(data.length !== 0){
+          angular.forEach(data, function(daraResult){
+            obj.results.push(daraResult);
+            console.log(daraResult);
+          });
+          }
+          defer.resolve(data);
+         }).
+         error(function(err){
+        });
+
+        return defer.promise;
+      }
+
+  };
+
+   obj.load();
+   return obj;
+
+
+}]);

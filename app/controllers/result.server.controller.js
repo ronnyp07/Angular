@@ -63,7 +63,6 @@ exports.create = function(req, res) {
 exports.listpage = function(req, res) { 
      var count = req.query.count || 5;
      var page = req.query.page || 1;
-     console.log(page);
      var endDate = new Date(req.query.endDate);
      var endDateYear = endDate.getFullYear();
      var endDateMonth = endDate.getMonth();
@@ -74,50 +73,32 @@ exports.listpage = function(req, res) {
      var startDateMonth = startDate.getMonth();
      var startDateDay = startDate.getDate() + 1;
 
-    console.log(req.query.startDate);
-    //  var startDateR = {
-    //   day: startDate.getDay(),
-    //   month: startDate.getMonth(),
-    //   year: startDate.getYear()
-    // };
-     //var endDate = req.query.endDate;
-
-    
-    //var date = new Date(2015, 3, 15)
-     //console.log(req.query.startDate);
-  //  console.log(startDateR);
-   // console.log(endDate);
-
      var pagination = {
       start : (page - 1) * count,
       count : count
-     }
+     };
 
     var sort ={
       sort: {
         desc: '_id'
       }
-     }
+     };
     
     var filter = {
       filters: {
-       // field: ['reportname'],
            mandatory : {
             contains : {
                 rSereal : req.query.filter
-            }
-             ,
+            },
                greaterThanEqual : {
                 created : new Date(startDateYear, startDateMonth, startDateDay)
-             }
-            ,
+             },
             lessThanEqual : {
                 created : new Date(endDateYear, endDateMonth, endDateDay)
             }
-             
        }
      }
-   }
+   };
 
     Result
     .find()

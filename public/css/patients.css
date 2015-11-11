@@ -73,14 +73,18 @@ body {
 .float1{
   float:left;
   width: 85%;
+  margin-right: 5px;
+
 }
 .float{
   float:left;
   width: 90%;
+  margin-right: 5px;
 }
 .float2{
   float:left;
   width: 89%;
+  margin-right: 5px;
 }
 
 .homeBtnOrder {

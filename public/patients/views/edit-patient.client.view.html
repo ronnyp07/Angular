@@ -46,17 +46,12 @@
                             <div class="controls">
                             	<input ui-date="dateOptions" data-ng-model="patient.patientDOB" name="DateOfBirth" class="form-control">
                             </div>
-                        <!--     <div class="controls">
-                                <input type="text" data-ng-model="patient.patientDOB | date:dd/MM/yyyy" id="patientDOB" name="patientDOB" pattern="\d{1,2}-\d{1,2}-\d{4}"
-       placeholder="dd-MM-yyyy"  class="form-control">
-
-                         
-                            </div> -->
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="patientEdad" > Edad</label>
                             <div class="controls">
-                                <input type="number" data-ng-model="patient.patientEdad" id="patientEdad" name="patientEdad" class="form-control" min="0" max="99" required>
+                             <input type="text" data-ng-model="patient.patientEdad" id="patientEdad" name="patientEdad" class="form-control">
+                               <!--  <input type="text" data-ng-model="patient.patientEdad" id="patientEdad" name="patientEdad" class="form-control" min="0" max="99" required> -->
 
                             </div>
                         </div>

@@ -1,3 +1,5 @@
+'use strict';
+
 // Cargar las dependencias del módulo
 var users    = require('../../app/controllers/user.server.controller'), 
     patients = require('../../app/controllers/patient.server.controller');

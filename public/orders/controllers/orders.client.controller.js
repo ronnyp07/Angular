@@ -26,11 +26,11 @@ ordersModule.controller('ordersController', [
        var params = {
        	  page: 1,            
 	      count: 10,
-       }
+       };
 
-        $scope.data = {
+       $scope.data = {
           group1 : 'Ordenes'
-          }
+       };
 
        var settings = {
        	total: 0,  
@@ -43,26 +43,22 @@ ordersModule.controller('ordersController', [
 	        });
 	      
 	        }
-       }
+       };
 
     
 	  $scope.tableParams = new ngTableParams( params, settings);
-	  console.log($scope.tableParams);
-
-	   NotifyPatient.getMsg('updated', function(event, data){
-         getPatientList();
-         getDoctorList();
-         getClienteList();
-         alertify.success('Acción realizada exitosamente!! !!'); 
-      });
+	   // NotifyPatient.getMsg('updated', function(event, data){
+    //      getPatientList();
+    //      getDoctorList();
+    //      getClienteList();
+    //      alertify.success('Acción realizada exitosamente!! !!'); 
+    //   });
 
 
 	  $scope.openExams = function(value, order){
 	  	$scope.edit = value;
-	  	//$scope.orderExam = order;
-	  	console.log(order._id);
 	  	$scope.orderExam = GetResults.getResultlist(order._id);
-	  }
+	  };
 
 
 
@@ -140,6 +136,8 @@ ordersModule.controller('ordersController', [
 	'CierreControl',
 	'$interval',
 	'NotifyPatient',
+	'PatientServices',
+	'$timeout',
  	function(
  	 $scope, 
  	 $http,
@@ -160,8 +158,9 @@ ordersModule.controller('ordersController', [
  	 $location,
  	 CierreControl,
  	 $interval,
- 	 NotifyPatient
- 		//, $stateParams
+ 	 NotifyPatient,
+ 	 PatientServices,
+ 	 $timeout
  		) {
     
    //Auto Cierre
@@ -181,7 +180,7 @@ ordersModule.controller('ordersController', [
     getClienteList();
 
  	$scope.orderDetail = [];
- 	$scope.rpaciente.aseguradora = "";
+ 	$scope.rpaciente.aseguradora = '';
  	
     $http.post('procs/getList').
     success(function(data){
@@ -189,43 +188,54 @@ ordersModule.controller('ordersController', [
     }).error(function(err){
 	   console.log(err);
     });
-
     
-    // $interval(function(){
-    //  getPatientList();
-    //   $('#selectedPatient').select2('data', $scope.paciente) 
-    // }, 300);
-
-     NotifyPatient.getMsg('saved', function(event, data){
-         getPatientList();
-         getDoctorList();
-         getClienteList();
-         alertify.success('Acción realizada exitosamente!! !!'); 
+     $scope.isSaving = false;
+     NotifyPatient.getMsg('patientsaved', function(event, data){ 
+     	 getPatientList();
+     	 createCtrl.patient = data.patientSavedInfo._id;
+         $scope.rpaciente.aseguradora = data.patientSavedInfo.DoctorTelefono;
+         $scope.rpaciente.polisa = data.patientSavedInfo.patientPolisa;
+         $scope.rpaciente.telefono = data.patientSavedInfo.patientTelefono;
+         $scope.rpaciente.ID = data.patientSavedInfo.patientId;
+         alertify.success('Acción realizada exitosamente!! !!');
       });
 
      NotifyPatient.getMsg('doctorsaved', function(event, data ){
      	getDoctorList();
-     	$scope.setDoctorDetail(data.doctorSavedInfo._id)
+
+     	$scope.setDoctorDetail(data.doctorSavedInfo._id);
      	$scope.doctorName = data.doctorSavedInfo.firstName + ' ' + data.doctorSavedInfo.lastName;
 		$scope.rdoctor.ID = data.doctorSavedInfo.DoctorId;
-		$scope.doctors = data.doctorSavedInfo._id;
+		createCtrl.doctors = data.doctorSavedInfo._id;
 		$scope.rdoctor.telefono = data.doctorSavedInfo.DoctorTelefono;
-    
-     }) 
+		alertify.success('Acción realizada exitosamente!! !!');
+     });
+
+      NotifyPatient.getMsg('clientesaved', function(event, data ){
+     	getClienteList();
+     	createCtrl.clientes = data.clienteSavedInfo._id;
+		$scope.rcliente.ID = data.clienteSavedInfo.ClienteId;
+		$scope.rcliente.IC = data.clienteSavedInfo.clienteRNC;
+		$scope.rcliente.telefono = data.clienteSavedInfo.clienteTelefono;
+		alertify.success('Acción realizada exitosamente!! !!');
+     });
+
 
      
 	$scope.testThis = function(){
          getPatientList();
          getDoctorList();
          getClienteList();
-         //$('#selectedPatient').select2('data', $scope.paciente) 
+         createCtrl.clientes = '';
+         createCtrl.patient = '';
+         createCtrl.doctors = '';
+
     };
 
     function getPatientList(){
     $http.post('patient/getList').
     success(function(data){
-    console.log('data re-load')
-    $scope.paciente = data;
+       $scope.paciente = data;
      }).
      error(function(err){
     });
@@ -305,8 +315,8 @@ ordersModule.controller('ordersController', [
 	     	 }    	
 	     	//$scope.Bcounter = $scope.Bcounter + $scope.BcounterIncrement;
 	     	$scope.flag = true;
-	     }else if (procsResult.proType == 'BL'){
-	     	if($scope.InitFlag == true){
+	     }else if (procsResult.proType === 'BL'){
+	     	if($scope.InitFlag === true){
 	     	 	$scope.BLcounterIncrement = $scope.BLcounterIncrement + 1;
 	     	 	$scope.InitFlag = false;
 	     	 } else {
@@ -314,14 +324,14 @@ ordersModule.controller('ordersController', [
 	     	 } 
 	     	 $scope.BLflag = true;     	
 	     }else {
-	     	if($scope.InitFlag == true){
+	     	if($scope.InitFlag ===true){
 	     	 	$scope.PcounterIncrement = $scope.PcounterIncrement + 1;
 	     	 	$scope.InitFlag = false;
 	     	 } else {
 	     	 	$scope.PcounterIncrement +=  1;
 	     	 }    	
 	     	$scope.Pflag = true;
-	     };
+	     }
 
 	     $scope.getTotal();
 	     
@@ -330,15 +340,15 @@ ordersModule.controller('ordersController', [
  		//Add the detail to the order array		
  		 //$scope.clearProcForm();
  		
- 	}
+ 	};
 
     this.setClienteDetail = function(){
-    var sCliente = $scope.clientes
+    var sCliente = $scope.clientes;
     $scope.getCliente(sCliente);
     };
 
     $scope.getCliente = function(cliente){
-    	Cliente.get({ clienteId: cliente }, function(clienteResult){
+    	Cliente.get({ clienteId: createCtrl.patient }, function(clienteResult){
     	$scope.rcliente._id = clienteResult._id;
 		$scope.rcliente.ID = clienteResult.clienteId;
 	    $scope.rcliente.name = clienteResult.name;		
@@ -348,12 +358,12 @@ ordersModule.controller('ordersController', [
     };
 
     $scope.clearClientForm = function(){
-    	$scope.cliente = Cliente.get();
+    	createCtrl.cliente = Cliente.get();
     	$scope.rcliente = {};
     };
 
     this.setPatientDetail = function(){
-        var sPatient = $scope.patient
+        var sPatient = createCtrl.patient;
         Patients.get({ patientId: sPatient }, function(patientResult){
 		$scope.rpaciente.FullName = patientResult.patientFirstName + ' ' + patientResult.patientLastName;
 		$scope.rpaciente._id = patientResult._id;
@@ -363,14 +373,13 @@ ordersModule.controller('ordersController', [
 		$scope.rpaciente.age = patientResult.patientEdad;
 		Cliente.get({ clienteId: patientResult.clientes }, function(clienteResult){
 		$scope.rpaciente.aseguradora = clienteResult.name;
-	
 	    });
 	    });
     };
 
      $scope.setDoctorDetail = function(doctorparamId){
         var sDoctor = doctorparamId;
-        Doctors.get({ doctorId: sDoctor }, function(doctorResult){
+        Doctors.get({ doctorId: createCtrl.doctors }, function(doctorResult){
           $scope.doctorName = doctorResult.firstName + ' ' + doctorResult.lastName;
 		  $scope.rdoctor.ID = doctorResult.DoctorId;
 		  $scope.rdoctor._id = doctorResult._id;
@@ -379,26 +388,26 @@ ordersModule.controller('ordersController', [
     };
 
      $scope.setProcsDetail = function(){
-	    var sProcs = $scope.procs
-
+	    var sProcs = createCtrl.procs;
+         console.log(sProcs);
          var nserie = '';
          Procs.get({ procsId: sProcs }, function(procsResult){
 		 $scope.rprocs = procsResult;
-          $scope.presultType = $scope.rprocs.proType
-         
-          if($scope.presultType == 'C'){
-          	$scope.presultType = 'P'
+         $scope.presultType = $scope.rprocs.proType;
+         console.log($scope.rprocs);
+          if($scope.presultType === 'C'){
+          	$scope.presultType = 'P';
           }
 
 	      var currentB = CierreControl.getActiveCurrentMonth($scope.presultType);
 	      currentB.then(function(r){
 
 	       $scope.currentB = r[0];
-
+	       console.log($scope.currentB);
 	       if($scope.currentB) {
           	 console.log($scope.rprocs.proType);
-          	   if($scope.rprocs.proType == 'B'){         	   
-          	   	 if($scope.flag == true){
+          	   if($scope.rprocs.proType === 'B'){         	   
+          	   	 if($scope.flag === true){
           	   	 	console.log($scope.BcounterIncrement);    
 		         	  $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BcounterIncrement) + 1);
 		         	  $scope.Bcounter = $scope.currentB.counter + $scope.BcounterIncrement;
@@ -409,8 +418,8 @@ ordersModule.controller('ordersController', [
 		         	 $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year + '-' + $scope.Bcounter;
 		          
 		             }
-          	   } else if ($scope.rprocs.proType == 'BL') {
-                    if($scope.BLflag == true){
+          	   } else if ($scope.rprocs.proType === 'BL') {
+                    if($scope.BLflag === true){
 		         	  $scope.nserie = $scope.rprocs.proType  + $scope.currentB.year + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BLcounterIncrement) + 1);
 		         	  $scope.BLcounter = $scope.currentB.counter + $scope.BLcounterIncrement;
 		         	
@@ -421,120 +430,30 @@ ordersModule.controller('ordersController', [
 		            }
 
 		       } else {     	   
-		       	   if($scope.Pflag == true){
+		       	   if($scope.Pflag === true){
 		         	$scope.nserie = $scope.presultType + $scope.currentB.year + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.PcounterIncrement) + 1);
 		         	$scope.Pcounter = $scope.currentB.counter + $scope.PcounterIncrement;
 		         	}else{
 		         	$scope.pcurrentCount = parseInt($scope.currentB.counter);
 		         	$scope.Pcounter = $scope.pcurrentCount + 1;
 		         	$scope.nserie =  $scope.presultType  + $scope.currentB.year + '-' + $scope.Pcounter;
-		         	  // if($scope.pcurrentCount == 1){
-		         	  // 	$scope.Pcounter = 1
-		         	  // 	$scope.InitFlag = true;
-		         	  // } else {
-		         	  // 	 $scope.Pcounter = $scope.pcurrentCount + 1;
-		         	  // }	         	
-		         	 //$scope.nserie = data[0].proType + yResult + '-' + $scope.Pcounter;
+
 		              } 
-
-
-		       }
-		   // $http.post('api/counter', {info: info}).
-		   //   success(function(data){
-		   // if(data.length >= 0){
-		   //  	console.log(data);
-		   //       var yResult = data[0].year.substr(2,2);
-		   //       var mResult = parseInt(data[0].month) + 1;
-		              
-		   //       if(data[0].proType == 'B'){
-		   //       	if($scope.flag == true){
-		   //       	  $scope.nserie = mResult + data[0].proType + yResult + '-' + ($scope.currentCount + $scope.BcounterIncrement);
-		   //       	  $scope.Bcounter = $scope.currentCount + $scope.BcounterIncrement;
-		   //       	}else{
-		   //       	 $scope.currentCount = parseInt(data[0].counter);
-		   //       	 $scope.Bcounter = $scope.currentCount + 1;
-		   //       	  // if($scope.currentCount == 1){
-		   //       	  // 	$scope.Bcounter = 1
-		   //       	  // 	$scope.InitFlag = true;
-		   //       	  // } else {
-		   //       	  // 	 $scope.Bcounter = $scope.currentCount + 1;
-		   //       	  // }	         	
-		   //       	 $scope.nserie = mResult + data[0].proType + yResult + '-' + $scope.Bcounter;
-		   //            }
-		   //       }else if (data[0].proType == 'BL') {
-     //                if($scope.BLflag == true){
-		   //       	  $scope.nserie = data[0].proType + yResult + '-' + ($scope.blcurrentCount + $scope.BLcounterIncrement);
-		   //       	  $scope.BLcounter = $scope.blcurrentCount + $scope.BLcounterIncrement;
-		   //       	}else{
-		   //       	 $scope.blcurrentCount = parseInt(data[0].counter);
-		   //       	  $scope.BLcounter = $scope.blcurrentCount + 1;
-		   //       	  // if($scope.blcurrentCount == 1){
-		   //       	  // 	$scope.BLcounter = 1
-		   //       	  // 	$scope.InitFlag = true;
-		   //       	  // } else {
-		   //       	  // 	 $scope.BLcounter = $scope.blcurrentCount + 1;
-		   //       	  // }	         	
-		   //       	 $scope.nserie =  data[0].proType + yResult + '-' + $scope.BLcounter;
-		   //          }
-
-		   //       }else {
-		   //       	if($scope.Pflag == true){
-		   //       	$scope.nserie = data[0].proType + yResult + '-' + ($scope.pcurrentCount + $scope.PcounterIncrement);
-		   //       	$scope.Pcounter = $scope.pcurrentCount + $scope.PcounterIncrement;
-		   //       	}else{
-		   //       	$scope.pcurrentCount = parseInt(data[0].counter);
-		   //       	$scope.Pcounter = $scope.pcurrentCount + 1;
-		   //       	  // if($scope.pcurrentCount == 1){
-		   //       	  // 	$scope.Pcounter = 1
-		   //       	  // 	$scope.InitFlag = true;
-		   //       	  // } else {
-		   //       	  // 	 $scope.Pcounter = $scope.pcurrentCount + 1;
-		   //       	  // }	         	
-		   //       	 $scope.nserie = data[0].proType + yResult + '-' + $scope.Pcounter;
-		   //            } 
-
-		   //       };	        
+		       }        
 		           $scope.rprocs.ID = $scope.nserie;
-		   //   }else {
-		   //   	console.log('something here');
-		   //   }
-
-		   //   }).
-		   //   error(function(err){
-		   //   	console.log(err);
-		   //   });
-		 }
-	           // console.log(r[0]);
-	           
+		   }   
 	      });
 	      $scope.p = $scope.currentB;
-	      console.log($scope.p);
-
-
-		  // var d = new Date();
-				// var y = d.getFullYear();
-				// var m = d.getMonth();
-				// var year = y.toString();
-			 //    var info = {
-			 //    	year: year,
-			 //    	month: m,
-			 //    	proType: procsResult.proType
-		  //      };
-      
-
 	    });
-
-
-
     };
     
      $scope.clearPatientForm = function(){
-    	$scope.paciente = Patients.get();
+    	createCtrl.paciente = Patients.get();
     	$scope.rpaciente = {};
     };
 
     $scope.clearDoctorForm = function(){
-    	$scope.doctor = Doctors.get();
+    	createCtrl.doctor = Doctors.get();
     	$scope.rdoctor = {};
     };
 
@@ -544,18 +463,17 @@ ordersModule.controller('ordersController', [
     };
 
     $scope.getTotal = function(){
-          $scope.total = 0
+          $scope.total = 0;
           for(var i = 0; i < $scope.orderDetail.length; i++ ){
           	$scope.orderd = $scope.orderDetail[i];
-          	$scope.total += Number($scope.orderd.costo ? $scope.orderd.costo : 0 )
+          	$scope.total += Number($scope.orderd.costo ? $scope.orderd.costo : 0 );
           } 
           return $scope.total;   	
-    }
+    };
 
    this.deleteProcs = function(index) { 
      $scope.orderDetail.splice(index, 1);
-     //$scope.counter = $scope.counter - 1;
-     $scope.BcounterIncrement -= 1
+     $scope.BcounterIncrement -= 1;
      $scope.doSearch();
    };
 
@@ -631,11 +549,12 @@ ordersModule.controller('ordersController', [
 
     // Create new Pai
  	this.create = function() {
+ 		$scope.isSaving = true;
             var patientClient = false;
-            if($scope.clientes == ""){
+            if(createCtrl.clientes === ''){
             	patientClient = true;
             }
- 	      var orders = new Orders({
+ 	        var orders = new Orders({
                clienteName : $scope.rcliente.name,
                clienteId: $scope.rcliente.ID,
                clienteIc: $scope.rcliente.IC,
@@ -655,34 +574,31 @@ ordersModule.controller('ordersController', [
                patients: $scope.rpaciente._id
  	      });
         $scope.orderResult = orders;
-               
+        console.log($scope.orderResult);   
+
         var d = new Date();
 	    var y = d.getFullYear();
 		var m = d.getMonth();
 		var year = y.toString();
+        
         if($scope.Bcounter){
-               console.log($scope.Bcounter);
-
-			    var info = {
+			  var info = {
 			    	year: $scope.p.year,
 			    	month: $scope.p.month,
 			    	proType: 'B',
 			    	newCount: $scope.Bcounter
 		       };
+        
         $http.post('/api/count', {info: info})
         .success(function(){
         	$scope.BcounterIncrement = 0;
         }).error(function(err){
 		     	console.log(err);
 		 });
-	   };
+	   }
 
 	    if($scope.Pcounter){
-    //     	var d = new Date();
-				// var y = d.getFullYear();
-				// var m = d.getMonth();
-				// var year = y.toString();
-			    var info = {
+			var info = {
 			    	year: $scope.p.year,
 			    	month: $scope.p.month,
 			    	proType: 'P',
@@ -694,13 +610,9 @@ ordersModule.controller('ordersController', [
         }).error(function(err){
 		     	console.log(err);
 		 });
-	   };
+	   }
 
 	    if($scope.BLcounter){
-    //     	var d = new Date();
-				// var y = d.getFullYear();
-				// var m = d.getMonth();
-				// var year = y.toString();
 			    var info = {
 			    	year: $scope.p.year,
 			    	month: $scope.p.month,
@@ -713,14 +625,11 @@ ordersModule.controller('ordersController', [
         }).error(function(err){
 		     	console.log(err);
 		 });
-	   };
-
- 	    orders.$save(function(response){
- 	     
+	   }
+ 	   
+ 	      orders.$save(function(response){
 	      Notify.sendMsg('newPis', {'id': 'nada'});
 	      $scope.orderResponse = response;
-          console.log($scope.orderResponse.proclist);
- 	      
          for(var i = 0; i < $scope.orderResponse.proclist.length; i++ ){
           var report = new Result({
 	          rSereal: $scope.orderResponse.proclist[i].id,
@@ -730,30 +639,24 @@ ordersModule.controller('ordersController', [
 	          orders: $scope.orderResponse._id
            }); 
 
-
          report.$save(function(response){
-         	 $scope.testThis();
-         	 // $location.path('/ordenesList');
+         	 $timeout(function(){
+	         	 $scope.isSaving = false;
+	         	 $scope.testThis();
+	         	 alertify.success('Acción realizada exitosamente!! !!');
+         	 }, 2000);
           }, function(errorResponse){
 	       // En otro caso, presentar al usuario el mensaje de error
-	      $scope.error = errorResponse.data.message
-	      console.log($scope.error);
+	        alertify.error('Se ha producido un error en el sistema!!');
+           
 	      });
-         };
-
-	     // $scope.cleanForm();
-
-	   
+         }
          
 	    }, function(errorResponse) {
-	       // En otro caso, presentar al usuario el mensaje de error
-	    $scope.error = errorResponse.data.message
-	    console.log($scope.error);
+	       alertify.error('Se ha producido un error en el sistema!!');
 	   });
  	};
-     	
 	}
-
  ]);
 
  ordersModule.directive('autoComplete', function(){
@@ -762,108 +665,6 @@ ordersModule.controller('ordersController', [
  	   };
  });
 			
-
-
-
-// clienteModule.controller('clienteDeleteController', ['$scope', 'Authentication', 'Cliente', 'Notify',
-// 	function($scope, Authentication, Cliente, Notify) {
-// 		//$scope.authentication = Authentication;
-        
-// 	      this.delete = function(cliente) {
-// 	       var cliente = new Cliente({
-//                 _id: $scope.cliente._id
-// 	       });
-
-// 	       cliente.$remove(function(){
-// 	        Notify.sendMsg('newPis', {'id': 'nada'});
-// 	       }, function(errorResponse) {
-// 		  	$scope.error = errorResponse.data.message;
-// 		   });
-// 	   };	
-// 	}
-// ]);
-
-// clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication', 'Cliente', 'Notify', 'Pais', 'Ciudad', 'Sector', '$mdToast', '$animate',
-// 	function($scope, Authentication, Cliente, Notify, Pais, Ciudad, Sector, $mdToast, $animate) {
-
-// 		 this.pais = Pais.query();
-// 		 this.ciudad = Ciudad.query();
-// 		 this.sector = Sector.query();
-		 
-// 		 this.filterByPais = function(){
-//             this.sector = {};
-           
-// 		 };
-
-// 		 this.filterByCiudad = function(){
-// 		 	this.sector = Sector.query();
-// 		 };
-	 
-// 	    this.update = function(updateCliente) {
-// 	   	   //  console.log(updateCliente);
-
-// 	      	var cliente  = new Cliente ({
-// 	      		_id: updateCliente._id,
-// 				name: updateCliente.name,
-// 				tipo: updateCliente.tipo,
-//                 clienteRNC: updateCliente.clienteRNC,
-//                 clienteTelefono: updateCliente.clienteTelefono,
-//                 pais: $scope.cliente.rpais,
-// 	            ciudad: $scope.cliente.rciudad,
-// 	            sector: $scope.cliente.rsector,
-// 	            clienteDireccion: updateCliente.clienteDireccion
-// 	       });
-
-// 	     this.showSimpleUdpdate = function() {
-// 			    $mdToast.show(
-// 			      $mdToast.simple()
-// 			        .content('Cliente Guardado!!')
-// 			        .position('bottom right')
-// 			        .hideDelay(3000)
-// 			    );
-// 		};
-		
-// 		   cliente.$update(function() {
-// 		  	 Notify.sendMsg('newPis', {'id': 'update'});
-// 			}, function(errorResponse) {
-// 				$scope.error = errorResponse.data.message;
-// 			});
-// 	   };
-     	
-// 	}
-// ]);
-
-//  clienteModule.controller('modalResutl',  function ($scope, $modalInstance) {
-
-//    $scope.ok = function () {
-//      $modalInstance.close();
-//     };
-
-
-//    $scope.cancel = function () {
-//      $modalInstance.dismiss('cancel');
-//    };
-//  });
-
-
-
-//  			//console.log(clientes);
-//  			// Redirect after save
-// 			clientes.$save(function(response) {
-//               Notify.sendMsg('newPis', {'id': response._id});
-//              // Notify.sendbroadCast('noError');*/
-//              // this.cliente = cliente.query();
-//  				// Clear form fields
-//  			}, function(errorResponse) {
-//  				$scope.error = errorResponse.data.message;
-//  			});
-//  		 };
-
-//  	}
-//  ]);
-
-
-
 ordersModule.directive('orderList', ['Orders', 'Notify', function(Orders, Notify){
     return {
     restrict: 'E',
@@ -872,7 +673,6 @@ ordersModule.directive('orderList', ['Orders', 'Notify', function(Orders, Notify
      link: function(scope, element, attr){          // when a new cliente is added update the cliente List..
 
             Notify.getMsg('newPis', function(event, data){                 	
-            scope.clienteCtrl.doSearch(); 
          });
     }
    };
@@ -890,33 +690,3 @@ ordersModule.directive('resultList', ['Orders', 'Notify', 'Result', function(Ord
     }
    };
  }]);
-
-
-
-
-      //  window.onafterprint = function () {
-      //           // clean the print section before adding new content
-      //           printSection.innerHTML = '';
-      //  }
-
-      // var printSection = document.getElementById('printSection');
-      //   // if there is no printing section, create one
-      //   if (!printSection) {
-      //       printSection = document.createElement('div');
-      //       printSection.id = 'printSection';
-      //       document.body.appendChild(printSection);
-      //   };
-
-      //   function printElement(elem) {
-      //       // clones the element you want to print
-      //       var domClone = elem.cloneNode(true);
-      //       printSection.appendChild(domClone);
-      //       window.print();
-      //   }
-
-         //    Notify.getMsg('newPis', function(event, data){            	
-         //    scope.clienteCtrl.doSearch(); 
-         // });
-
-
-

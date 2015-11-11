@@ -253,7 +253,7 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
 
  	  this.filterSector = function(){
  	  	this.sector = Sector.query();
- 	  }
+ 	  };
 
  	  	// Create new Pai
  	  this.create = function() {
@@ -270,13 +270,9 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
  	   });
 			
 
- 			//console.log(clientes);
- 			// Redirect after save
+ 	
 			clientes.$save(function(response) {
-              Notify.sendMsg('newPis', {'id': response._id});
-             // Notify.sendbroadCast('noError');*/
-             // this.cliente = cliente.query();
- 				// Clear form fields
+              Notify.sendMsg('clientesaved', {clienteSavedInfo: response});
  			}, function(errorResponse) {
  				$scope.error = errorResponse.data.message;
  			});

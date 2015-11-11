@@ -32,7 +32,7 @@ patientModule.controller
           filter: {
               name: name
         }
-       }
+       };
 
        var settings = {
       //  groupBy: 'tipo',
@@ -51,27 +51,36 @@ patientModule.controller
 
       $scope.tableParams = new ngTableParams( params, settings);
 
+      // NotifyPatient.getMsg('saving', function(event, data){
+      //    $scope.isSaving = true;
+      //  });
+
+      // NotifyPatient.getMsg('saved', function(event, data){
+      //    $scope.tableParams.reload(); 
+      //    $scope.isSaving = false;
+      //    // alertify.success('Acción realizada exitosamente!! !!'); 
+      // });
+
       NotifyPatient.getMsg('updating', function(event, data){
          $scope.isSaving = true;
       });
 
        NotifyPatient.getMsg('updated', function(event, data){
+         $scope.tableParams.reload();
          $scope.isSaving = false;
          alertify.success('Acción realizada exitosamente!! !!'); 
+        
       });
     //Open the middleware to open a single cliente modal.
      this.modelRemove = function (size, selectedcliente) {
           $scope.patient = selectedcliente;
         var modalInstance = $modal.open({
           templateUrl: 'patients/views/patient-delete.template.html',
-          controller: 
-          //'modalDelete',
-          function ($scope, $modalInstance, patient) {
+          controller: function ($scope, $modalInstance, patient) {
                  $scope.patient = patient;
                   
                   $scope.ok = function () {
-                   //console.log($scope.cliente);
-                  // $scope.doSearch();
+            
                   $modalInstance.close($scope.patient);
           };
 
@@ -87,7 +96,6 @@ patientModule.controller
             }
           }
      });
-
 
    modalInstance.result.then(function (selectedcliente) {
       $scope.selected = selectedcliente;
@@ -125,8 +133,8 @@ patientModule.controller
           }
      });
 
-   modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
+    modalInstance.result.then(function (selectedPatient) {
+      $scope.selected = selectedPatient;
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
@@ -174,8 +182,6 @@ patientModule.controller
     this.ciudad = Ciudad.query();
     this.sector = Sector.query();
     this.cliente = Cliente.get();
-
-    console.log(this.ciudad);
     
     this.filterByCity = function() {
         if(this.pais == null){
@@ -206,12 +212,11 @@ patientModule.controller
     // var ageDate = new Date(ageDifMs); // miliseconds from epoch
     // console.log(Math.abs(ageDate.getUTCFullYear() - 1970));
     //return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
+    };
 
     this.PatientCI = {};
     $scope.authentication = Authentication;
     $scope.referred = true;
-    //$scope.seguros = Seguros.query();
 
     this.showPatientSave = function() {
       $mdToast.show(
@@ -223,72 +228,40 @@ patientModule.controller
     };
 
     this.create = function(){
+    NotifyPatient.sendMsg('saving', {'id': 'nada'});
     this.PatientCI = {
       tipo: this.PatientCI.tipo, 
       value: this.PatientCI.tipovalue 
-    }
-    //console.log(this.PatientCI);
-    // Usar los campos form para crear un nuevo objeto $resource Patient
-     
-      // this.dateFormat = ''
+    };
+    var patient = new Patients({
+    PatientCI: this.PatientCI,
+    patientFirstName: this.patientFirstName,
+    patientLastName: this.patientLastName,
+    patientDOB : this.patientDOB,
+    patientEdad: this.patientEdad,
+    patientSexo: this.patientSexo,
+    patientEC : this.patientEC,
+    patientTelefono: this.patientTelefono,
+    clientes: this.clientes,
+    patientPolisa: this.patientPolisa,
+    patientDireccion: this.patientDireccion,
+    pais: this.pais,
+    ciudad: this.patientCiudad,
+    sector: this.patientSector
+    });
 
-      // if(this.patientDOB){
-      // var parts = this.patientDOB.split("-");
-      // this.dateFormat = new Date(parseInt(parts[2], 10),
-      //                   parseInt(parts[1], 10) - 1,
-      //                   parseInt(parts[0], 10));
-      // }
-
-      var patient = new Patients({
-      PatientCI: this.PatientCI,
-      patientFirstName: this.patientFirstName,
-      patientLastName: this.patientLastName,
-      patientDOB : this.patientDOB,
-      patientEdad: this.patientEdad,
-      patientSexo: this.patientSexo,
-      patientEC : this.patientEC,
-      patientTelefono: this.patientTelefono,
-      clientes: this.clientes,
-      patientPolisa: this.patientPolisa,
-      patientDireccion: this.patientDireccion,
-      pais: this.pais,
-      ciudad: this.patientCiudad,
-      sector: this.patientSector
-
-      });
-
-      console.log(patient);
       //
       // Usar el método '$save' de Patient para enviar una petición POST apropiada
       patient.$save(function(response){ 
-     NotifyPatient.sendMsg('saved', {'id': 'nada'});
-
-       // Limpia los fields del formulario        
-      // this.PatientCI = {};
-       // this.patientFirstName = '';
-       // this.patientLastName = '';
-       // this.patientDOB = '';
-       // this.patientEdad = '';
-       // this.patientSexo = '';
-       // this.patientEC = '';
-       // this.patientTelefono = '';
-       // this.parientSeguro = '';
-       // this.patientPolisa = '';
-       // this.patientDireccion = '';
-       // this.patientPais = '';
-       // this.patientCiudad = '';
-       // this.patientSector = '';
-       // this.dateFormat = '';
-
+      NotifyPatient.sendMsg('saved', {patientSavedInfo: response});
+      NotifyPatient.sendMsg('patientsaved', {patientSavedInfo: response});
       }, function(errorResponse) {
        // En otro caso, presentar al usuario el mensaje de error
-       $scope.error = errorResponse.data.message
+       $scope.error = errorResponse.data.message;
        });
     };
     }
 ]);
-
-
 
 patientModule.controller
   ('PatientsUpdateController', 
@@ -297,7 +270,6 @@ patientModule.controller
    '$routeParams',  
    'Authentication', 
    'Patients', 
-   //'Seguros',
    'Pais',
    'Ciudad',
    'Sector',
@@ -305,8 +277,6 @@ patientModule.controller
    'NotifyPatient', '$mdToast', '$animate','$timeout',
    function($scope, $http, $routeParams,  Authentication, Patients, 
     Pais, Ciudad, Sector, Cliente, NotifyPatient, $mdToast, $animate, $timeout) {
-
-
 
     $scope.dateOptions = {
         changeYear: true,
@@ -318,9 +288,7 @@ patientModule.controller
      this.ciudad = Ciudad.query();
      this.sector = Sector.query();
      this.cliente = Cliente.get();
-     
-    console.log(this.ciudad);  
-   
+
    this.filterByCity = function() {
         if(this.pais == null){
           console.log('pais is null');
@@ -347,7 +315,6 @@ patientModule.controller
       this.sector = Sector.query();
      };
 
-     
     this.showPatientSave = function() {
       $mdToast.show(
         $mdToast.simple()
@@ -357,14 +324,13 @@ patientModule.controller
       );
     };
 
-    this.update = function(selectedPatient){
+  this.update = function(selectedPatient){
     NotifyPatient.sendMsg('updating', {'id': 'nada'});
     this.PatientCI = {
       tipo: selectedPatient.PatientCI ? selectedPatient.PatientCI.tipo: '', 
       value: selectedPatient.PatientCI ? selectedPatient.PatientCI.value: '' 
-    }
+    };
 
-    console.log(selectedPatient.rciudad);
     // Usar los campos form para crear un nuevo objeto $resource Patient
       var patient = new Patients({
       _id: selectedPatient._id,
@@ -376,23 +342,22 @@ patientModule.controller
       patientSexo: selectedPatient.patientSexo,
       patientEC : selectedPatient.patientEC,
       patientTelefono: selectedPatient.patientTelefono,
-      clientes: $scope.patient.rcliente,
+      clientes: selectedPatient.rcliente ? selectedPatient.rcliente : null,
       patientPolisa: selectedPatient.patientPolisa,
       patientDireccion: selectedPatient.patientDireccion,
-      pais: $scope.patient.rpais,
-      ciudad: selectedPatient.rciudad,
-      sector: selectedPatient.rsector
-
+      pais: selectedPatient.rpais ? selectedPatient.rpais : null,
+      ciudad: selectedPatient.rciudad ? selectedPatient.rciudad : null,
+      sector: selectedPatient.rsector ? selectedPatient.rsector : null
       });
-      console.log(patient);
+
      // Usar el método '$save' de Patient para enviar una petición POST apropiada
       patient.$update(function(){ 
            $timeout(function() {
-             NotifyPatient.sendMsg('updated', {'id': 'nada'});
+            NotifyPatient.sendMsg('updated', {'id': 'nada'});
            }, 3000);      
        
       }, function(errorResponse) {
-       $scope.error = errorResponse.data.message
+         
        });
     };
     }

@@ -1,0 +1,43 @@
+ <div class="panel panel-info">
+   <div class="panel-heading headerMargin"> 
+     <span class="headertitle">Clinicas Afiliadas al Doctor</span></div>
+     <div class="panel-body">
+      <div class="row">
+       <div class="col-sm-9">
+                  <div class="form-group">
+                  <label for="IC" class="col-sm-1 control-label">Clinica:</label>
+                  <div class="col-sm-11">
+                  <div class="float1">
+                  <select id="clinicaDoctor" ui-select2="select2Config" data-ng-model="UpCtrl.clientes" id="clientes" class="selec2Big"  ng-change="UpCtrl.setClienteDetail()"  name="clientes" data-placeholder="-- Selecione Cliente --" >
+                    <option value=""></option>
+                    <option ng-repeat="value in UpCtrl.cliente" value="{{value._id}}">{{value.name}}</option>
+                   </select> 
+     
+                    </div>
+                     <div style="float: left;">
+                    <button  type="submit" class="btn btn-sm btn-success text-center " ng-click="UpCtrl.AddClinica()"><i class="glyphicon glyphicon-chevron-down"></i>
+                    </button>
+                    </div>
+                    <div data-ng-controller="clienteController as clienteCtrl" >
+                    <button  type="submit" class="btn btn-sm btn-primary text-center pull-right " ng-click="clienteCtrl.modelCreate('lg')"><i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+      </div><!--End of contain row -->
+      <div class="row">
+      <div class="col-sm-9">
+         <table class="table">
+           <tr ng-repeat= "m in doctor.rClinicaList">
+             <td>{{m.clinica}}</td>
+             <td>
+              <button  type="submit" class="btn btn-sm btn-danger text-center pull-right" ng-click="UpCtrl.deleteClinica($index)"><i class="glyphicon  glyphicon-trash"></i>
+              </button></td>
+           </tr>
+         </table>
+      </div>
+      </div>
+</div><!--End of panel body -->
+</div><!--End of panel-->
+

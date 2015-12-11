@@ -5,7 +5,7 @@
  */
 var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
-  Cierre = mongoose.model('Cierre')
+  Cierre = mongoose.model('Cierre');
 
 // Crear un nuevo método controller manejador de errores
 var getErrorMessage = function(err) {

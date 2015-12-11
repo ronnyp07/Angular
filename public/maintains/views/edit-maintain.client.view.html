@@ -1,0 +1,33 @@
+<section data-ng-controller="MaintainsController as mainCtrl" data-ng-init="findOne()" class="cmargin">
+
+<div data-ng-controller = "MaintainsControllerDetails as m">
+<div class="row">
+    <div class="col-md-10">
+    <div class="panel panel-default">
+           <div class="panel-heading">
+           <div class="row">
+                 <div class="col-md-6">
+                    <h2>Agregar {{maintain.name}}</h2>
+                 </div>
+           </div>
+           </div> 
+    </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col-md-7">
+            </md-input-container>
+               <md-select placeholder="" id="drpHeader" ng-model="mainCtrl.maintainParent" md-on-open="loadUsers()" style="100;">
+            <md-option ng-value="" >-- Seleccione Centro--</md-option>
+        <md-option ng-value="maintain._id" ng-repeat="maintain in mainCtrl.maintainList2">{{maintain.name}}</md-option>
+            </md-select> 
+             <md-button class="md-raised md-primary">Guardar</md-button>
+            </fieldset>
+        </form>
+       
+     </md-content>
+     </div> -->
+   </div> 
+</div>
+</div>
+</section>

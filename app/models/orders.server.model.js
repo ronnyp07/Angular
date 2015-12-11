@@ -30,7 +30,11 @@ var OrderSchema = new Schema({
 	    id : {type: String, trim: true},
 	    name: { type: String, trim: true},
 	    costo: {type: Number, trim: true},
-	    procType: { type: String, trim: true}
+	    pago: {type: Number, trim: true},
+	    debe:  {type: Number, trim: true},
+	    procType: { type: String, trim: true},
+	    seguroId: {type:Schema.ObjectId, ref: 'locations'},
+	    seguroDesc: { type: String, trim: true }
 	 }],
 
    nota: {

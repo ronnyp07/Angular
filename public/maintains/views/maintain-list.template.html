@@ -1,0 +1,42 @@
+<section data-ng-controller="MaintainsController as vm">
+  <div>
+  <table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
+        <tr ng-repeat="mantain in $data">
+         
+         <td data-title="'Codigo'" filter="{'name': 'text' }">{{mantain.name}}</td>
+        
+         <td>
+          <div class="pull-right  hidden-xs">
+           <!-- <button type="button" class="btn btn-info" title="Editar" ng-click="vm.modelUpdate('lg', mantain)">
+            <i class="fa fa-pencil-square-o labelBig"></i></button>  -->
+            <div class="dropdown zise">
+            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown ">Acción
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a ng-click="vm.modelUpdate('lg', mantain)"><i class="glyphicon glyphicon-plus"></i>Agregar</a></li>
+              <li><a ng-click="vm.modelUpdateHeader('lg', mantain)"><i class="fa fa-eye"></i> Actualizar</a></li>
+            </ul>
+            </div>
+            <button type="button" class="btn btn-sm btn-danger" title="Eliminar" style="margin-left: 12px;" ng-click="pacientsCtrl.modelRemove('sm', mantain)"><span class="glyphicon glyphicon glyphicon-trash labelBig"></span></button>
+         </div>
+
+         <div class="pull-right visible-xs-block, hidden-sm hidden-md hidden-lg ">
+            <div class="dropdown zise">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown ">Acción
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#!/patients/{{patient._id}}"><i class="glyphicon glyphicon-user"></i> Perfil</a></li>
+              <li><a ng-click="modelUpdate('lg', patient)"><i class="fa fa-eye"></i> Actualizar</a></li>
+              <li><a href="#"><i class="fa fa-bed"></i> Ingresar</a></li>
+            </ul>
+            </div>
+         </div>
+       </td>
+     </tr>
+    
+  </table>
+   <div>
+     <p><strong>Total Pacientes:</strong> {{total}}</p>
+     </div>
+</div>
+</section>

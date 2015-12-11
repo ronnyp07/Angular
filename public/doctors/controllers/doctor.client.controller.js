@@ -29,7 +29,7 @@ doctorModule.controller
           filter: {             
               name: name
         }
-       }
+       };
 
        var settings = {
       //  groupBy: 'tipo',
@@ -44,7 +44,7 @@ doctorModule.controller
           });
         
           }
-       }
+       };
 
     $scope.calculateAge = function calculateAge(birthday) { 
     // birthday is a date
@@ -52,7 +52,7 @@ doctorModule.controller
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     console.log(Math.abs(ageDate.getUTCFullYear() - 1970));
     //return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
+    };
 
     $scope.tableParams = new ngTableParams( params, settings);
     //Open the middleware to open a single cliente modal.
@@ -98,10 +98,12 @@ doctorModule.controller
         var modalInstance = $modal.open({
           templateUrl: 'doctors/views/edit-doctor.client.view.html',
           controller: function ($scope, $modalInstance, doctor) {
-                $scope.doctor = doctor;
-                $scope.doctor.rpais = selectedDoctor.pais;
-                $scope.doctor.rciudad = selectedDoctor.ciudad;
-                $scope.doctor.rsector = selectedDoctor.sector;
+            $scope.doctor = doctor;
+            console.log(selectedDoctor);
+            $scope.doctor.rClinicaList = selectedDoctor.clinicaList;
+            $scope.doctor.rpais = selectedDoctor.pais;
+            $scope.doctor.rciudad = selectedDoctor.ciudad;
+            $scope.doctor.rsector = selectedDoctor.sector;
                 // console.log($scope.doctor.rsector);
 
           $scope.ok = function () {  
@@ -145,9 +147,7 @@ doctorModule.controller
     this.doSearch = function () {
         $scope.tableParams.reload();
     };  
-
  }
-
 ]);
 
 doctorModule.controller
@@ -197,9 +197,7 @@ doctorModule.controller
      this.DoctorCI = {
       tipo: this.DoctorCI.tipo, 
       value: this.DoctorCI.tipovalue 
-     }
-
-  
+     };
 
       var doctor = new Doctors({
       DoctorCI: this.DoctorCI,
@@ -241,15 +239,51 @@ doctorModule.controller
    'Ciudad',
    'Sector',
    'Cliente',
-   'Notify', '$mdToast', '$animate',
+   'Notify', '$mdToast', '$animate', 'ClienteService',
    function($scope, $http, $routeParams,  Authentication, Doctors, 
-    Pais, Ciudad, Sector, Cliente, Notify, $mdToast, $animate) {
-
+    Pais, Ciudad, Sector, Cliente, Notify, $mdToast, $animate, ClienteService) {
+     
+     var vm = this;
      this.pais = Pais.query();
      this.ciudad = Ciudad.query();
      this.sector = Sector.query();
-     this.cliente = Cliente.get();
+     //this.cliente = ClienteService;
+     this.ClientList = [];
+
+     $http.post('cliente/getList').
+          success(function(data){ 
+           vm.cliente = data;
+           console.log(vm.cliente);
+           }).
+           error(function(err){
+     });
      
+     this.AddClinica = function(){
+       var skillsSelect = document.getElementById('clinicaDoctor');
+       var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+       if($scope.doctor.rClinicaList.length <= 0){
+       $scope.doctor.rClinicaList.push({id: this.clientes, clinica: selectedText});
+       console.log('asdfasdfasd');
+       }else{
+        for(var i = 0; i< $scope.doctor.rClinicaList.length; i++){
+          if($scope.doctor.rClinicaList[i].id === this.clientes){
+              alertify.error('Esta clinica ya esta asociada');
+            return;
+          }
+        }
+        $scope.doctor.rClinicaList.push({id: this.clientes, clinica: selectedText});
+       }
+     };
+
+     this.deleteClinica = function($index){
+      console.log($index);
+        $scope.doctor.rClinicaList.splice($index, 1);
+     };
+
+     this.setClienteDetail = function(){
+      console.log('Clinica changed');
+     }; 
+
      this.filterByPais = function(){
             this.sector = {}; 
      };
@@ -272,9 +306,9 @@ doctorModule.controller
         this.DoctorCI = {
           tipo: selectedDoctor.DoctorCI.tipo, 
           value: selectedDoctor.DoctorCI.value 
-        }
+        };
       }
-      console.log(selectedDoctor);
+     
     // Usar los campos form para crear un nuevo objeto $resource Patient
       var doctors = new Doctors({
       _id: selectedDoctor._id,
@@ -288,12 +322,10 @@ doctorModule.controller
       DoctorDireccion: selectedDoctor.DoctorDireccion,
       pais: $scope.doctor.rpais,
       ciudad: $scope.doctor.rciudad,
-      sector: $scope.doctor.rsector
-
+      sector: $scope.doctor.rsector,
+      clinicaList : $scope.doctor.rClinicaList
       });
 
-      console.log(doctors);
-      //
      // Usar el método '$save' de Patient para enviar una petición POST apropiada
       doctors.$update(function(){ 
       Notify.sendMsg('newPis', {'id': 'nada'});
@@ -307,8 +339,6 @@ doctorModule.controller
 doctorModule.controller('patientDeleteController', ['$scope', 'Authentication', 'Patients', 'Notify', '$mdToast', '$animate',
   function($scope, Authentication, Patients, Notify, $mdToast, $animate) {
     $scope.authentication = Authentication;
-      // Update existing Pai
-        
         this.delete = function(patient) {
           //console.log ('passed');
          var patient = new Patients({
@@ -351,3 +381,19 @@ doctorModule.directive('doctorsList', ['Patients', 'Notify', function(Cliente, N
     }
    };
  }]);
+
+doctorModule.directive('doctorsContact', function(){
+    return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: 'doctors/template/doctor-contact-template.html'
+    };
+ });
+
+doctorModule.directive('doctorsClinica', function(){
+    return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: 'doctors/template/doctor-clinica-template.html'
+    };
+ });

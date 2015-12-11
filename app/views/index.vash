@@ -19,6 +19,7 @@
   <div class="col-md-12">
     <section ng-view=""> 
     </section>
+    <section ui-view></section>
   </div>
   </div>
   </div>

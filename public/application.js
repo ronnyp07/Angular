@@ -1,8 +1,10 @@
 var mainApplicationModuleName = 'mean';
 
 var mainApplicationModule = angular.module('mean', 
-	['ngRoute',
+	[
 	 'ngResource', 
+	 'ui.router',
+	 'ngRoute',
 	 'users', 
 	 'example', 
 	 'patients', 
@@ -15,15 +17,20 @@ var mainApplicationModule = angular.module('mean',
 	 'clientes',
 	 'tempresult',
 	 'procs',
+	 'ngLodash',
 	 'doctor',
 	 'orders', 
 	 'cierre',
 	 'index',
+	 'headermasters',
+	 'maintains',
+	 'locations',
 	 'ngMaterial',
 	 'ui.date',
 	 'angularUtils.directives.dirPagination',
 	 'daterangepicker',
-	 'ui.calendar']);
+	 'ui.calendar',
+	 'ngLodash']);
 
 mainApplicationModule.config(['$locationProvider',
  function($locationProvider){

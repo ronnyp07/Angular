@@ -1,0 +1,40 @@
+<div data-ng-controller = "MaintainsControllerDetails as m">
+<div class="row">
+   <div class="col-md-12">
+    <div class="md-whiteframe-z2">
+        <md-content class="md-padding">
+        <form name="maintainDetailsForm" data-ng-submit="m.sendMaintainDetails(); ok()">
+
+         <fieldset>
+            <md-input-container flex>
+                 <label>Codigo</label>
+                         <input ng-model="m.code" readonly="true">
+            </md-input-container>
+            
+             <md-input-container flex>
+                      <label>Nombre</label>
+                         <input ng-model="m.name" required>
+            
+            </md-input-container>
+<!--                <md-input-container flex>
+                      <label>Valor</label>
+                         <input ng-model="m.name">
+            </md-input-container> -->
+             <md-input-container flex>
+                      <label>Descripccion</label>
+                         <textarea data-ng-model="m.description" columns= "1" ></textarea>
+                           <!-- <input ng-model="name"> -->
+            </md-input-container>
+               <md-select placeholder="" id="drpHeader" ng-model="mainCtrl.maintainParent" md-on-open="loadUsers()" style="100;">
+            <md-option ng-value="" >-- Seleccione Centro--</md-option>
+        <md-option ng-value="maintain._id" ng-repeat="maintain in mainCtrl.maintainList2">{{maintain.name}}</md-option>
+            </md-select> 
+             <md-button class="md-raised md-primary" ng-disabled="maintainDetailsForm.$invalid">Guardar</md-button>
+            </fieldset>
+        </form>
+       
+     </md-content>
+     </div>
+   </div> 
+</div>
+</div>

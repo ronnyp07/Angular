@@ -1,0 +1,52 @@
+<section data-ng-controller="MaintainsController as mainCtrl">
+    <div class="col-md-10">
+       <div class="panel panel-default">
+           <div class="panel-heading">
+           <div class="row">
+                 <div class="col-md-6">
+                    <h2>Maestro Parametros</h2>
+                 </div>
+           </div>
+           </div> 
+     </div>
+          <div class="row">
+           <div class="col-md-12">
+           <md-button class="md-raised md-primary bodyContainer pull-right"  ng-click="toggleRight()" ng-hide="isOpenRight()"> <i class="fa fa-plus"></i> Agregar</md-button>
+           </div>
+           </div>
+           <div class="row">
+           <div class="col-md-12">
+           <mantain-list></mantain-list>
+           </div>
+       </div> 
+    </div>
+
+      <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+      <md-toolbar class="md-tall md-warn md-hue-3">
+        <h1 class="md-toolbar-tools">Nueva Cabezera</h1>
+      </md-toolbar>
+      <md-content layout-padding="">
+        <form name="maintainsCreateForm" >
+         <md-input-container>
+            <label for="testInput">Codigo</label>
+            <input type="text" id="testInput" ng-model="mainCtrl.codigo">
+          </md-input-container>
+          <md-input-container>
+            <label for="testInput">Nombre Cabezera</label>
+            <input type="text" id="testInput" ng-model="mainCtrl.name" md-autofocus="">
+          </md-input-container>
+          <md-input-container>
+            <label for="testInput">Descripcion</label>
+            <input type="text" id="testInput" ng-model="mainCtrl.desc">
+          </md-input-container>
+         
+        </form>
+        <md-button ng-click="mainCtrl.create(); close()" class="md-primary">
+          Guardar y Cerrar
+        </md-button>
+         <md-button ng-click="mainCtrl.clearValue()" class="md-accent">Limpiar</md-button>
+      </md-content>
+
+    </md-sidenav>
+</section>
+

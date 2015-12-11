@@ -49,6 +49,7 @@ var DoctorSchema = new Schema({
     	type: String,
 		trim: true	
     },
+    clinicaList: [],
 
     pais: {
 		type: Schema.ObjectId,

@@ -138,6 +138,8 @@ ordersModule.controller('ordersController', [
 	'NotifyPatient',
 	'PatientServices',
 	'$timeout',
+  'DoctorsService',
+  'lodash',
  	function(
  	 $scope, 
  	 $http,
@@ -160,27 +162,43 @@ ordersModule.controller('ordersController', [
  	 $interval,
  	 NotifyPatient,
  	 PatientServices,
- 	 $timeout
+ 	 $timeout,
+   DoctorsService,
+   lodash
  		) {
     
    //Auto Cierre
     var createCtrl = this;
+    $scope.isNotSave = false;
+    $scope.init = function(){
     $scope.rcliente = {};
     $scope.rpaciente = {};
     $scope.rdoctor = {};
     $scope.rprocs = {};
-    $scope.isNotSave = false;
+    createCtrl.doctorSelected = {};
+    createCtrl.patient = {};
+    //createCtrl.procs = {};
+    createCtrl.clientes = {};
     $scope.BcounterIncrement = 0;
     $scope.PcounterIncrement = 0;
     $scope.BLcounterIncrement = 0;
     $scope.addbAvalilable = false;
     $scope.currentB = '';
+    $scope.doctor = DoctorsService;
+    $scope.total = 0;
+    $scope.pago = 0;
+    $scope.debe = 0;
     getPatientList();
     getDoctorList();
     getClienteList();
+    getProcInit();
 
- 	$scope.orderDetail = [];
- 	$scope.rpaciente.aseguradora = '';
+    };
+
+     $scope.init();
+
+   	$scope.orderDetail = [];
+   	$scope.rpaciente.aseguradora = '';
  	
     $http.post('procs/getList').
     success(function(data){
@@ -190,48 +208,37 @@ ordersModule.controller('ordersController', [
     });
     
      $scope.isSaving = false;
-     NotifyPatient.getMsg('patientsaved', function(event, data){ 
+       NotifyPatient.getMsg('patientsaved', function(event, data){ 
      	 getPatientList();
      	 createCtrl.patient = data.patientSavedInfo._id;
      	 createCtrl.setPatientDetail(createCtrl.patient);
-         $scope.rpaciente.aseguradora = data.patientSavedInfo.DoctorTelefono;
-         $scope.rpaciente.polisa = data.patientSavedInfo.patientPolisa;
-         $scope.rpaciente.telefono = data.patientSavedInfo.patientTelefono;
-         $scope.rpaciente.ID = data.patientSavedInfo.patientId;
-         alertify.success('Acción realizada exitosamente!! !!');
+       $scope.rpaciente.aseguradora = data.patientSavedInfo.DoctorTelefono;
+       $scope.rpaciente.polisa = data.patientSavedInfo.patientPolisa;
+       $scope.rpaciente.telefono = data.patientSavedInfo.patientTelefono;
+       $scope.rpaciente.ID = data.patientSavedInfo.patientId;
+        // alertify.success('Acción realizada exitosamente!! !!');
       });
 
      NotifyPatient.getMsg('doctorsaved', function(event, data ){
-     	getDoctorList();
-     	$scope.doctorName = data.doctorSavedInfo.firstName + ' ' + data.doctorSavedInfo.lastName;
-		$scope.rdoctor.ID = data.doctorSavedInfo.DoctorId;
-		createCtrl.doctors = data.doctorSavedInfo._id;
-		createCtrl.setDoctorDetail(createCtrl.doctors);
-		$scope.rdoctor.telefono = data.doctorSavedInfo.DoctorTelefono;
-		alertify.success('Acción realizada exitosamente!! !!');
+     	//getDoctorList();
+      //$scope.doctorName = data.doctorSavedInfo.firstName + ' ' + data.doctorSavedInfo.lastName;
+  		// $scope.rdoctor.ID = data.doctorSavedInfo.DoctorId;
+  		createCtrl.doctors = data.doctorSavedInfo._id;
+  		createCtrl.setDoctorDetail(createCtrl.doctors);
+  		//$scope.rdoctor.telefono = data.doctorSavedInfo.DoctorTelefono;
+  		//alertify.success('Acción realizada exitosamente!! !!');
      });
 
       NotifyPatient.getMsg('clientesaved', function(event, data ){
      	getClienteList();
      	createCtrl.clientes = data.clienteSavedInfo._id;
      	createCtrl.setClienteDetail(createCtrl.clientes);
-		$scope.rcliente.ID = data.clienteSavedInfo.ClienteId;
-		$scope.rcliente.IC = data.clienteSavedInfo.clienteRNC;
-		$scope.rcliente.telefono = data.clienteSavedInfo.clienteTelefono;
-		alertify.success('Acción realizada exitosamente!! !!');
+  		$scope.rcliente.ID = data.clienteSavedInfo.ClienteId;
+  		$scope.rcliente.IC = data.clienteSavedInfo.clienteRNC;
+  		$scope.rcliente.telefono = data.clienteSavedInfo.clienteTelefono;
+  		//alertify.success('Acción realizada exitosamente!! !!');
      });
 
-
-     
-	$scope.testThis = function(){
-         getPatientList();
-         getDoctorList();
-         getClienteList();
-         createCtrl.clientes = '';
-         createCtrl.patient = '';
-         createCtrl.doctors = '';
-
-    };
 
     function getPatientList(){
     $http.post('patient/getList').
@@ -242,6 +249,15 @@ ordersModule.controller('ordersController', [
     });
     }
 
+    $scope.setDoctorDetail = function(param){
+      $scope.doctorClinic = lodash.chain(param)
+                           .find({ '_id': createCtrl.doctorSelected})
+                           .value();
+      if ($scope.doctorClinic){
+       createCtrl.clientes = $scope.doctorClinic.clinicaList[0].id;
+      }
+    };
+    
    function getDoctorList(){
    $http.post('doctor/getList').
     success(function(data){
@@ -249,20 +265,19 @@ ordersModule.controller('ordersController', [
      }).
      error(function(err){
     });
-    };
-
+    } 
+     
     function getClienteList(){
     $http.post('cliente/getList').
     success(function(data){
     $scope.cliente = data;
-    console.log(procs.selectedIndex);
      }).
      error(function(err){
     });
-    };
+    }
 
  //Carga el listando de los procedimientos
-  $scope.getProcInit = function(){ 
+  function getProcInit (){ 
  	$http.post('procs/getList').
 		     success(function(data){
         $scope.procedimeinto = data;  
@@ -277,32 +292,32 @@ ordersModule.controller('ordersController', [
 	   count: 5
     }
 
-       var settings = {
-        total: $scope.orderDetail.length, // length of data
-        getData: function($defer, params) {
-        $defer.resolve($scope.orderDetail.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-           }
-       };
- 
+   var settings = {
+    total: $scope.orderDetail.length, // length of data
+    getData: function($defer, params) {
+    $defer.resolve($scope.orderDetail.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+       }
+   };
+
     $scope.tableParams = new ngTableParams(params, settings);
    
 
    $scope.doSearch = function () {
         $scope.tableParams.reload();
-         console.log($scope.tableParams);
+         //console.log($scope.tableParams);
     };  
- 	 //$scope.getTotal();
-
 
  	$scope.addOrderProcs = function (procs) {
 
  		Procs.get({ procsId: procs }, function(procsResult){
-            var costo = 0;   
-            console.log($scope.rprocs.ID);
-		 $scope.orderDetail.push({"id": $scope.nserie, "procType":procsResult.proType,  "name": procsResult.name, "costo": procsResult.costo})
+            var costo = 0; 
+            var pago = 0;  
+            //console.log($scope.rprocs.ID);
+		  $scope.orderDetail.push({"id": $scope.nserie, "procType":procsResult.proType,  "name": procsResult.name, "costo": procsResult.costo ? procsResult.costo : 0, 'pago': procsResult.pago ? procsResult.pago : 0});
 	     
+       console.log($scope.orderDetail);
          //console.log($scope.orderDetail);
-	     $scope.getProcInit();
+	     getProcInit();
 	     $scope.doSearch();
 
 	     if(procsResult.proType == 'B'){
@@ -336,109 +351,104 @@ ordersModule.controller('ordersController', [
 
 	     $scope.getTotal();
 	     
-	     console.log($scope.counter);
+	    // console.log($scope.counter);
 	    });
  		//Add the detail to the order array		
  		 //$scope.clearProcForm();
  		
  	};
 
-    this.setClienteDetail = function(vCliente){
-    var sCliente = vCliente;
-    $scope.getCliente(sCliente);
-    };
+    // this.setClienteDetail = function(vCliente){
+    // var sCliente = vCliente;
+    // $scope.getCliente(sCliente);
+    // };
 
-    $scope.getCliente = function(cliente){
-    	var vCliente = cliente;
-    	Cliente.get({ clienteId: vCliente}, function(clienteResult){
-    	$scope.rcliente._id = clienteResult._id;
-		$scope.rcliente.ID = clienteResult.clienteId;
-	    $scope.rcliente.name = clienteResult.name;		
-		$scope.rcliente.telefono = clienteResult.clienteTelefono;
-		$scope.rcliente.IC = clienteResult.clienteRNC;
-	    });
-    };
+    // $scope.getCliente = function(cliente){
+    // 	var vCliente = cliente;
+    // 	Cliente.get({ clienteId: vCliente}, function(clienteResult){
+    //   console.log(clienteResult);
+    // 	$scope.rcliente._id = clienteResult._id;
+		  // $scope.rcliente.ID = clienteResult.clienteId;
+	   //  $scope.rcliente.name = clienteResult.name;		
+    //   $scope.rcliente.telefono = clienteResult.clienteTelefono;
+    //   $scope.rcliente.IC = clienteResult.clienteRNC;
+	   //  });
+    // };
 
-    $scope.clearClientForm = function(){
-    	createCtrl.cliente = Cliente.get();
-    	$scope.rcliente = {};
-    };
+    // $scope.clearClientForm = function(){
+    // 	createCtrl.cliente = Cliente.get();
+    // 	$scope.rcliente = {};
+    // };
 
     this.setPatientDetail = function(patientParam){
         var sPatient = patientParam;
         Patients.get({ patientId: sPatient }, function(patientResult){
-		$scope.rpaciente.FullName = patientResult.patientFirstName + ' ' + patientResult.patientLastName;
-		$scope.rpaciente._id = patientResult._id;
-		$scope.rpaciente.ID = patientResult.patientId;
-		$scope.rpaciente.telefono = patientResult.patientTelefono;
-		$scope.rpaciente.polisa = patientResult.patientPolisa;
-		$scope.rpaciente.age = patientResult.patientEdad;
-		Cliente.get({ clienteId: patientResult.clientes }, function(clienteResult){
-		$scope.rpaciente.aseguradora = clienteResult.name;
-	    });
-	    });
+        $scope.rpaciente.FullName = patientResult.patientFirstName + ' ' + patientResult.patientLastName;
+    		$scope.rpaciente._id = patientResult._id;
+    		$scope.rpaciente.ID = patientResult.patientId;
+    		$scope.rpaciente.telefono = patientResult.patientTelefono;
+    		$scope.rpaciente.polisa = patientResult.patientPolisa;
+    		$scope.rpaciente.age = patientResult.patientEdad;
+    		$scope.rpaciente.aseguradora = patientResult.locations ? patientResult.locations.name : null;
+	      $scope.rpaciente.aseguradoraId = patientResult.locations ? patientResult.locations._id : null;
+      });
     };
 
      this.setDoctorDetail = function(doctorparamId){
         var sDoctor = doctorparamId;
         Doctors.get({ doctorId: sDoctor }, function(doctorResult){
-          $scope.doctorName = doctorResult.firstName + ' ' + doctorResult.lastName;
-		  $scope.rdoctor.ID = doctorResult.DoctorId;
-		  $scope.rdoctor._id = doctorResult._id;
-		  $scope.rdoctor.telefono = doctorResult.DoctorTelefono;
+        $scope.doctorName = doctorResult.firstName + ' ' + doctorResult.lastName;
+  		  $scope.rdoctor.ID = doctorResult.DoctorId;
+  		  $scope.rdoctor._id = doctorResult._id;
+  		  $scope.rdoctor.telefono = doctorResult.DoctorTelefono;
 	    });
     };
 
      $scope.setProcsDetail = function(){
-	    var sProcs = createCtrl.procs;
-         console.log(sProcs);
+	      var sProcs = createCtrl.procs;
          var nserie = '';
          Procs.get({ procsId: sProcs }, function(procsResult){
-		 $scope.rprocs = procsResult;
-         $scope.presultType = $scope.rprocs.proType;
-         console.log($scope.rprocs);
-          if($scope.presultType === 'C'){
+		    $scope.rprocs = procsResult;
+        $scope.presultType = $scope.rprocs.proType;
+        if($scope.presultType === 'C'){
           	$scope.presultType = 'P';
-          }
+        }
 
 	      var currentB = CierreControl.getActiveCurrentMonth($scope.presultType);
 	      currentB.then(function(r){
 
 	       $scope.currentB = r[0];
-	       console.log($scope.currentB);
 	       if($scope.currentB) {
-          	 console.log($scope.rprocs.proType);
           	   if($scope.rprocs.proType === 'B'){         	   
-          	   	 if($scope.flag === true){
-          	   	 	console.log($scope.BcounterIncrement);    
-		         	  $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BcounterIncrement) + 1);
+          	   	if($scope.flag === true){
+		         	  $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BcounterIncrement) + 1);
 		         	  $scope.Bcounter = $scope.currentB.counter + $scope.BcounterIncrement;
 
 		         	}else{   	  	 
 		         	 $scope.currentCount = parseInt($scope.currentB.counter);
 		         	 $scope.Bcounter = $scope.currentCount + 1;		                	
-		         	 $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year + '-' + $scope.Bcounter;
+		         	 $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + $scope.Bcounter;
 		          
 		             }
           	   } else if ($scope.rprocs.proType === 'BL') {
                     if($scope.BLflag === true){
-		         	  $scope.nserie = $scope.rprocs.proType  + $scope.currentB.year + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BLcounterIncrement) + 1);
+		         	  $scope.nserie = $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BLcounterIncrement) + 1);
 		         	  $scope.BLcounter = $scope.currentB.counter + $scope.BLcounterIncrement;
 		         	
 		         	}else{
 		         	 $scope.blcurrentCount = parseInt($scope.currentB.counter);
 		         	 $scope.BLcounter = $scope.blcurrentCount + 1;         	
-		         	 $scope.nserie =    $scope.rprocs.proType  + $scope.currentB.year + '-' + $scope.BLcounter;
+		         	 $scope.nserie =    $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + $scope.BLcounter;
 		            }
 
 		       } else {     	   
 		       	   if($scope.Pflag === true){
-		         	$scope.nserie = $scope.presultType + $scope.currentB.year + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.PcounterIncrement) + 1);
+		         	$scope.nserie = $scope.presultType + $scope.currentB.year.substring(2, 4) + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.PcounterIncrement) + 1);
 		         	$scope.Pcounter = $scope.currentB.counter + $scope.PcounterIncrement;
 		         	}else{
 		         	$scope.pcurrentCount = parseInt($scope.currentB.counter);
 		         	$scope.Pcounter = $scope.pcurrentCount + 1;
-		         	$scope.nserie =  $scope.presultType  + $scope.currentB.year + '-' + $scope.Pcounter;
+		         	$scope.nserie =  $scope.presultType  + $scope.currentB.year.substring(2, 4) + '-' + $scope.Pcounter;
 
 		              } 
 		       }        
@@ -446,65 +456,62 @@ ordersModule.controller('ordersController', [
 		   }   
 	      });
 	      $scope.p = $scope.currentB;
+        console.log($scope.p);
 	    });
     };
     
-     $scope.clearPatientForm = function(){
-    	createCtrl.paciente = Patients.get();
-    	$scope.rpaciente = {};
-    };
+    //  $scope.clearPatientForm = function(){
+    // 	createCtrl.paciente = Patients.get();
+    // 	$scope.rpaciente = {};
+    // };
 
-    $scope.clearDoctorForm = function(){
-    	createCtrl.doctor = Doctors.get();
-    	$scope.rdoctor = {};
-    };
+    // $scope.clearDoctorForm = function(){
+    // 	createCtrl.doctor = Doctors.get();
+    // 	$scope.rdoctor = {};
+    // };
 
-    $scope.clearProcForm = function(){	
-    	$scope.rprocs = {};
-    	$scope.procedimeinto =  Procs.get();
-    };
+    // $scope.clearProcForm = function(){	
+    // 	$scope.rprocs = {};
+    // 	$scope.procedimeinto =  Procs.get();
+    // };
 
     $scope.getTotal = function(){
           $scope.total = 0;
+          $scope.pago = 0;
+          $scope.debe = 0;
           for(var i = 0; i < $scope.orderDetail.length; i++ ){
           	$scope.orderd = $scope.orderDetail[i];
           	$scope.total += Number($scope.orderd.costo ? $scope.orderd.costo : 0 );
-          } 
-          return $scope.total;   	
+            $scope.pago += Number($scope.orderd.pago ? $scope.orderd.pago : 0 );
+          }   	
+           $scope.debe = Number($scope.pago > $scope.total ? 0 :  $scope.total - $scope.pago);
     };
 
    this.deleteProcs = function(index) { 
      $scope.orderDetail.splice(index, 1);
      $scope.BcounterIncrement -= 1;
      $scope.doSearch();
+     $scope.getTotal();
    };
 
    $scope.clearOrderForm =  function(){
      	 $scope.orderDetail = [];
      	 $scope.doSearch();
-     	 $scope.note = "";
-     	 $scope.duedate = "";
-     	 $scope.autorisation = "";
-     	 $scope.statusOrder = "";
+     	 $scope.note = '';
+     	 $scope.duedate = '';
+     	 $scope.autorisation = '';
+     	 $scope.statusOrder = '';
 
-   };
-
-   $scope.showSimpleUdpdate = function() {
-	    $mdToast.show(
-		$mdToast.simple()
-	    .content('Folio Guardado Exitosamente!!')
-	    .position('top right')
-	    .hideDelay(4000)
-		);
    };
 
    $scope.cleanForm = function(){
-          $scope.clearDoctorForm();
-	      $scope.clearPatientForm();
-	      $scope.clearClientForm();
+        getPatientList();
+        getPatientList();
+       //  $scope.clearDoctorForm();
+	      // $scope.clearPatientForm();
+	      // $scope.clearClientForm();
 	      //$scope.clearClientForm();
 	      $scope.clearOrderForm();
-	      $scope.showSimpleUdpdate();
    };
 
    this.modelCreate = function (size) {
@@ -528,7 +535,7 @@ ordersModule.controller('ordersController', [
 		      //'modalDelete',
 		      function ($scope, $modalInstance) {
                   $scope.ok = function () {  
-                  console.log('works');                 
+                  //console.log('works');                 
                   $scope.cleanForm();
                   $modalInstance.close();
 				  };
@@ -556,13 +563,14 @@ ordersModule.controller('ordersController', [
             if(createCtrl.clientes === ''){
             	patientClient = true;
             }
+
+            console.log($scope.orderDetail);
  	        var orders = new Orders({
                clienteName : $scope.rcliente.name,
-               clienteId: $scope.rcliente.ID,
-               clienteIc: $scope.rcliente.IC,
+               clienteId: createCtrl.clientes,
                proclist: $scope.orderDetail,
                nota: $scope.note,
-               total: $scope.total ,
+               total: $scope.total,
                statusOrder : $scope.statusOrder,
                fechaValida: $scope.duedate,
                patientName: $scope.rpaciente.FullName,
@@ -571,17 +579,18 @@ ordersModule.controller('ordersController', [
                patientEdad: $scope.rpaciente.age,
                doctorName : $scope.doctorName,
                doctorId: $scope.rdoctor.ID,
-               cliente: $scope.rcliente._id,
-               doctor: $scope.rdoctor._id,
-               patients: $scope.rpaciente._id
+               cliente: createCtrl.clientes,
+               //doctor: $scope.rdoctor._id,
+               doctor: createCtrl.doctorSelected,
+               patients: createCtrl.patient
  	      });
         $scope.orderResult = orders;
-        console.log($scope.orderResult);   
+        //console.log($scope.orderResult);   
 
         var d = new Date();
-	    var y = d.getFullYear();
-		var m = d.getMonth();
-		var year = y.toString();
+	      var y = d.getFullYear();
+		    var m = d.getMonth();
+		    var year = y.toString();
         
         if($scope.Bcounter){
 			  var info = {
@@ -595,7 +604,7 @@ ordersModule.controller('ordersController', [
         .success(function(){
         	$scope.BcounterIncrement = 0;
         }).error(function(err){
-		     	console.log(err);
+		     	//console.log(err);
 		 });
 	   }
 
@@ -610,7 +619,7 @@ ordersModule.controller('ordersController', [
         .success(function(){
         	$scope.PcounterIncrement = 0;
         }).error(function(err){
-		     	console.log(err);
+		     	//console.log(err);
 		 });
 	   }
 
@@ -628,25 +637,41 @@ ordersModule.controller('ordersController', [
 		     	console.log(err);
 		 });
 	   }
- 	   
- 	      orders.$save(function(response){
-	      Notify.sendMsg('newPis', {'id': 'nada'});
-	      $scope.orderResponse = response;
+
+ 	       var patientId = $scope.rpaciente._id;
+         var seguroId = $scope.rpaciente.aseguradoraId;
+         var clinica = createCtrl.clientes;
+         var doctor = createCtrl.doctorSelected;
+         var seguroDesc = $scope.rpaciente.aseguradora;
+ 	       orders.$save(function(response){
+	       Notify.sendMsg('newPis', {'id': 'nada'});
+	       $scope.orderResponse = response;
+         //console.log(patientId);
          for(var i = 0; i < $scope.orderResponse.proclist.length; i++ ){
           var report = new Result({
 	          rSereal: $scope.orderResponse.proclist[i].id,
 	          tipomuestra : $scope.orderResponse.proclist[i].procType,
 	          tipomuestraDesc: $scope.orderResponse.proclist[i].name,
 	          reportStatus: 'Pendiente',
-	          orders: $scope.orderResponse._id
+	          orders: $scope.orderResponse._id,
+            costo: $scope.orderResponse.proclist[i].costo,
+            pago: $scope.orderResponse.proclist[i].pago,
+            debe: $scope.orderResponse.proclist[i].pago > $scope.orderResponse.proclist[i].costo ? 0 :  $scope.orderResponse.proclist[i].costo - $scope.orderResponse.proclist[i].pago,
+            patientReport: patientId,
+            seguroId : seguroId,
+            doctor: doctor,
+            clinica : clinica,
+            seguroDesc : seguroDesc
            }); 
 
          report.$save(function(response){
          	 $timeout(function(){
 	         	 $scope.isSaving = false;
-	         	 $scope.testThis();
 	         	 alertify.success('Acción realizada exitosamente!! !!');
-         	 }, 2000);
+         	   Notify.sendMsg('newOrderPost', {'id': 'nada'});
+           }, 2000);
+            $scope.init();
+            createCtrl.procs = {};
           }, function(errorResponse){
 	       // En otro caso, presentar al usuario el mensaje de error
 	        alertify.error('Se ha producido un error en el sistema!!');

@@ -14,7 +14,7 @@
                      <div class="panel panel-primary">
                              <div class="panel-heading">
                       <i class="glyphicon glyphicon-th"> </i> 
-                          Informacion del Cliente 
+                          Informacion del Doctor/Clinica 
                       <i class="glyphicon glyphicon-chevron-down pull-right"></i>
                              </div>
 
@@ -24,12 +24,32 @@
 
                  <div class="col-sm-6">
                   <div class="form-group">
-                  <label for="IC" class="col-sm-2 control-label">Nombre:</label>
+                  <label for="IC" class="col-sm-2 control-label">Doctores:</label>
                   <div class="col-sm-10">
                   <div class="float1">
-                  <select ui-select2="select2Config" data-ng-model="createCtrl.clientes" id="clientes" class="selec2Big"  ng-change="createCtrl.setClienteDetail()"  name="clientes" data-placeholder="-- Selecione Cliente --" >
+                  <select ui-select2="select2Config" data-ng-model="createCtrl.doctorSelected" id="doctor" class="selec2Big"  ng-change="setDoctorDetail(doctor)"  name="doctor" data-placeholder="-- Selecione Cliente --" >
                     <option value=""></option>
-                    <option ng-repeat="value in cliente |  filter: {tipo: 'C'}" value="{{value._id}}">{{value.name}}</option>
+                    <option ng-repeat="value in doctor" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
+                   </select> 
+     
+                    </div>
+                     
+                    <div data-ng-controller="doctorsController as doctorsCtrl" >
+                    <button  type="submit" class="btn btn-sm btn-primary text-center pull-right " ng-click="doctorsCtrl.modelCreate('lg')"><i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                    </div>
+               
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group">
+                  <label for="IC" class="col-sm-2 control-label">Clinica:</label>
+                  <div class="col-sm-10">
+                  <div class="float1">
+                  <select ui-select2="select2Config" data-ng-model="createCtrl.clientes" id="clientes" class="selec2Big"  ng-change="createCtrl.setClienteDetail()"  name="clientes"  >
+                    <option ng-repeat="value in doctorClinic.clinicaList" value="{{value.id}}">{{value.clinica}}</option>
                    </select> 
      
                     </div>
@@ -43,19 +63,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="IC" class="col-sm-3 control-label">I.C:</label>
-                  <div class="col-sm-9">
-                    <input type="text" data-ng-model="rcliente.IC" class="form-control" id="ic" readonly
-                          >
-                  </div>
-                </div>
-
-             </div>
              </div>
             
-            <div class="row rowcontrolmargin">
+     <!--        <div class="row rowcontrolmargin">
               <div class="col-sm-6">
                   <div class="form-group">
                   <label for="IC" class="col-sm-2 control-label">ID:</label>
@@ -74,7 +84,7 @@
                   </div>
                 </div>
              </div>
-           </div>
+           </div> -->
 <!-- 
            <div class="row rowcontrolmargin">
               <div class="col-sm-6">
@@ -89,8 +99,8 @@
             </div>
              </div>
             </div>  <!-- End of first row -->
-            <div class="row">
-              <div class="col-sm-8">
+            <div class="row rowcontrolmargin">
+              <div class="col-sm-12">
               <div class="panel panel-info"> <!--Begin of Patient Panel -->
                       <div class="panel-heading">
                           <i class="glyphicon glyphicon-th"> </i> 
@@ -98,73 +108,27 @@
                       <i class="glyphicon glyphicon-chevron-down pull-right"></i>
                           </div>
                 <div class="row rowcontrolmargin OrdersrowTopmargin">
-                  <div class="col-sm-2 text-center">
-                        <div class="form-group">
-                        <i class="glyphicon glyphicon-user cust-order textPink col-sm-2" ng-class=""></i>
-                       </div>
-
-                  </div>
-                  <div class="col-sm-10">
-                     <div class="row">
-                     <div class="col-sm-12">
-                           <div class="float">
-                        <select ui-select2 id="selectedPatient" data-ng-model="createCtrl.patient" id="patients" class="selec2Big"  ng-change="createCtrl.setPatientDetail()"  name="patients" data-placeholder="-- Selecione Cliente --" >
+                  <div class="col-sm-12">
+                     <div class="row rowcontrolmargin">
+                      <div class="col-sm-6">
+                     <div class="form-group">
+                     <label for="IC" class="col-sm-2 control-label" >Paciente:</label>
+                     <div class="col-sm-10">
+                        <div class="float1">
+                        <select ui-select2 id="selectedPatient" data-ng-model="createCtrl.patient" id="patients" class="selec2Big"  ng-change="createCtrl.setPatientDetail(createCtrl.patient)"  name="patients" data-placeholder="-- Selecione Cliente --" >
                         <option value=""></option>
                             <option ng-repeat="value in paciente" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
-                                
-                                </select> 
-                        
-                                </div>
+                        </select> 
+                      </div>
                         <div data-ng-controller="pacientsController as pacientsCtrl" >
-                           <button type="submit" class="btn btn-sm btn-info text-center" ng-click="pacientsCtrl.modelCreate('lg');">
+                           <button type="submit" class="btn btn-sm btn-info text-center pull-right" ng-click="pacientsCtrl.modelCreate('lg');">
                            <i class="glyphicon glyphicon-plus"></i></button>
                        </div>                      
                         </div>
-                      </div>
-
-                      <div class="row rowcontrolmargin">
-                       <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="email" class="col-sm-3 control-label">ID:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.ID"  id="ID" readonly
-                                   >
-                          </div>
-                        </div>
-                     </div>
-
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="IC" class="col-sm-3 control-label">Telefono:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.telefono" readonly  id="telefono"
-                                   >
-                          </div>
-                        </div>
-                     </div>
-                    </div>
-
-
-                      <div class="row rowcontrolmargin">
-                       <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="polisa" class="col-sm-3 control-label">Polisa:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.polisa"  id="polisa" readonly
-                                   >
-                          </div>
-                        </div>
-                     </div>
-
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="aseguradora" class="col-sm-3 control-label">Seguro:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.aseguradora" readonly  id="aseguradora"
-                                  >
                          </div>
-                       </div>
-                     </div>
+                         </div>
+                      </div>
+            <!-- Aqui es donde va -->
                   </div>
                  <!--  <div class="row rowcontrolmargin">
                   <div class="col-sm-12">
@@ -174,101 +138,54 @@
                   </div>
                  </div>
                 </div> -->
-               </div><!--End of Patient column 10 Row -->
               </div><!--End of Patient First Row -->
-             </div> <!--End of Patient Panel -->
-            </div><!--End of Patient first column 8 -->
-           <div class="col-md-4"><!--Begin of Patient second column 4 -->
-                   <div class="panel panel-success">
-                             <div class="panel-heading">
-                          <i class="glyphicon glyphicon-th"> </i> 
-                          Informacion Doctor 
-                      <i class="glyphicon glyphicon-chevron-down pull-right"></i>
-                             </div>
-
-                  <div class="row rowcontrolmargin OrdersrowTopmargin">
-   
-                  <div class="col-sm-12">
-                    <div class="row rowcontrolmargin">
-                     <div class="col-sm-12">
-
-                          <!-- <label for="IC" >Nombre:</label> -->
-                        <div class="float1">
-                        <select ui-select2="select2Config" data-ng-model="createCtrl.doctors" id="doctor" class="selec2Big"  ng-change="setDoctorDetail(doctors)"  name="doctor" data-placeholder="-- Selecione Doctor --" >
-                        <option value=""></option>
-                          <option ng-repeat="value in doctor" value="{{value._id}}"> {{value.firstName}} {{value.lastName}} 
-                          <br>
-                          <span>{{value.DoctorCI.value}}</span> </option>
-                        </select>                          
-                        </div>
-                         <div data-ng-controller="doctorsController as doctorsCtrl" >  
-                        <button type="submit" class="btn btn-sm btn-success text-center " ng-click="doctorsCtrl.modelCreate('lg')">
-                         <i class="glyphicon glyphicon-plus"></i></button>
-                         </div>
-                      </div>
-                    </div>
-                    <div class="row rowcontrolmargin">
-                      <div class="col-sm-12">
+                 <div class="row rowcontrolmargin">
+                       <div class="col-sm-2">
                         <div class="form-group">
-                          <label for="email" class="col-sm-3 control-label">ID:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rdoctor.ID" readonly  id="ID"
+                          <label for="email" class="col-sm-1 control-label">ID:</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" data-ng-model="rpaciente.ID"  id="ID" readonly
                                    >
                           </div>
                         </div>
                      </div>
-                    </div><!-- -->
-                    <div class="row rowcontrolmargin">
-                     <div class="col-sm-12">
+
+                      <div class="col-sm-3">
                         <div class="form-group">
-                          <label for="IC" class="col-sm-3 control-label">Telefono:</label>
+                          <label for="IC" class="col-sm-3 control-label">Tel:</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rdoctor.telefono"  readonly id="telefono"
-                                  >
+                            <input type="text" class="form-control" data-ng-model="rpaciente.telefono" readonly  id="telefono"
+                                   >
                           </div>
                         </div>
                      </div>
-                    </div><!-- -->
-                 <!--     <div class="row rowcontrolmargin">
-                  <div class="col-sm-12">
-                
-                  <div data-ng-controller="doctorsController as doctorsCtrl" >
-                       <button id="btnDoctorOrderCreate" type="submit" class="btn btn-large btn-success text-center pull-right bottonMarginRight" ng-click="doctorsCtrl.modelCreate('lg')">
-                       Ingresar Doctor</button>
-                  </div>
-                 </div>
-                </div> -->
-                   </div>
-                  </div>  <!--End of OrdersrowTopmargin -->
-                 </div><!--End of Panel  -->
-                </div><!--End of Patient second column 4 -->
-               </div> <!--End of Patient row -->
+
+                     <div class="col-sm-3">
+                        <div class="form-group">
+                          <label for="polisa" class="col-sm-3 control-label">Polisa:</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" data-ng-model="rpaciente.polisa"  id="polisa" readonly
+                                   >
+                          </div>
+                        </div>
+                     </div>
+
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label for="aseguradora" class="col-sm-3 control-label">Seguro:</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" data-ng-model="rpaciente.aseguradora" readonly  id="aseguradora"
+                                  >
+                         </div>
+                       </div>
+                     </div>
+                    </div>  
+             </div> <!--End of Patient Panel -->
+            </div><!--End of Patient first column 8 -->
+            </div> <!--End of Patient row -->
               <div class="row ">    
             </div><!--End of doctor Row  -->
            </div>
-          <!--    <div class="col-sm-4">
-                  <div class="panel panel-success">
-                             <div class="panel-heading">
-                          <i class="glyphicon glyphicon-th"> </i> 
-                        Resumen Orden
-                      <i class="glyphicon glyphicon-chevron-down pull-right"></i>
-                             </div>
-                   </div>
-
-                   <div class="row">
-                     <div class="col-sm-12">
-                       <table class="table">
-                        <tr>
-                          <td>
-                          <h1>Cliente Info</h1> 
-                          Aqui va la informacion del cliente
-                          </td>
-                        </tr>
-                   </table>
-
-                     </div>
-                   </div>
-             </div> -->
         </div>
         <div class="row">
           <div class="col-sm-12">
@@ -359,8 +276,12 @@
                              <div ng-if="order.$edit"><span>{{order.name}}</span></div>
                         </td>
                         <td data-title="'Costo'">
-                            <span ng-if="!order.$edit">{{order.costo}}</span>
-                            <div ng-if="order.$edit"><input class="form-control" type="text" ng-model="order.costo" /></div>
+                            <span ng-if="!order.$edit">{{order.costo }}</span>
+                            <div ng-if="order.$edit"><input class="form-control" type="text" ng-change="getTotal()" ng-model="order.costo" /></div>
+                        </td>
+                        <td data-title="'Pago'">
+                            <span ng-if="!order.$edit">{{order.pago}}</span>
+                            <div ng-if="order.$edit"><input class="form-control" type="text" ng-change="getTotal()" ng-model="order.pago" /></div>
                         </td>
                         <td data-title="'Actions'">
                             <a ng-if="!order.$edit" href="" class="btn btn-default btn-xs" ng-click="order.$edit = true">Editar</a>
@@ -392,7 +313,7 @@
                </div>
                <div class="row">
                    <div class="col-sm-6">
-                     <textarea rows="5" ng-trim="false" ng-model="note" name: "note" id="note" maxlength="200" class="form-control" placeholder="Nota">
+                     <textarea rows="2" ng-trim="false" ng-model="note" name: "note" id="note" maxlength="200" class="form-control" placeholder="Nota">
                      </textarea>
                      <span>{{200 - note.length}} Restante</span>
                    </div>
@@ -400,24 +321,32 @@
                    <div class="col-sm-6">
                       <div class="row rowcontrolmargin">
                         <div class="col-sm-6">
-                          <span class="label label-default label-large">Total</span>
+                          <span class="label label-default label-large">Monto</span>
 
                       </div>
                       <div class="col-sm-6">
-                         <label ng-model="total" class="label-order pull-right">{{getTotal()}}</label>
+                         <label ng-model="total" class="label-order pull-right">{{total  | currency}}</label>
                       </div>
                       </div>
-
-                    <!--    <div class="row rowcontrolmargin">
+                      <div class="row rowcontrolmargin">
                         <div class="col-sm-6">
-                         <label class="pull-left">Total</label>
+                          <span class="label label-default label-large">Pago</span>
 
                       </div>
                       <div class="col-sm-6">
-                         <label class="label-order pull-right">0</label>
+                         <label ng-model="total" class="label-order pull-right">{{pago  | currency}}</label>
                       </div>
-                      </div> -->
+                      </div>
+                      <div class="row rowcontrolmargin">
+                        <div class="col-sm-6">
+                          <span class="label label-default label-large">Debe</span>
 
+                      </div>
+                      <div class="col-sm-6">
+                         <label ng-model="total" class="label-order pull-right">{{debe  | currency}}</label>
+                      </div>
+                      </div>
+<!-- 
                       <div class="row rowcontrolmargin">
                         <div class="col-sm-5">
                          <label class="pull-left">D. Valida</label>
@@ -432,7 +361,7 @@
                         </div>
 
                       </div>
-                      </div>
+                      </div> -->
 
                         <div class="row rowcontrolmargin">
                         <div class="col-sm-6">
@@ -458,7 +387,17 @@
 
                </div>
               </div>
-             </div>      
+             </div>
         </div>
         </form>
+        <br>
+        <br>
+
+       <div class="row" ng-if="!isSaving">
+         <div class="col-sm-12">
+             <div>
+             <result-list></result-list>
+             </div>
+         </div>
+       </div>   
 </section>

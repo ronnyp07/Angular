@@ -1,0 +1,106 @@
+<section data-ng-controller="locationUpdateController as UpCtrl" >
+    <div class="modal-header">
+        <h3 class="modal-title"><i class="glyphicon glyphicon-user"></i> Actualizar Centro</h3>
+    </div>
+    <div class="modal-body">
+    
+        <form name="createlocationForm" >
+         <input type="hidden" name="_csrf" value="@model.csrfToken">
+            <fieldset>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-7 col-lg-offset-3">
+
+                  <div class="panel panel-success well">
+                             <div class="panel-heading">
+                               Informacion del location 
+                             </div>
+                                  
+                <div class="form-group divmargin" >
+                <div class="controls">
+                <input type="text" data-ng-model="location.locationRNC" id="locationRNC" class="form-control" name="locationRNC" placeholder="RNC ej. 000-000000-0" style="">
+                </div>
+                </div>
+         
+
+                 <div class="form-group">
+                 <label class="control-label" for="name">Nombre</label>
+                        <div class="controls">
+                          <input type="text" data-ng-model="location.name" id="name" name="name" class="form-control">
+                       </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label" for="locationTelefono">Telefono</label>
+                            <div class="controls">
+                            <input type="text" data-ng-model="location.locationTelefono" id="locationTelefono" name="locationTelefono" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                      <div class="panel panel-warning well">
+                             <div class="panel-heading"> 
+                             Informacion Distrital</div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="locationPais">Pais</label>
+                            <div class="controls">
+                        <select data-ng-model="location.rpais" data-ng-change="UpCtrl.filterByPais()"  id="locationPais" class="form-control" ng-options="value._id as value.name for value in UpCtrl.pais" >
+                        <option value="" class="">-- Selecione Pais --</option>
+                        </select>        
+                            </div>
+                            </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="locationZona">Zona</label>
+                            <div class="controls">
+                        <select data-ng-model="location.locationZona"   id="locationZona" class="form-control" name="locationZona" ng-options="value._id as value.locationNombre for value in locations" >
+                        <option value="" class="">-- Selecione Zona --</option>
+                        </select>        
+                            </div>
+                        </div>
+                        
+          <div class="form-group">
+                  <label class="control-label" for="locationCiudad">Ciudad</label>
+                <div class="controls">
+            <!--   <select ui-select2 data-ng-model="location.rciudad" class="selec2Big" data-ng-change="createCtrl.filterSector()" data-placeholder="-- Selecione Ciudad --">  <option value=""></option>
+              <option ng-repeat="value in UpCtrl.ciudad " value="{{value._id}}">{{value.name}}</option>
+             </select>  -->
+            <select data-ng-model="location.rciudad"  id="locationCiudad" class="form-control" data-ng-change="UpCtrl.filterByCiudad()" name="locationCiudad" ng-options="value._id as value.name for value in UpCtrl.ciudad | filter:location.rpais" >
+                        <option value="" class="">-- Selecione Ciudad --</option>
+                        </select>        
+                    </div>
+                        </div>
+                      <div class="form-group">
+                            <label class="control-label" for="locationSector">Sector</label>
+                            <div class="controls">
+                        <select data-ng-model="location.rsector" id="locationSector" class="form-control" name="locationSector" ng-options="value._id as value.name for value in UpCtrl.sector | filter:location.rciudad" >
+                        <option value="" class="">-- Selecione Sector --</option>
+                        </select>        
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label" for="locationDireccion">Direccion</label>
+                            <div class="controls">
+                              <input type="text" data-ng-model="location.locationDireccion" id="locationDireccion" name="locationDireccion" class="form-control" placeholder="Insertar Direccion">
+                            </div>
+                        </div>
+                     </div>
+                    </div>
+                  
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-7 col-lg-offset-3">
+                      <div class="modal-footer">
+    <button class="btn btn-success btn-lg" ng-click="UpCtrl.update(location); ok(); UpCtrl.showSimpleUdpdate(); doSearch()">Guardar &amp; Cerrar</button>
+            <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancelar</button>
+           </div>
+                        </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+  
+
+</section>
+
+

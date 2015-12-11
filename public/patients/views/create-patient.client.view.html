@@ -108,7 +108,7 @@
                      <div class="form-group">
                          <label class="control-label" for="clientes">Aseguradora</label>
                         <div class="controls">
-                        <select data-ng-model="createCtrl.clientes" id="clientes" class="form-control" name="clientes" ng-options="value._id as value.name for value in createCtrl.cliente.results | filter: {tipo: 'A'}" >
+                        <select data-ng-model="createCtrl.clientes" id="clientes" class="form-control" name="clientes" ng-options="value._id as value.name for value in createCtrl.cliente " >
                         <option value="" class="">-- Selecione Seguro --</option>
                         </select>        
                        </div>
@@ -184,7 +184,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success btn-lg"  ng-click="createCtrl.create(); ok();" ng-disabled="createPatientForm.$invalid">Guardar &amp; Cerrar</button>
+        <button class="btn btn-success btn-lg"  ng-click="createCtrl.create(); ok();" ng-disabled="createPatientForm.$invaild">Guardar &amp; Cerrar</button>
         <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancelar</button>
     </div>
 

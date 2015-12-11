@@ -111,11 +111,12 @@ patientModule.controller
           templateUrl: 'patients/views/edit-patient.client.view.html',
           controller: function ($scope, $modalInstance, patient) {
                 $scope.patient = patient;
+                console.log($scope.patient);
                 $scope.patient.rpais = selectedPatient.pais ? selectedPatient.pais._id : '';
                 $scope.patient.rciudad = selectedPatient.ciudad ? selectedPatient.ciudad._id: '';
                 $scope.patient.rsector = selectedPatient.sector ? selectedPatient.sector._id: '';
                 $scope.patient.rcliente = selectedPatient.clientes ? selectedPatient.clientes._id: '';
-
+                $scope.patient.rlocation =  selectedPatient.locations ? selectedPatient.locations._id: '';
           $scope.ok = function () {  
               $modalInstance.close($scope.patient);
           };
@@ -178,11 +179,21 @@ patientModule.controller
    function($scope, $http, $routeParams,  Authentication, Patients, 
     Pais, Ciudad, Sector, Cliente, NotifyPatient, $mdToast, $animate) {
 
+    var vm = this;
     this.paisD = Pais.query();
     this.ciudad = Ciudad.query();
     this.sector = Sector.query();
     this.cliente = Cliente.get();
-    
+
+
+     $http.post('locations/getList').
+          success(function(data){ 
+           vm.cliente = data;
+           console.log(vm.cliente);
+           }).
+           error(function(err){
+     });
+     
     this.filterByCity = function() {
         if(this.pais == null){
           console.log('pais is null');
@@ -278,6 +289,8 @@ patientModule.controller
    function($scope, $http, $routeParams,  Authentication, Patients, 
     Pais, Ciudad, Sector, Cliente, NotifyPatient, $mdToast, $animate, $timeout) {
 
+    
+    var vm = this;
     $scope.dateOptions = {
         changeYear: true,
         changeMonth: true,
@@ -287,8 +300,15 @@ patientModule.controller
      this.pais = Pais.query();
      this.ciudad = Ciudad.query();
      this.sector = Sector.query();
-     this.cliente = Cliente.get();
+     //this.cliente = Cliente.get();
 
+     $http.post('locations/getList').
+          success(function(data){ 
+           vm.location = data;
+           }).
+           error(function(err){
+     });
+     
    this.filterByCity = function() {
         if(this.pais == null){
           console.log('pais is null');
@@ -343,6 +363,7 @@ patientModule.controller
       patientEC : selectedPatient.patientEC,
       patientTelefono: selectedPatient.patientTelefono,
       clientes: selectedPatient.rcliente ? selectedPatient.rcliente : null,
+      locations: selectedPatient.rlocation ? selectedPatient.rlocation : null,
       patientPolisa: selectedPatient.patientPolisa,
       patientDireccion: selectedPatient.patientDireccion,
       pais: selectedPatient.rpais ? selectedPatient.rpais : null,
@@ -373,8 +394,6 @@ patientModule.controller('patientDeleteController', ['$scope', 'Authentication',
          var patient = new Patients({
                 _id: $scope.patient._id
          });
-
-         console.log($scope.patient);
 
          patient.$remove(function(){
           NotifyPatient.sendMsg('removed', {'id': 'nada'});

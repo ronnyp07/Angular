@@ -83,7 +83,8 @@ exports.update = function(req, res) {
 	doctor.pais = req.body.pais;
 	doctor.ciudad = req.body.ciudad;
 	doctor.sector = req.body.sector;
-
+	doctor.clinicaList = req.body.clinicaList;
+	
 	doctor.save(function(err) {
 		if (err) {
 			return res.status(400).send({

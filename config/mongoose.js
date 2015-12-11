@@ -26,6 +26,9 @@ module.exports = function() {
     require('../app/models/cierretrack.server.model');
     require('../app/models/tempresult.server.model');
     require('../app/models/result.server.model');
+    require('../app/models/maintain.server.model');
+    require('../app/models/location.server.model');
+    require('../app/models/headermaster.server.model');
 
     // Cargar el modelo 'Article'
 	//require('../app/models/article.server.model');

@@ -1,0 +1,14 @@
+ <table class="table table-striped">
+        <tr ng-repeat="mantain in maintaindetails">
+         
+         <td data-title="'Codigo'" filter="{'name': 'text' }">{{mantain.value}}</td>
+        
+         <td>
+          <div class="pull-right">
+           <button type="button" class="btn btn-info" title="Editar" ng-click="vm.stateUpdateForm(true); vm.setDetailsUpdate(mantain)">
+            <i class="fa fa-pencil-square-o labelBig"></i></button> 
+            <button type="button" class="btn btn-danger" title="Eliminar" ng-click="pacientsCtrl.modelRemove('sm', mantain)"><span class="glyphicon glyphicon-remove-circle labelBig"></span></button>
+         </div>
+       </td>
+     </tr>
+</table>

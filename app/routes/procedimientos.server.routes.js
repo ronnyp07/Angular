@@ -10,8 +10,8 @@ module.exports = function(app) {
 
 	app.route('/procs/:procsId')
 		.get(procs.read)
-		.put(users.requiresLogin, procs.hasAuthorization, procs.update)
-		.delete(users.requiresLogin, procs.hasAuthorization, procs.delete);
+		.put(procs.update)
+		.delete(procs.delete);
 
 	app.route('/procs/getList')
 	   .post(procs.getList);

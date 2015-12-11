@@ -1,6 +1,6 @@
 <section data-ng-controller="clienteCreateController as createCtrl" >
     <div class="modal-header">
-        <h3 class="modal-title"><i class="glyphicon glyphicon-user"></i> Crear Cliente</h3>
+        <h3 class="modal-title"><i class="fa fa-building"></i> Nueva Aseguradora</h3>
     </div>
     <div class="modal-body">
     
@@ -8,18 +8,18 @@
          <input type="hidden" name="_csrf" value="@model.csrfToken">
             <fieldset>
                 <div class="row">
-                    <div class="col-sm-6 col-sm-push-3">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-7 col-lg-offset-3">
 
                   <div class="panel panel-success well">
                              <div class="panel-heading">
-                               Informacion del Cliente 
+                               Informacion del Seguro 
                              </div>
                                   
                 <div class="form-group divmargin" >
-                <div class="controls">
+                <!-- <div class="controls">
                 <select data-ng-model="createCtrl.tipo" id="tipo" name="tipo" class="form-control"  style=""><option value="" class="">-- Tipo Entidad --</option><option value="A" label="">Aseguradora</option><option value="C" label="">Clinicas</option>
                 </select>
-                </div>
+                </div> -->
                 <div class="controls">
                 <input type="text" data-ng-model="createCtrl.clienteRNC" id="clienteRNC" class="form-control" name="clienteRNC" placeholder="RNC ej. 000-000000-0" style="">
                 </div>
@@ -35,7 +35,7 @@
                         <div class="form-group">
                           <label class="control-label" for="clienteTelefono">Telefono</label>
                             <div class="controls">
-                            <input type="text" data-ng-model="createCtrl.clienteTelefono" id="clienteTelefono" name="clienteTelefono" class="form-control">
+                            <input  type="number" ng-minlength="10" ng-maxlength="10" data-ng-model="createCtrl.clienteTelefono" id="clienteTelefono" name="clienteTelefono" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -91,11 +91,11 @@
                   
                 </div>
                 <div class="row">
-                    <div class="col-sm-6 col-sm-push-3">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-7 col-lg-offset-3">
             <div class="modal-footer">
             <button class="btn btn-success btn-lg" 
-            ng-disabled = "createCtrl.tipo == '' || !createCtrl.name || createCtrl.tipo == undefined"  ng-click="createCtrl.create(); ok(); doSearch()">Save &amp; Close</button>
-            <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancel</button>
+            ng-disabled = "!createCtrl.name"  ng-click="createCtrl.create(); ok(); doSearch()">Guardar &amp; Cerrar</button>
+            <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancelar</button>
            </div>
                         </div>
                 </div>

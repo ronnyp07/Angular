@@ -1,10 +1,11 @@
 'use strict';
 
 //Setting up route
-angular.module('pais').config(['$routeProvider',
-	function($routeProvider) {
-		$routeProvider.
-		when('/pais', {
+angular.module('pais').config(['$stateProvider',
+	function($stateProvider) {
+		$stateProvider.
+		state('pais', {
+			url: '/pais',
 			templateUrl: 'pais/views/list-pais.client.view.html'
 		});
 		// .

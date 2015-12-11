@@ -58,6 +58,11 @@ var PatientSchema = new Schema({
     ref: 'Clientes'
   },
 
+  locations: {
+    type: Schema.ObjectId,
+    ref: 'locations'
+  },
+
   patientPolisa:{
     type: String,
     trim: true

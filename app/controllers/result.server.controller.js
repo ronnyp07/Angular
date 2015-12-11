@@ -5,8 +5,8 @@
  */
 var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
-  Result = mongoose.model('Result')
-
+  Result = mongoose.model('Result'),
+  deepPopulate = require('mongoose-deep-populate')(mongoose);
 // Crear un nuevo método controller manejador de errores
 var getErrorMessage = function(err) {
   // Definir la variable de error message
@@ -41,6 +41,7 @@ var getErrorMessage = function(err) {
  */
 exports.create = function(req, res) {
   var result = new Result(req.body);
+  console.log(result);
   result.user = req.user;
   result.save(function(err) {
     if (err) {
@@ -102,6 +103,10 @@ exports.listpage = function(req, res) {
 
     Result
     .find()
+    .populate('orders')
+    .populate('patientReport')
+    .populate('patientReport.locations')
+    //.deepPopulate('comments.user')
     .filter(filter)
     .order(sort)
     .page(pagination, function(err,tempate){
@@ -110,7 +115,19 @@ exports.listpage = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(tempate);
+      console.log(tempate);
+    Result.populate(tempate, {
+      path: 'patientReport.locations',
+      model: 'locations'
+    },
+
+    function(err, result) {
+      if(err) return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+      res.jsonp(result); // This object should now be populated accordingly.
+    });
+      
     }
     });
 };
@@ -134,7 +151,14 @@ exports.getResultbyId = function(req, res){
       var resultId = req.body.resultId;
       console.log(resultId);
        Result
-       .find({_id: resultId}).populate('user', 'displayName').populate('orders').exec(function(err, result){
+       .find({_id: resultId})
+       .populate('user', 'displayName')
+       .populate('orders')
+       .populate('patientReport')
+       .populate('seguroId')
+       .populate('clinica')
+       .populate('doctor')
+       .exec(function(err, result){
           if (err) {
           return res.status(400).send({
             message: errorHandler.getErrorMessage(err)

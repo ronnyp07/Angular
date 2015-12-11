@@ -5,8 +5,7 @@ var clienteModule = angular.module('clientes');
 // cliente controller
 clienteModule.controller('clienteController', [
 	'$scope', 
-	'$http', 
-	'$routeParams',  
+	'$http',  
 	'$location', 
 	'Authentication',
 	'Pais',
@@ -17,22 +16,33 @@ clienteModule.controller('clienteController', [
 	'ngTableParams',
 	'$modal', 
 	'$log',
-	function($scope, $http, $routeParams, $location, Authentication, Pais, Ciudad, Sector, Cliente, Notify, ngTableParams, $modal, $log) {
+	function($scope, $http,  $location, Authentication, Pais, Ciudad, Sector, Cliente, Notify, ngTableParams, $modal, $log) {
 		this.authentication = Authentication;
+
+		 // alertify.dialog("Message", function factory(){
+			// return {
+   //                   build: function(){
+   //                   	var html = '<i class="fa fa-building-o"></i>';
+   //                   	html += 'wao';
+   //                   	this.setHeader(html);
+   //                   }
+			// };
+			// }, false, 'alert');
+	
 
 	    // Find a list of cliente
        var params = {
        	  page: 1,            
-	      count: 5,
+	      count: 15,
 	      filter: {
             name: name
         }
-       }
+       };
 
        var settings = {
       // 	groupBy: 'tipo',
        	total: 0,  
-       	counts: [5,10,15],        
+       	counts: [15,20,25],        
 	    getData: function($defer, params) {
 	        Cliente.get(params.url(), function(response){     
                 params.total(response.total);
@@ -41,10 +51,10 @@ clienteModule.controller('clienteController', [
 	        });
 	      
 	        }
-       }
+       };
 
 	  $scope.tableParams = new ngTableParams( params, settings);
-  //Open the middleware to open a single cliente modal.
+      //Open the middleware to open a single cliente modal.
 	  this.modelCreate = function (size) {
 		    var modalInstance = $modal.open({
 		      templateUrl: 'clientes/views/create-clientes.client.view.html',
@@ -58,17 +68,16 @@ clienteModule.controller('clienteController', [
 	    });
 	  };
 
-	    this.modelUpdate = function (size, selectedClient) {
-     
-            console.log(selectedClient);
-        var modalInstance = $modal.open({
+	    this.modelUpdate = function (size, selectedClient) {      
+          var modalInstance = $modal.open({
           templateUrl: 'clientes/views/edit-clientes.client.view.html',
           controller: function ($scope, $modalInstance, cliente) {
+
+          	 console.log(selectedClient);
                $scope.cliente = cliente;
                $scope.cliente.rpais = selectedClient.pais;
                $scope.cliente.rciudad = selectedClient.ciudad;
                $scope.cliente.rsector = selectedClient.sector;
-
                console.log($scope.cliente.rciudad);
           $scope.ok = function () {  
             $modalInstance.close($scope.cliente);
@@ -94,9 +103,16 @@ clienteModule.controller('clienteController', [
 	      });
 	  };
 
-	  this.doSearch = function () {
+	 
+	 $scope.doSearch = function () {
 		    $scope.tableParams.reload();
-		}
+	 };
+
+     Notify.getMsg('seguroLoad', function(event, data ){
+     	 $scope.doSearch();
+     	 alertify.success('Acción realizada exitosamente!! !!');
+     });
+
 
 	 this.modelRemove = function (size, selectedcliente) {
 	   	    $scope.cliente = selectedcliente;
@@ -163,7 +179,7 @@ clienteModule.controller('clienteDeleteController', ['$scope', 'Authentication',
 	       });
 
 	       cliente.$remove(function(){
-	        Notify.sendMsg('newPis', {'id': 'nada'});
+	        Notify.sendMsg('seguroLoad', {'id': 'nada'});
 	       }, function(errorResponse) {
 		  	$scope.error = errorResponse.data.message;
 		   });
@@ -188,7 +204,7 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
 		 };
 	 
 	    this.update = function(updateCliente) {
-	   	   //  console.log(updateCliente);
+	   	     console.log("patientUpdate");
 
 	      	var cliente  = new Cliente ({
 	      		_id: updateCliente._id,
@@ -205,14 +221,14 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
 	     this.showSimpleUdpdate = function() {
 			    $mdToast.show(
 			      $mdToast.simple()
-			        .content('Cliente Guardado!!')
+			        .content('Paso!!')
 			        .position('bottom right')
 			        .hideDelay(3000)
 			    );
 		};
-		
-		   cliente.$update(function() {
-		  	 Notify.sendMsg('newPis', {'id': 'update'});
+	
+	   cliente.$update(function() {
+		  	 Notify.sendMsg('seguroLoad', {'id': 'nada'});
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -260,23 +276,21 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
  			// Create new Pai object
  	   var clientes = new Cliente ({
  				name: this.name,
- 				tipo: this.tipo,
+ 				tipo: 'A',
                 clienteRNC: this.clienteRNC,
                 clienteTelefono: this.clienteTelefono,
                 pais: this.clientePais,
 	            ciudad: this.clienteCiudad,
 	            sector: this.clienteSector,
 	            clienteDireccion: this.clienteDireccion
- 	   });
-			
-
- 	
+ 	      });
+ 			
 			clientes.$save(function(response) {
-              Notify.sendMsg('clientesaved', {clienteSavedInfo: response});
+             Notify.sendMsg('seguroLoad', {'id': 'nada'});
  			}, function(errorResponse) {
  				$scope.error = errorResponse.data.message;
  			});
- 		 };
+ 	  };
 
  	}
  ]);
@@ -288,7 +302,8 @@ clienteModule.directive('clienteList', ['Cliente', 'Notify', function(Cliente, N
     restrict: 'E',
     transclude: true,
     templateUrl: 'clientes/views/clientes-list.template.html',
-     link: function(scope, element, attr){          // when a new cliente is added update the cliente List..
+     link: function(scope, element, attr){          
+          // when a new cliente is added update the cliente List..
           // Notify.getMsg('newcliente', function(event, data){
          // 	scope.rpais = data;
             

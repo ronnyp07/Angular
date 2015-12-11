@@ -38,13 +38,29 @@ var ResultSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	costo: {
+		type: Number,
+		trim: true
+	},
+	pago: {
+		type: Number,
+		trim: true
+	},
+	debe: {
+		type: Number,
+		trim: true
+	},
 	status: {
 		type: String,
 		trim: true
 	},
 	resultado: 
 	[{}],
-	
+	seguroDesc: {
+		type: String,
+		trim: true
+	},
+
     tecnica: {
         type: String,
 		trim: true
@@ -60,6 +76,22 @@ var ResultSchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
+	},
+	clinica: {
+		type:Schema.ObjectId,
+		ref: 'Clientes'
+	},
+	seguroId: {
+		type:Schema.ObjectId,
+		ref: 'locations'
+	},
+	doctor: {
+		type:Schema.ObjectId,
+		ref: 'Doctors'
+	},
+	patientReport:{
+		type: Schema.ObjectId,
+		ref: 'Patients'
 	},
 	user: {
 		type: Schema.ObjectId,

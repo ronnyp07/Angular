@@ -1,0 +1,19 @@
+<section data-ng-controller="locationController as locationCtrl" >
+<div class="col-md-10">
+     <div class="panel panel-default">
+           <div class="panel-heading">
+           <div class="row">
+                 <div class="col-md-6">
+                    <h1><i class="fa fa-hospital-o"></i> Aseguradoras</h1>
+                 </div>
+           </div>
+           </div> 
+     </div> 
+     <div class="row">
+           <div class="col-md-12">
+            <md-button class="md-raised md-primary bodyContainer pull-right" data-ng-click="locationCtrl.modelCreate('lg')"> <i class="fa fa-plus"></i> Agregar</md-button>
+          <location-list></location-list>
+           </div>
+       </div> 
+ </div>
+</section>

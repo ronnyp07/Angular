@@ -1,10 +1,10 @@
 'use strict';
 
-//Setting up route
-angular.module('ciudad').config(['$routeProvider',
-	function($routeProvider) {
-		$routeProvider.
-		when('/ciudad', {
+angular.module('ciudad').config(['$stateProvider',
+	function($stateProvider) {
+		$stateProvider.
+		state('ciudad', {
+			url: '/ciudad',
 			templateUrl: 'ciudad/views/list-ciudad.client.view.html'
 		});
 	}

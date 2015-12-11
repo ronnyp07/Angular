@@ -1,0 +1,25 @@
+<div>
+  <table ng-table="tableParams" show-filter="true" class="table table-striped">
+
+    <tr ng-repeat="location in $data">
+    
+       <td data-title="'#'">{{location.locationId}}</td>
+       <td data-title="'Nombre'" filter="{'name': 'text' }">{{location.name}}</td>
+      <!--  <td data-title="'RNC'" filter="{'locationRNC': 'text' }">{{location.locationRNC}}</td> -->
+       <td data-title="'Telefono'" filter="{'locationTelefono': 'text' }">{{location.locationTelefono}}</td>
+       <td class="text-right">
+           
+           <button type="button" class="btn btn-sm btn-info" title="Editar" ng-click="locationCtrl.modelUpdate('lg', location)">
+            <span class="glyphicon glyphicon-eye-open labelBig"></span></button> 
+         
+            <button type="button" class="btn btn-sm btn-danger" title="Remove" ng-click="locationCtrl.modelRemove('sm', location)"><span class="glyphicon glyphicon-remove-circle labelBig"></span></button>
+     
+
+       </td>
+     </tr>
+      
+  </table>
+   <div>
+     <p><strong>Total de Centros:</strong> {{total}}</p>
+     </div>
+</div>

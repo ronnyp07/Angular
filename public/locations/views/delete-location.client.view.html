@@ -1,0 +1,16 @@
+<section data-ng-controller="locationDeleteController as deleteCtrl">
+ <div class="modal-body">
+  <div class="panel panel-danger ">
+         <div class="panel-heading">
+           <i class="glyphicon glyphicon-trash"></i> Está a punto de eliminar este centro
+         </div>
+           <div class="modal-body">
+              Seguro de querer continuar?
+           </div>
+  </div>
+  </div>
+  <div class="modal-footer">
+   <button class="btn btn-danger" ng-click="deleteCtrl.delete(location); ok();" >Eliminar</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+   </div>
+</section>

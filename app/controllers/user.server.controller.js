@@ -201,11 +201,12 @@ exports.login = function(req, res) {
           if(!user){
             res.render('signin', {err: "Verificar su informacion e intentar de nuevo"
               //, csrfToken : req.csrfToken()}
-              })
+              });
           } else {
             if(bcrypt.compareSync(req.body.password, user.password)){
               req.session.user = user;
-              res.redirect('/');
+              console.log('verore');
+              res.redirect('#!/');
             }else {
                  res.render('signin', {err: "Verificar su informacion e intentar de nuevo"
                  // csrfToken : req.csrfToken()

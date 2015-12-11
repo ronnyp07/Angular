@@ -5,7 +5,7 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Clientes = mongoose.model('Clientes')
+	Clientes = mongoose.model('Clientes');
 
 
 
@@ -115,7 +115,7 @@ exports.delete = function(req, res) {
  * List of Pais
  */
 exports.list = function(req, res) { 
-     
+ 
      var count = req.query.count || 5;
      var page = req.query.page || 1;
 
@@ -126,18 +126,18 @@ exports.list = function(req, res) {
      			contains: req.query.filter
      		}
      	}
-     }
+     };
 
      var pagination = {
      	start : (page - 1) * count,
      	count : count
-     }
+     };
 
      var sort ={
      	sort: {
      		desc: '_id'
      	}
-     }
+     };
     
     Clientes
     .find()
@@ -156,7 +156,8 @@ exports.list = function(req, res) {
 
 exports.getList = function(req, res) { 
    Clientes
-    .find().exec(function(err, patient){
+    .find()
+    .exec(function(err, patient){
     	if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

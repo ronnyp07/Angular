@@ -1,0 +1,100 @@
+<section data-ng-controller="locationCreateController as createCtrl" >
+    <div class="modal-header">
+        <h3 class="modal-title"><i class="glyphicon glyphicon-user"></i> Crear Centro Medico</h3>
+    </div>
+    <div class="modal-body">
+    
+        <form name="createlocationForm" class="form-horizontal">
+         <input type="hidden" name="_csrf" value="@model.csrfToken">
+            <fieldset>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-7 col-lg-offset-3">
+
+                  <div class="panel panel-success well">
+                             <div class="panel-heading headerMargin">
+                               <span class="headertitle">Informacion del Centro </span>
+                             </div>
+                                
+                
+                <div class="form-group divmargin">
+                 <label class="control-label col-sm-2" for="name">Rnc:</label>
+                 <div class="col-sm-10">
+                    <input type="text" data-ng-model="createCtrl.locationRNC" id="locationRNC" class="form-control" name="locationRNC" placeholder="RNC ej. 000-000000-0" style="">
+                 </div>
+                </div>
+                <div class="form-group">
+                 <label class="control-label col-sm-2" for="name">Nombre:</label>
+                        <div class="col-sm-10">
+                          <input type="text" data-ng-model="createCtrl.name" id="name" name="name" class="form-control">
+                       </div>
+                </div>
+                <div class="form-group">
+                          <label class="control-label col-sm-2" for="locationTelefono">Telefono:</label>
+                            <div class="col-sm-10">
+                            <input type="text" data-ng-model="createCtrl.locationTelefono" id="locationTelefono" name="locationTelefono" class="form-control">
+                            </div>
+                  </div>
+                  </div>
+                  <div class="panel panel-warning well">
+                       <div class="panel-heading headerMargin"> 
+                             <span class="headertitle">Informacion Distrital</span></div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="locationPais">Pais</label>
+                            <div class="col-sm-10">
+                        <select data-ng-model="createCtrl.locationPais" data-ng-change="createCtrl.filterByCity()"  id="locationPais" class="form-control" ng-options="value._id as value.name for value in createCtrl.pais" >
+                        <option value="" class="">-- Selecione Pais --</option>
+                        </select>        
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="locationZona">Zona</label>
+                            <div class="col-sm-10">
+                        <select data-ng-model="createCtrl.locationZona" id="locationZona" class="form-control" name="locationZona" ng-options="value._id as value.locationNombre for value in locations" >
+                        <option value="" class="">-- Selecione Zona --</option>
+                        </select>        
+                            </div>
+                        </div>
+                        
+          <div class="form-group">
+                  <label class="control-label col-sm-2" for="locationCiudad">Ciudad</label>
+                <div class="col-sm-10">
+              <select ui-select2 data-ng-model="createCtrl.locationCiudad" class="selec2Big" data-ng-change="createCtrl.filterSector()" data-placeholder="-- Selecione Ciudad --">  <option value=""></option>
+              <option ng-repeat="value in createCtrl.ciudad | filter:createCtrl.locationPais " value="{{value._id}}">{{value.name}}</option>
+                            </select> 
+
+                            </div>
+                        </div>
+                      <div class="form-group">
+                            <label class="control-label col-sm-2" for="locationSector">Sector</label>
+                            <div class="col-sm-10">
+                        <select data-ng-model="createCtrl.locationSector" id="locationSector" class="form-control" name="locationSector" ng-options="value._id as value.name for value in createCtrl.sector | filter:createCtrl.locationCiudad" >
+                        <option value="" class="">-- Selecione Sector --</option>
+                        </select>        
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-2" for="locationDireccion">Direccion</label>
+                            <div class="col-sm-10">
+                              <input type="text" data-ng-model="createCtrl.locationDireccion" id="locationDireccion" name="locationDireccion" class="form-control" placeholder="Insertar Direccion">
+                            </div>
+                        </div>
+                     </div>
+                    </div>              
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-7 col-lg-offset-3">
+                      <div class="modal-footer">
+            <button class="btn btn-success btn-lg"  ng-click="createCtrl.create(); ok(); doSearch()">Guardar &amp; Cerrar</button>
+            <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancelar</button>
+           </div>
+                        </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

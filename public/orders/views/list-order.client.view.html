@@ -17,17 +17,10 @@
           <md-radio-button ng-click="order.$edit = true" value="Reportes"> Reportes </md-radio-button>
         </md-radio-group>
 
-   
-         <!--  <div class="btn-group btn-group-lg" role="group" aria-label=" button group">
-                <button type="button" ng-click="order.$edit = false" class="btn btn-large btn-default">Ordenes</button>
-                <button type="button" ng-click="order.$edit = true" class="btn btn-large btn-info">Reportes </button>
-           </div>
- -->       <div class="resultBody">
+           <div class="resultBody">
            <order-list ng-if="!order.$edit"></order-list>
            <result-list ng-if="order.$edit"></result-list>
            </div>
-
-
            </div>
            </div>       
        </div>

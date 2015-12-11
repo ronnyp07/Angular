@@ -86,6 +86,7 @@ exports.list = function(req, res) {
     .populate('ciudad')
     .populate('sector')
     .populate('clientes')
+    .populate('locations')
     .page(pagination, function(err, patient){
     	if (err) {
 			return res.status(400).send({
@@ -98,8 +99,9 @@ exports.list = function(req, res) {
 };
 
 exports.getList = function(req, res) { 
-   Patients
+    Patients
     .find()
+    .populate('locations')
     .sort('patientFirstName')
     .exec(function(err, patient){
     	if (err) {
@@ -126,6 +128,7 @@ exports.update = function(req, res) {
     patient.clientes = req.body.clientes;
     patient.patientPolisa = req.body.patientPolisa;
     patient.patientDireccion = req.body.patientDireccion;
+    patient.locations = req.body.locations;
     patient.pais = req.body.pais;
     patient.ciudad = req.body.ciudad;
     patient.sector = req.body.sector;
@@ -150,7 +153,10 @@ exports.read = function(req, res) {
 
 
 exports.patientByID = function(req, res, next, id) { 
-	Patients.findById(id).populate('user', 'displayName').exec(function(err, patient) {
+	 Patients.findById(id)
+	.populate('user', 'displayName')
+    .populate('locations')
+	.exec(function(err, patient) {
 		if (err) return next(err);
 		if (! patient) return next(new Error('Failed to load procs ' + id));
 		req.patient = patient ;

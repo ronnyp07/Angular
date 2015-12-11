@@ -5,7 +5,7 @@ var resultModule = angular.module('result');
 resultModule.controller('resultController', [
 	'$scope', 
 	'$http', 
-	'$routeParams',  
+	'$stateParams',  
 	'$location', 
 	'Authentication',
 	'Result',
@@ -16,71 +16,26 @@ resultModule.controller('resultController', [
 	'$log',
 	'ConvertArray',
 	'GetResults',
-	function($scope, $http, $routeParams, $location, Authentication, Result, Orders, Notify, ngTableParams, $modal, $log, ConvertArray, GetResults) {
-		this.authentication = Authentication;
+	function($scope, $http, $stateParams, $location, Authentication, Result, Orders, Notify, ngTableParams, $modal, $log, ConvertArray, GetResults) {
+	this.authentication = Authentication;
 
-		var param1= $routeParams.resultId;
-		var resultId = param1.replace(':', '')
+		var param1= $stateParams.resultId;
+		var resultId = param1.replace(':', '');
         var resultado = [];
-        var reportStatus = "";
-        $scope.resultDetails = {}
+        var reportStatus = '';
+        $scope.resultDetails = {};
         $scope.muestra = {};
-   //[]
-                     // {Saticatoria : false},
-                     // {ConLimitaciones : false},
-                     // {Inadecuada: false},
-                     // {CitologicoNormal: false},
-                     // {Negativo : false},
-                     // {Inflamatorio : false},
-                     // {Hemorragico: false},
-                     // {Citolitico: false},
-                     // {Purulento: false},
-                     // {Atrofico: false},      
-                     // {Leve : false},
-                     // {Moderada : false},
-                     // {Severa: false},
-                     // {Superficiales : false},
-                     // {Intermedias : false},
-                     // {Parabasales: false},
-                     // {BacilosVaginales : false},
-                     // {TricomonasVaginales : false},
-                     // {BacteriasCocoides: false},
-                     // {VirusSimple : false},
-                     // {HemofilosVaginales : false},
-                     // {Clamidias : false},
-                     // {Hongos : false},
-                     // {FloraMixta : false},
-                     // {Gardnerella : false}
-
-                    
-
-   // $scope.frotis = [{Negativo : false},
-   //                   {Inflamatorio : false},
-   //                   {Inadecuada: false},
-   //                   {CitológicoNormal: false}]
-   
-   // $scope.inflamacion = [{Leve : false},
-   //                       {Moderada : false},
-   //                       {Severa: false}]
-
-                                      
-             
-
-
-	 //    $scope.resultDetails = Result.get({ 
-		// 		resultId: resultId
-		// });
-
-         $http.post('api/resultfilter', {resultId: resultId}).
+        $http.post('api/resultfilter', {resultId: resultId}).
 		      success(function(data){
+            console.log(data);
 		     	$scope.resultData = data;
-		     	$scope.resultDetails.diagnostico = $scope.resultData[0].diagnostico
+		     	      $scope.resultDetails.diagnostico = $scope.resultData[0].diagnostico;
                 $scope.resultDetails.resultado = $scope.resultData[0].resultado.toString();
                 $scope.resultDetails.resultadoArray = $scope.resultData[0].resultado;
                 $scope.resultDetails.rSereal = $scope.resultData[0].rSereal;
-                $scope.resultDetails.nombre = $scope.resultData[0].orders.patientName;
-                $scope.resultDetails.doctorName = $scope.resultData[0].orders.doctorName;
-                $scope.resultDetails.clienteName = $scope.resultData[0].orders.clienteName; 
+                $scope.resultDetails.nombre = $scope.resultData[0].patientReport.patientFirstName + ' ' + $scope.resultData[0].patientReport.patientLastName;
+                $scope.resultDetails.doctorName = $scope.resultData[0].doctor.firstName + ' ' + $scope.resultData[0].doctor.lastName;
+                $scope.resultDetails.clienteName = $scope.resultData[0].clinica.name; 
                 $scope.resultDetails.created = $scope.resultData[0].orders.created;
                 $scope.resultDetails.patiendEdad = $scope.resultData[0].orders.patientEdad;
                 $scope.resultDetails.tipomuestraDesc = $scope.resultData[0].tipomuestraDesc;
@@ -96,39 +51,23 @@ resultModule.controller('resultController', [
                 }else if ($scope.resultData[0].tipomuestra == 'B'){
                 	$scope.resultDetails.reportName = 'Reporte Histopatológico';
                 }else if ($scope.resultData[0].tipomuestra == 'P'){
-                 // $scope.muestraresult = JSON.stringify($scope.resultData[0].resultado);
-                  //$scope.muestra = {Saticatoria : true, Inadecuada: true}
-                  //$scope.muestra = $scope.muestraresult.Negativo;
                   if($scope.resultData[0].resultado[0]){
                      $scope.muestra = $scope.resultData[0].resultado[0];
                     }
                   console.log($scope.resultData[0].resultado[0]);
                 }
-                
-        //          var resultadoString = "";
-			     // for(var i = 0; i < resultado.length; i++){
-			     //    resultadoString = resultadoString + ', '  + resultado[i];
-     //}
 		 }).
 		 error(function(err){
 		  console.log(err);
 		});
 
-		
 	$scope.update = function(){
       
         if($scope.resultDetails.resultado){
             resultado = ConvertArray.arrayConvert($scope.resultDetails.resultado);
           }
-          // else{
-          //   resultado = $scope.muestra;
-          // }
-          // if($scope.resultDetails.reportStatus == 'undefined'){
-          // 	$scope.resultDetails.reportStatus = "Pendiente"
-          // }
-          console.log($scope.muestra);
-
-             var resultupdate = new Result({
+        
+         var resultupdate = new Result({
              	 _id: resultId,
                resultado: resultado,
                diagnostico:  $scope.resultDetails.diagnostico,
@@ -137,7 +76,7 @@ resultModule.controller('resultController', [
                reportStatus: 'Listo',
                nota: $scope.resultDetails.nota,
                tecnica: $scope.resultDetails.tecnica
-             })
+             });
 
           if($scope.resultDetails.tipomuestra === 'P'){
 
@@ -150,10 +89,8 @@ resultModule.controller('resultController', [
                noAutho: $scope.resultDetails.noAutho,
                total: $scope.resultDetails.total,
                reportStatus: 'Listo'
-             })
+             });
 
-           //console.log(resultPap);
-            //console.log($scope.muestra);
             resultPap.$update(function(){ 
              }, function(errorResponse) {
               console.log(errorResponse);
@@ -166,8 +103,6 @@ resultModule.controller('resultController', [
 	        $scope.error = errorResponse.data.message
 	        });
           }
-
-         // location.reload(true);
           $location.path('/ordenesList');
 		};
 
@@ -177,7 +112,7 @@ resultModule.controller('resultController', [
  resultModule.controller('resultUpdateController', 
  	['$scope', 
  	 '$http',
- 	'$routeParams', 
+ 	'$stateParams', 
 	'Orders',
 	'ngTableParams',
  	'Notify',
@@ -188,7 +123,7 @@ resultModule.controller('resultController', [
  	function(
  	 $scope, 
  	 $http,
- 	 $routeParams, 
+ 	 $stateParams, 
  	 Orders, 
  	 ngTableParams,
  	 Notify, 
@@ -208,7 +143,7 @@ resultModule.controller('resultController', [
   resultModule.controller('resultListController', 
  	['$scope', 
  	 '$http',
- 	'$routeParams', 
+ 	'$stateParams', 
 	'Orders',
 	'ngTableParams',
  	'Notify',
@@ -220,7 +155,7 @@ resultModule.controller('resultController', [
  	function(
  	 $scope, 
  	 $http,
- 	 $routeParams, 
+ 	 $stateParams, 
  	 Orders, 
  	 ngTableParams,
  	 Notify, 
@@ -229,42 +164,39 @@ resultModule.controller('resultController', [
  	 $modal,
  	 $log,
  	 $location
- 		//, $stateParams
  		) {
 
    $scope.date = {
-        startDate: moment().subtract("months", 1),
+        //startDate: moment().subtract("months", 1),
+        startDate: moment().subtract("days", 1),
         endDate: moment()
     };
-
-    $scope.getDate = function(){
-    	console.log($scope.date);
-    };
-
   
    $scope.getDatecurrentPage = 1;
    $scope.pageSize = 10;
    
-   $scope.q = "";
+    $scope.q = "";
 
     $scope.users = [];
     $scope.totalUsers = 0;
     $scope.usersPerPage = 25; // this should match however many results your API puts on one page
     getResultsPage(1, $scope.q, setDateVariables());
 
-    // $scope.pagination = {
-    //     current: 1
-    // };
+
+    function loadGrid(){
+    getResultsPage(1, $scope.q, setDateVariables());
+    }
+    loadGrid();
+
+     Notify.getMsg('newOrderPost', function(event, data ){
+     loadGrid();
+     });
 
     $scope.dateChange = function(pagination, filter){
-    	console.log(pagination);
-    	 //$scope.pagination.current = ; 
     	 getResultsPage($scope.cPage, filter, setDateVariables());
     };
 
-
     $scope.pageChanged = function(newPage, filter, pgCurrent) {
-    	console.log($scope.cPage);
     	 var startDate = new Date($scope.date.startDate);
     	 var endDate = new Date($scope.date.endDate);
     
@@ -293,13 +225,13 @@ resultModule.controller('resultController', [
         page: pageNumber,
         count: 10,
         filter: filterLetter,
-        //startDate: dateFilter.startDate,
         startDate: startDate,
         endDate: dateFilter.endDate
       }
     })
       .then(function(result) {
                 $scope.users = result.data.results;
+                console.log($scope.users);
                 $scope.totalUsers = result.data.total
     });
     }

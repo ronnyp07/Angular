@@ -21,18 +21,18 @@
         <thead>
                 <th>Sereal</th>
                 <th>Fecha Creacion</th>
-                <th>Estado</th>
-                <th>No. Authorizacion</th>
-                <th>Monto a Pagar</th>
+                <th>Paciente</th>
+                <th>Resultado</th>
+                <th>Pago</th>
             </thead>
             <tr dir-paginate="user in users | itemsPerPage: 10" current-page="cPage" total-items="totalUsers">
             
                     <td>{{ user.rSereal }}</td>
                     <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
                     <td data-title="'Estatus'" ><span ng-if="user.reportStatus == 'Pendiente'" class="label label-danger"> {{user.reportStatus}} </span>
         <span ng-if="user.reportStatus == 'Listo'" class="label label-success"> {{user.reportStatus}} </span>
        </td>
-       <td>{{user.noAutho}}</td>
        <td>{{user.total}}</td>
          <td>
           <div>

@@ -45,4 +45,31 @@ angular.module('doctor').factory('Doctors', ['$resource', function($resource) {
     return notify;
     // Usar el service '$resource' para devolver un objeto '$resource' Patients
  
+}]).service('DoctorsService',['$http', '$q', function($http, $q){
+    var self = {
+      'result': [],
+      'refresh': function(){
+        self.result = [];
+        return self.load();
+      },
+      'load' : function(){
+         var defer = $q.defer();
+         $http.post('doctor/getList').
+          success(function(data){ 
+            if(data.length !== 0){
+              angular.forEach(data, function(daraResult){
+                self.result.push(daraResult);
+              });
+            }
+           defer.resolve(data);
+           }).
+           error(function(err){
+            defer.reject(err);
+          });
+         return defer.promise;
+      }
+    };
+
+    self.load();
+    return self;
 }]);

@@ -92,6 +92,9 @@ module.exports = function(){
   require('../app/routes/cierretrack.server.routes.js')(app);
   require('../app/routes/tempresult.server.routes.js')(app);
   require('../app/routes/result.server.routes.js')(app);
+  require('../app/routes/maintains.server.routes')(app);
+  require('../app/routes/locations.server.routes')(app);
+  require('../app/routes/headermasters.server.routes')(app);
 
   //require('../app/routes/articles.server.routes.js')(app);
    

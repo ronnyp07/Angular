@@ -54,7 +54,6 @@ angular.module('patients').factory('Patients', ['$resource', function($resource)
           if(data.length !== 0){
           angular.forEach(data, function(daraResult){
             obj.results.push(daraResult);
-            console.log(daraResult);
           });
           }
           defer.resolve(data);

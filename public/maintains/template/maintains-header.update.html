@@ -1,0 +1,42 @@
+<div ng-controller= "MaintainsControllerUpdate as vm">
+  <div class="modal-header">
+        <h5 class="modal-title"><span>{{maintainHeader.name}}</span></h5>  
+  </div>
+<div ng-if="vm.isSaving" class="detailsUpdateLoading">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+ <div class="modal-body">
+<div class="row" ng-if="!vm.isSaving">
+   <div class="col-md-12">
+    <div class="md-whiteframe-z2">
+        <md-content class="md-padding">
+        <form name="maintainUpdateDetailsForm">
+         <fieldset>
+            <md-input-container flex>
+                 <label>Codigo</label>
+                         <input ng-model="maintainHeader.code">
+            </md-input-container>
+
+            <md-input-container flex>
+                      <label>Nombre</label>
+                         <input ng-model="maintainHeader.name" required>
+            </md-input-container>
+             <md-input-container flex>
+                      <label>Descripccion</label>
+                         <textarea data-ng-model="maintainHeader.desc" columns= "1" ></textarea>
+                           <!-- <input ng-model="name"> -->
+            </md-input-container>
+               <md-select placeholder="" id="drpHeader" ng-model="mainCtrl.maintainParent" md-on-open="loadUsers()" style="100;">
+            <md-option ng-value="" >-- Seleccione Centro--</md-option>
+          <md-option ng-value="maintain._id" ng-repeat="maintain in mainCtrl.maintainList2">{{maintain.name}}</md-option>
+            </md-select> 
+             <md-button class="md-raised md-primary" ng-disabled="maintainUpdateDetailsForm.$invalid" ng-click="vm.updateHeader(maintainHeader)">Guardar</md-button>
+            </fieldset>
+        </form>
+       
+     </md-content>
+     </div>
+   </div> 
+</div>
+</div>
+</div>

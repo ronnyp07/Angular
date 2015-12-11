@@ -11,11 +11,11 @@
       
        <td data-title="'Telefono'" >{{patient.patientTelefono}}</td>
        
-       <td data-title="'Aseguradora'">{{patient.clientes.name}}</td>
+       <td data-title="'Aseguradora'">{{patient.locations.name}}</td>
        
       <!--  <td data-title="'RNC'" filter="{'clienteRNC': 'text' }">{{cliente.clienteRNC}}</td>
        <td data-title="'Telefono'" filter="{'clienteTelefono': 'text' }">{{cliente.clienteTelefono}}</td> -->
-       <td>
+       <td class="pull-right">
           <div>
            <button type="button" class="btn btn-info" title="Editar" ng-click="pacientsCtrl.modelUpdate('lg', patient)">
             <span class="glyphicon glyphicon-eye-open labelBig"></span></button> 

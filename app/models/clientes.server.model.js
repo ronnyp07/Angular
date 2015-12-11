@@ -64,7 +64,7 @@ var ClienteSchema = new Schema({
 });
 
 ClienteSchema.plugin(autoIncrement.plugin, {
-    model: 'Cliente',
+    model: 'Clientes',
     field: 'clienteId',
     startAt: 100,
     incrementBy: 1

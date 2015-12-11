@@ -1,0 +1,39 @@
+
+<div data-ng-controller = "HeadermastersController as vm">
+<div class="row">
+   <div class="col-md-12">
+    <div class="md-whiteframe-z2">
+        <md-content class="md-padding">
+        <form name="maintainDetailsForm" data-ng-submit="vm.sendMaintainDetails();">
+
+         <fieldset>
+            <md-input-container flex>
+                 <label>Parametro</label>
+                         <input ng-model="matainArray.name" readonly="true">
+            </md-input-container>
+            <md-input-container flex>
+                      <label>Codigo</label>
+                         <input ng-model="vm.code" required>        
+            </md-input-container>
+            
+             <md-input-container flex>
+                      <label>Nombre</label>
+                         <input ng-model="vm.name" required>        
+            </md-input-container>
+             <md-input-container flex>
+                      <label>Descripccion</label>
+                         <textarea data-ng-model="vm.description" columns= "1" ></textarea>
+            </md-input-container>
+               <md-select placeholder="" id="drpHeader" ng-model="mainCtrl.maintainParent" md-on-open="loadUsers()" style="100;">
+            <md-option ng-value="" >-- Seleccione Centro--</md-option>
+        <md-option ng-value="maintain._id" ng-repeat="maintain in mainCtrl.maintainList2">{{maintain.name}}</md-option>
+            </md-select> 
+             <md-button class="md-raised md-primary" ng-disabled="maintainDetailsForm.$invalid">Guardar</md-button>
+            </fieldset>
+        </form>
+       
+     </md-content>
+     </div>
+   </div> 
+</div>
+</div>

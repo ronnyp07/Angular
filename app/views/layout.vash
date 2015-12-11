@@ -7,6 +7,7 @@
 <link href="/css/bootstrap-theme.min.css" rel="stylesheet"></link> 
 <link href="/css/angular.css" rel="stylesheet"></link>
 <link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
+<link href="/css/font-awesome.min.css" rel="stylesheet"></link>
 <link href="/css/patients.css" rel="stylesheet"></link>
 <link href="/css/imprimir.css" rel="stylesheet"></link>
 <link href="/lib/select2/select2.css"  rel="stylesheet" ></link>
@@ -30,7 +31,7 @@
         <span class="icon-bar"></span>
       </button>
 
-      <a class="navbar-brand" href="#/">Easy-Lab</a>
+      <a class="navbar-brand" href="#!/">Easy-Lab</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,10 +45,11 @@
             <li><a href="#">Zona</a></li>
             <li><a href="#!/ciudad">Ciudad</a></li>
             <li><a href="#!/sector">Sector</a></li>
-            <li class="divider"></li>
-            <li><a href="#!/clientes">Clientes</a></li>
-            <li><a href="#!/doctors">Doctores</a></li>
+            <li class="divider"></li>         
             <li><a href="/#!/patients">Pacientes</a></li>
+            <li><a href="#!/doctors">Doctores</a></li>
+            <li><a href="#!/clientes">Clinicas</a></li>
+            <li><a href="#!/locations">Aseguradoras</a></li>
             <li class="divider"></li>
             <li><a href="#!/procs">Procedimientos</a></li>
             <li><a href="#!/tempresult">Reporte Layout</a></li>
@@ -94,8 +96,11 @@
 <script type="text/javascript" src="lib/select2/select2.min.js"></script>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="lib/angular-aria/angular-aria.min.js"></script>
+<script src="lib/ng-lodash/build/ng-lodash.min.js"></script>
 <script type="text/javascript" src="lib/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="lib/ng-lodash/build/ng-lodash.min.js"></script>
 <script type="text/javascript" src="lib/angular-ui-calendar/src/calendar.js"></script>
+<script type="text/javascript" src="lib/angular-ui-router/release/angular-ui-router.js"></script>
 <script type="text/javascript" src="lib/fullcalendar/dist/fullcalendar.min.js"></script>
 <script type="text/javascript" src="lib/fullcalendar/dist/gcal.js"></script>
 <script type="text/javascript" src="lib/angular-ui-date/src/date.js"></script>
@@ -130,6 +135,7 @@
 <script type="text/javascript" src="/sectors/controllers/sectors.client.controller.js"></script>
 <script type="text/javascript" src="/sectors/services/sectors.client.service.js"></script>
 <script type="text/javascript" src="/sectors/config/sectors.client.routes.js"></script>
+
 <script type="text/javascript" src="/clientes/clientes.client.module.js"></script>
 <script type="text/javascript" src="/clientes/controllers/clientes.client.controller.js"></script>
 <script type="text/javascript" src="/clientes/services/clientes.client.service.js"></script>
@@ -162,6 +168,25 @@
 <script type="text/javascript" src="/tempresult/controllers/tempresult.client.controller.js"></script>
 <script type="text/javascript" src="/tempresult/services/tempresult.client.service.js"></script>
 <script type="text/javascript" src="/tempresult/config/tempresult.client.route.js"></script>
+
+<script type="text/javascript" src="/locations/locations.client.module.js"></script>
+<script type="text/javascript" src="/locations/controllers/locations.client.controller.js"></script>
+<script type="text/javascript" src="/locations/services/locations.client.service.js"></script>
+<script type="text/javascript" src="/locations/config/locations.client.routes.js"></script>
+
+<script type="text/javascript" src="/maintains/maintains.client.module.js"></script>
+<script type="text/javascript" src="/maintains/controllers/maintains.client.controller.js"></script>
+<script type="text/javascript" src="/maintains/services/maintains.client.service.js"></script>
+<script type="text/javascript" src="/maintains/config/maintains.client.routes.js"></script>
+
+
+<script type="text/javascript" src="/headermasters/headermasters.client.module.js"></script>
+<script type="text/javascript" src="/headermasters/controllers/headermasters.client.controller.js"></script>
+<script type="text/javascript" src="/headermasters/services/headermasters.client.service.js"></script>
+<script type="text/javascript" src="/headermasters/config/headermasters.client.routes.js"></script>
+
+
+
 <script type="text/javascript" src="/users/users.client.module.js"></script>
 <script type="text/javascript" src="/users/services/authentication.client.service.js"></script>
 <script type="text/javascript" src="application.js"></script>

@@ -1,0 +1,97 @@
+ <div class="panel panel-warning ">
+                             <div class="panel-heading headerMargin"> 
+                               <span class="headertitle">Informacion de Contacto</span></div>
+
+                               <div class="panel-body">
+<div class="row">
+<div class="col-sm-6">
+
+
+ <div class="form-group">
+                            <label class="control-label col-sm-2" for="doctorPais">Pais</label>
+                            <div class="col-sm-10">
+                        <select data-ng-model="doctor.rpais" data-ng-change="UpCtrl.filterByPais()"  id="doctorPais" class="form-control" ng-options="value._id as value.name for value in UpCtrl.pais" >
+                        <option value="" class="">-- Selecione Pais --</option>
+                        </select>        
+                            </div>
+                        </div>
+
+                
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="doctorZona">Zona</label>
+                            <div class="col-sm-10">
+                        <select data-ng-model="UpCtrl.doctorZona" id="doctorZona" class="form-control" name="doctorZona" ng-options="value._id as value.doctorNombre for value in doctors" >
+                        <option value="" class="">-- Selecione Zona --</option>
+                        </select>        
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Ciudad</label>
+                        <div class="col-sm-10">
+                        <select  data-ng-model="doctor.rciudad" class="form-control"  data-ng-change="UpCtrl.filterByCiudad()"  ng-options="value._id as value.name for value in UpCtrl.ciudad | filter:UpCtrl.doctorPais ">  
+                        <option value="" class="">-- Selecione Ciudad --</option>
+                        </select> 
+                           </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="control-label col-sm-2" for="doctorSector">Sector</label>
+                            <div class="col-sm-10">
+                        <select data-ng-model="doctor.rsector" id="doctorSector" class="form-control" name="doctorSector" ng-options="value._id as value.name for value in UpCtrl.sector | filter:UpCtrl.doctorCiudad" >
+                        <option value="" class="">-- Selecione Sector --</option>
+                        </select>        
+                            </div>
+                        </div>
+
+                         <div class="form-group">
+                          <label class="control-label col-sm-2" for="doctorDireccion">Direccion</label>
+                            <div class="col-sm-10">
+                              <input type="text" data-ng-model="doctor.DoctorDireccion" id="DoctorDireccion" name="DoctorDireccion" class="form-control" placeholder="Insertar Direccion">
+                            </div>
+                        </div>
+
+
+
+
+</div>
+<div class="col-md-6">
+
+<div class="">
+
+<div class="form-group">
+                        <label class="control-label col-sm-3" for="patientDireccion">Tel. Celular</label>
+                                                <div class="controls">
+                                                    <div class="input-group doctorContact">
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-phone"></i></span>
+                                                        <input type="text" autocomplete="false" data-ng-model="doctor.DoctorTelefono" class="form-control" name="celular" placeholder="Username">
+                                                    </div>
+                                                </div>
+                      </div>
+                       <div class="form-group">
+                        <label class="control-label col-sm-3" for="patientDireccion">Tel. Oficina</label>
+                          <div class="controls">
+                           <div class="input-group doctorContact"> 
+                           <span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-phone"></i></span>                                   
+                          <input type="text" class="form-control" autocomplete="false" data-ng-model="doctor.DoctorTelefonoOff" placeholder="Telefono Casa" name="casa">
+                         </div>
+                         </div>
+                       
+                      </div>
+
+                      <div class="form-group ">
+                        <label class="control-label col-sm-3">Email </label>
+                        <div class="controls">
+                          <div class="input-group doctorContact">
+                           <span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-envelope"></i></span>
+                          <input type="text" class="form-control" ng-model="doctor.DoctorEmail" autocomplete="false" placeholder="Correo Electronico">
+                    </div>
+                  </div>
+                 </div>
+
+</div>
+</div>
+</div><!--End of contain row -->
+
+                </div><!--End of panel body -->
+                </div><!--End of panel-->
+

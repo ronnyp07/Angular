@@ -74,7 +74,7 @@
                      <div class="form-group">
                          <label class="control-label" for="clientes">Aseguradora</label>
                         <div class="controls">
-                        <select data-ng-model="patient.rcliente" id="clientes" class="form-control" name="clientes" ng-options="value._id as value.name for value in UpCtrl.cliente.results | filter: {tipo: 'A'}" >
+                        <select data-ng-model="patient.rlocation" id="clientes" class="form-control" name="clientes" ng-options="value._id as value.name for value in UpCtrl.location" >
                         <option value="" class="">-- Selecione Seguro --</option>
                         </select>        
                        </div>
@@ -150,5 +150,4 @@
         <button class="btn btn-success btn-lg"  ng-click="UpCtrl.update(patient); ok();" ng-disabled="updatePatientForm.$invalid">Save &amp; Close</button>
         <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancel</button>
     </div>
-
 </section>

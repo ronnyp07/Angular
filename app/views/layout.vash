@@ -55,6 +55,8 @@
             <li><a href="#!/tempresult">Reporte Layout</a></li>
             <li class="divider"></li>
             <li><a href="#!/cierre">Cierre</a></li>
+             <li class="divider"></li>
+            <li><a href="#!/maintains">Parametros</a></li>
            </ul>
         </li>
        <li>

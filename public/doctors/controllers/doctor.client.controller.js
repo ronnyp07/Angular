@@ -165,26 +165,66 @@ doctorModule.controller
    function($scope, $http, $routeParams,  Authentication, 
     Doctors, 
     Pais, Ciudad, Sector, Cliente, Notify, $mdToast, $animate, NotifyPatient) {
+    
+     var vm = this;
+     vm.ClinicaList = [];
+     vm.pais = Pais.query();
+     vm.ciudad = Ciudad.query();
+     vm.sector = Sector.query();
+     loadClientes();
 
-    this.pais = Pais.query();
-    //this.cliente = Cliente.get();
-     this.ciudad = Ciudad.query();
-     this.sector = Sector.query();
+    Notify.getMsg('clinicaLoad', function(event, data){ 
+      console.log('resive');
+      loadClientes();
+    });
 
-    this.filterByPais = function(){
+
+   vm.AddClinica = function(){
+       var skillsSelect = document.getElementById('clinicaDoctor');
+       var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+
+      if(vm.ClinicaList.length <= 0) {
+         vm.ClinicaList.push({id: this.clientes, clinica: selectedText});
+       }else{
+        for(var i = 0; i< vm.ClinicaList.length; i++){
+          if(vm.ClinicaList[i].id === this.clientes){
+              alertify.error('Esta clinica ya esta asociada');
+            return;
+          }
+        }
+        //console.log(vm.clientes);
+        vm.ClinicaList.push({id: vm.clientes, clinica: selectedText});
+       }
+   };
+
+    function loadClientes(){
+     $http.post('cliente/getList').
+          success(function(data){ 
+           vm.cliente = data;
+           }).
+           error(function(err){
+     });
+    }
+
+    vm.deleteClinica = function($index){
+     // console.log($index);
+        vm.ClinicaList.splice($index, 1);
+     };
+
+    vm.filterByPais = function(){
       this.sector = {};      
     };
 
-    this.filterByCiudad = function(){
+    vm.filterByCiudad = function(){
       this.sector = Sector.query();
     };
 
-    this.DoctorCI = {};
+    vm.DoctorCI = {};
     $scope.authentication = Authentication;
     $scope.referred = true;
     //$scope.seguros = Seguros.query();
 
-    this.showPatientSave = function() {
+    vm.showPatientSave = function() {
       $mdToast.show(
         $mdToast.simple()
           .content('Nuevo Paciente Guardado!!')
@@ -193,10 +233,10 @@ doctorModule.controller
       );
     };
 
-   this.create = function(){
+   vm.create = function(){
      this.DoctorCI = {
       tipo: this.DoctorCI.tipo, 
-      value: this.DoctorCI.tipovalue 
+      value: this.DoctorCI.value 
      };
 
       var doctor = new Doctors({
@@ -210,19 +250,20 @@ doctorModule.controller
       DoctorDireccion: this.DoctorDireccion,   
       pais: this.doctorPais,
       ciudad: this.doctorCiudad,
-      sector: this.doctorSector
+      sector: this.doctorSector,
+      clinicaList : this.ClinicaList
       });
 
       console.log(doctor);
 
       // Usar el método '$save' de Patient para enviar una petición POST apropiada
-      doctor.$save(function(response){ 
-      NotifyPatient.sendMsg('doctorsaved', {doctorSavedInfo: response});
-      }, function(errorResponse) {
-       // En otro caso, presentar al usuario el mensaje de error
-       $scope.error = errorResponse.data.message
-       console.log($scope.error);
-       });
+      // doctor.$save(function(response){ 
+      // NotifyPatient.sendMsg('doctorsaved', {doctorSavedInfo: response});
+      // }, function(errorResponse) {
+      //  // En otro caso, presentar al usuario el mensaje de error
+      //  $scope.error = errorResponse.data.message
+      //  console.log($scope.error);
+      //  });
     };
     }
 ]);
@@ -263,7 +304,6 @@ doctorModule.controller
        var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
        if($scope.doctor.rClinicaList.length <= 0){
        $scope.doctor.rClinicaList.push({id: this.clientes, clinica: selectedText});
-       console.log('asdfasdfasd');
        }else{
         for(var i = 0; i< $scope.doctor.rClinicaList.length; i++){
           if($scope.doctor.rClinicaList[i].id === this.clientes){
@@ -395,5 +435,21 @@ doctorModule.directive('doctorsClinica', function(){
     restrict: 'E',
     transclude: true,
     templateUrl: 'doctors/template/doctor-clinica-template.html'
+    };
+ });
+
+doctorModule.directive('doctorscreateContact', function(){
+    return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: 'doctors/template/doctorcreate-contact-template.html'
+    };
+ });
+
+doctorModule.directive('doctorscreateClinica', function(){
+    return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: 'doctors/template/doctorcreate-clinica-template.html'
     };
  });

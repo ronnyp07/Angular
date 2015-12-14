@@ -7,19 +7,19 @@ angular.module('maintains').config(['$stateProvider',
 		$stateProvider.
 		state('listMaintains', {
 			url: '/maintains',
-			templateUrl: 'modules/maintains/views/list-maintains.client.view.html'
+			templateUrl: 'maintains/views/list-maintains.client.view.html'
 		}).
 		state('createMaintain', {
 			url: '/maintains/create',
-			templateUrl: 'modules/maintains/views/create-maintain.client.view.html'
+			templateUrl: 'maintains/views/create-maintain.client.view.html'
 		}).
 		state('viewMaintain', {
 			url: '/maintains/:maintainId',
-			templateUrl: 'modules/maintains/views/view-maintain.client.view.html'
+			templateUrl: 'maintains/views/view-maintain.client.view.html'
 		}).
 		state('editMaintain', {
 			url: '/maintains/:maintainId/edit',
-			templateUrl: 'modules/maintains/views/edit-maintain.client.view.html'
+			templateUrl: 'maintains/views/edit-maintain.client.view.html'
 		});
 	}
 ]);

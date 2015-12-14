@@ -75,7 +75,8 @@ angular.module('maintains')
 }])
 .factory('MaintainList',  function(){
          var code = {
-           
+            
+             Especialidad: 100,
              Gender: 104,
              Estatus_Civil: 105,
              Tipo_Sangre: 106,
@@ -85,6 +86,7 @@ angular.module('maintains')
              Relacion_Paciente: 111,
              Tipo_Consulta: 112,
              Estado_Consulta : 113,
+
 
          };
         return code;

@@ -24,10 +24,10 @@
                       <label>Descripccion</label>
                          <textarea data-ng-model="vm.description" columns= "1" ></textarea>
             </md-input-container>
-               <md-select placeholder="" id="drpHeader" ng-model="mainCtrl.maintainParent" md-on-open="loadUsers()" style="100;">
+           <!--     <md-select placeholder="" id="drpHeader" ng-model="mainCtrl.maintainParent" md-on-open="loadUsers()" style="100;">
             <md-option ng-value="" >-- Seleccione Centro--</md-option>
         <md-option ng-value="maintain._id" ng-repeat="maintain in mainCtrl.maintainList2">{{maintain.name}}</md-option>
-            </md-select> 
+            </md-select>  -->
              <md-button class="md-raised md-primary" ng-disabled="maintainDetailsForm.$invalid">Guardar</md-button>
             </fieldset>
         </form>

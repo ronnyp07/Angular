@@ -108,7 +108,7 @@ clienteModule.controller('clienteController', [
 		    $scope.tableParams.reload();
 	 };
 
-     Notify.getMsg('seguroLoad', function(event, data ){
+     Notify.getMsg('clinicaLoad', function(event, data ){
      	 $scope.doSearch();
      	 alertify.success('Acción realizada exitosamente!! !!');
      });
@@ -179,7 +179,7 @@ clienteModule.controller('clienteDeleteController', ['$scope', 'Authentication',
 	       });
 
 	       cliente.$remove(function(){
-	        Notify.sendMsg('seguroLoad', {'id': 'nada'});
+	         Notify.sendMsg('clinicaLoad', {'id': 'nada'});
 	       }, function(errorResponse) {
 		  	$scope.error = errorResponse.data.message;
 		   });
@@ -228,7 +228,7 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
 		};
 	
 	   cliente.$update(function() {
-		  	 Notify.sendMsg('seguroLoad', {'id': 'nada'});
+		  	 Notify.sendMsg('clinicaLoad', {'id': 'nada'});
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -286,7 +286,8 @@ clienteModule.controller('clienteUpdateController', ['$scope', 'Authentication',
  	      });
  			
 			clientes.$save(function(response) {
-             Notify.sendMsg('seguroLoad', {'id': 'nada'});
+             Notify.sendMsg('clinicaLoad', {'id': 'nada'});
+             console.log('asdfasdf');
  			}, function(errorResponse) {
  				$scope.error = errorResponse.data.message;
  			});

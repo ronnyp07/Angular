@@ -94,19 +94,20 @@ exports.update = function(req, res) {
 };
 
 exports.getMaxB = function(req, res){
+  console.log(req.body.type + ' ' + 'This is a test');
   Cierre.find({proType : req.body.type}).sort({CierreId : -1}).limit(1).exec(function(err, result){
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(result);
+      //console.log(result);
       res.jsonp(result);
     }
 
   });
 
-}
+};
 
 /**
  * Delete an Pai
@@ -128,7 +129,7 @@ exports.delete = function(req, res) {
  * List of Pais
  */
 exports.list = function(req, res) {
- if(req.body.info.proType == 'B') {
+ if(req.body.info.proType === 'B') {
   Cierre.find({year: req.body.info.year, month:req.body.info.month, proType:req.body.info.proType }).exec(function(err, result){
       if(err){
         console.log(err);
@@ -137,9 +138,9 @@ exports.list = function(req, res) {
       });
       }else{
         res.jsonp(result);
-      };
+      }
   });
-}else if (req.body.info.proType == 'BL'){
+}else if (req.body.info.proType === 'BL'){
     Cierre.find({year: req.body.info.year, proType: 'BL' }).exec(function(err, result){
       if(err){
          return res.status(400).send({
@@ -147,7 +148,7 @@ exports.list = function(req, res) {
       });
       }else{
         res.jsonp(result);
-      };
+      }
   });
 }else{
   Cierre.find({year: req.body.info.year, proType: 'P' }).exec(function(err, result){
@@ -157,27 +158,24 @@ exports.list = function(req, res) {
       });
       }else{
         res.jsonp(result);
-      };
+      }
   });
+}
 };
-};
-
 
 exports.updateCierre = function(req, res) {
 
-  var query = "";
-  var requestType = req.body.info.proType
-  if(requestType == "B"){
+  var query = '';
+  var requestType = req.body.info.proType;
+  if(requestType === 'B'){
     query = {year: req.body.info.year, month:req.body.info.month, proType:req.body.info.proType };
   console.log(query);
-  }else if (requestType == "BL"){
+  }else if (requestType === 'BL'){
      query = {year: req.body.info.year,  proType:req.body.info.proType };
   }else {
     query = {year: req.body.info.year,  proType:req.body.info.proType }; 
   }
 
-  
-  
   Cierre.findOne(query, function(err, doc){
      if(err) throw err;
      if(doc){
@@ -191,7 +189,7 @@ exports.updateCierre = function(req, res) {
         });
         }else{
           res.jsonp(updated);
-        }; 
+        }
         });
      }
 
@@ -230,7 +228,6 @@ exports.cerrarmonth = function(req, res, next){
 
 exports.lastcierre = function(req, res, next){
     Cierre.nextCount(function(err, count) {
-    
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

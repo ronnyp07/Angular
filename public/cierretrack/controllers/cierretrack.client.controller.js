@@ -119,18 +119,14 @@ $scope.modelYearCierre = function (size, selectedcliente) {
         var modalInstance = $modal.open({
           templateUrl: 'cierretrack/views/cierretrack-yearcomfirm.template.html',
           controller: 
-          //'modalDelete',
           function ($scope, $modalInstance, selectedMonth) {
-                   
                   $scope.ok = function () {
-                  
                   $modalInstance.close();
           };
 
           $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
           };
-
           },
           size: size,
           resolve: {
@@ -145,9 +141,6 @@ $scope.modelYearCierre = function (size, selectedcliente) {
         $log.info('Modal dismissed at: ' + new Date());
       });
 };
-
-
-
 }]);
 
 
@@ -156,7 +149,7 @@ cierreModule.controller( 'confirmCtrl',
 ['$scope',
 'Cierre',
 function($scope, Cierre){
-        
+
 $scope.setCierre = function(r){
     
 	var d = new Date();
@@ -172,9 +165,7 @@ $scope.setCierre = function(r){
      });
 
      cierre.$save(function(response) {
-             //Notify.sendMsg('newPis', {'id': response._id});
 			}, function(errorResponse) {
-				//console.log (errorResponse);
 	  $scope.error = errorResponse.data.message;
     });
 };

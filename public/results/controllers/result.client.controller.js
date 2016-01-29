@@ -231,7 +231,6 @@ resultModule.controller('resultController', [
     })
       .then(function(result) {
                 $scope.users = result.data.results;
-                console.log($scope.users);
                 $scope.totalUsers = result.data.total
     });
     }

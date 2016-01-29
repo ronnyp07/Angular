@@ -253,17 +253,15 @@ doctorModule.controller
       sector: this.doctorSector,
       clinicaList : this.ClinicaList
       });
-
-      console.log(doctor);
-
+      
       // Usar el método '$save' de Patient para enviar una petición POST apropiada
-      // doctor.$save(function(response){ 
-      // NotifyPatient.sendMsg('doctorsaved', {doctorSavedInfo: response});
-      // }, function(errorResponse) {
-      //  // En otro caso, presentar al usuario el mensaje de error
-      //  $scope.error = errorResponse.data.message
-      //  console.log($scope.error);
-      //  });
+      doctor.$save(function(response){ 
+      NotifyPatient.sendMsg('doctorsaved', {doctorSavedInfo: response});
+      }, function(errorResponse) {
+       // En otro caso, presentar al usuario el mensaje de error
+       $scope.error = errorResponse.data.message;
+       console.log($scope.error);
+       });
     };
     }
 ]);

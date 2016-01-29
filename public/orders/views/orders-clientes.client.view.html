@@ -3,401 +3,372 @@
 
 <h3 class="modal-title"><i class="glyphicon glyphicon-user"></i> Crear Reporte</h3>   
 
-<div ng-if= "isSaving" class="loadsettings">
-            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+<div ng-if= "orders.isSaving" class="loadsettings">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div> 
-<form id="ordersCreate" name="ordersCreate" ng-if="!isSaving"> 
+<form id="ordersCreate" name="ordersCreate" ng-if="!orders.isSaving"> 
+  <div class="row">
+       <div class="col-sm-12">
         <div class="row">
-             <div class="col-sm-12">
-              <div class="row">
-                <div class="col-md-12">
-                     <div class="panel panel-primary">
-                             <div class="panel-heading">
-                      <i class="glyphicon glyphicon-th"> </i> 
-                          Informacion del Doctor/Clinica 
-                      <i class="glyphicon glyphicon-chevron-down pull-right"></i>
-                             </div>
-
-              <div class="row rowcontrolmargin OrdersrowTopmargin">
-               <div class="col-sm-12">
-                <div class="row rowcontrolmargin">
-
-                 <div class="col-sm-6">
-                  <div class="form-group">
-                  <label for="IC" class="col-sm-2 control-label">Doctores:</label>
-                  <div class="col-sm-10">
-                  <div class="float1">
-                  <select ui-select2="select2Config" data-ng-model="createCtrl.doctorSelected" id="doctor" class="selec2Big"  ng-change="setDoctorDetail(doctor)"  name="doctor" data-placeholder="-- Selecione Cliente --" >
-                    <option value=""></option>
-                    <option ng-repeat="value in doctor" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
-                   </select> 
-     
-                    </div>
-                     
-                    <div data-ng-controller="doctorsController as doctorsCtrl" >
-                    <button  type="submit" class="btn btn-sm btn-primary text-center pull-right " ng-click="doctorsCtrl.modelCreate('lg')"><i class="glyphicon glyphicon-plus"></i>
-                    </button>
-                    </div>
-               
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                  <div class="form-group">
-                  <label for="IC" class="col-sm-2 control-label">Clinica:</label>
-                  <div class="col-sm-10">
-                  <div class="float1">
-                  <select ui-select2="select2Config" data-ng-model="createCtrl.clientes" id="clientes" class="selec2Big"  ng-change="createCtrl.setClienteDetail()"  name="clientes"  >
-                    <option ng-repeat="value in doctorClinic.clinicaList" value="{{value.id}}">{{value.clinica}}</option>
-                   </select> 
-     
-                    </div>
-                     
-                    <!-- <div data-ng-controller="clienteController as clienteCtrl" >
-                    <button  type="submit" class="btn btn-sm btn-primary text-center pull-right " ng-click="clienteCtrl.modelCreate('lg')"><i class="glyphicon glyphicon-plus"></i>
-                    </button>
-                    </div> -->
-               
-
-                  </div>
-                </div>
-              </div>
-             </div>
-            
-     <!--        <div class="row rowcontrolmargin">
-              <div class="col-sm-6">
-                  <div class="form-group">
-                  <label for="IC" class="col-sm-2 control-label">ID:</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" data-ng-model="rcliente.ID"  id="id" readonly
-                           >
-                  </div>
-                </div>
-              </div>
-             <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="IC" class="col-sm-3 control-label">Telefono:</label>
-                  <div class="col-sm-9">
-                    <input type="" class="form-control" data-ng-model="rcliente.telefono"  id="telefono" readonly
-                          >
-                  </div>
-                </div>
-             </div>
-           </div> -->
-<!-- 
-           <div class="row rowcontrolmargin">
-              <div class="col-sm-6">
-              </div>
-            
-           </div>
- -->
-            </div><!--End of col-10 -->
-           </div>
-
-
-            </div>
-             </div>
-            </div>  <!-- End of first row -->
-            <div class="row rowcontrolmargin">
-              <div class="col-sm-12">
-              <div class="panel panel-info"> <!--Begin of Patient Panel -->
-                      <div class="panel-heading">
-                          <i class="glyphicon glyphicon-th"> </i> 
-                          Informacion Paciente
-                      <i class="glyphicon glyphicon-chevron-down pull-right"></i>
-                          </div>
-                <div class="row rowcontrolmargin OrdersrowTopmargin">
-                  <div class="col-sm-12">
-                     <div class="row rowcontrolmargin">
-                      <div class="col-sm-6">
-                     <div class="form-group">
-                     <label for="IC" class="col-sm-2 control-label" >Paciente:</label>
-                     <div class="col-sm-10">
-                        <div class="float1">
-                        <select ui-select2 id="selectedPatient" data-ng-model="createCtrl.patient" id="patients" class="selec2Big"  ng-change="createCtrl.setPatientDetail(createCtrl.patient)"  name="patients" data-placeholder="-- Selecione Cliente --" >
-                        <option value=""></option>
-                            <option ng-repeat="value in paciente" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
-                        </select> 
-                      </div>
-                        <div data-ng-controller="pacientsController as pacientsCtrl" >
-                           <button type="submit" class="btn btn-sm btn-info text-center pull-right" ng-click="pacientsCtrl.modelCreate('lg');">
-                           <i class="glyphicon glyphicon-plus"></i></button>
-                       </div>                      
-                        </div>
-                         </div>
-                         </div>
-                      </div>
-            <!-- Aqui es donde va -->
-                  </div>
-                 <!--  <div class="row rowcontrolmargin">
-                  <div class="col-sm-12">
-                  <div data-ng-controller="pacientsController as pacientsCtrl" >
-                       <button id="btnPatientOrderCreate" type="submit" class="btn btn-large btn-info text-center pull-right bottonMarginRight" ng-click="pacientsCtrl.modelCreate('lg');">
-                       Ingresar Pacientes</button>
-                  </div>
-                 </div>
-                </div> -->
-              </div><!--End of Patient First Row -->
-                 <div class="row rowcontrolmargin">
-                       <div class="col-sm-2">
-                        <div class="form-group">
-                          <label for="email" class="col-sm-1 control-label">ID:</label>
-                          <div class="col-sm-8">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.ID"  id="ID" readonly
-                                   >
-                          </div>
-                        </div>
-                     </div>
-
-                      <div class="col-sm-3">
-                        <div class="form-group">
-                          <label for="IC" class="col-sm-3 control-label">Tel:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.telefono" readonly  id="telefono"
-                                   >
-                          </div>
-                        </div>
-                     </div>
-
-                     <div class="col-sm-3">
-                        <div class="form-group">
-                          <label for="polisa" class="col-sm-3 control-label">Polisa:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.polisa"  id="polisa" readonly
-                                   >
-                          </div>
-                        </div>
-                     </div>
-
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="aseguradora" class="col-sm-3 control-label">Seguro:</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" data-ng-model="rpaciente.aseguradora" readonly  id="aseguradora"
-                                  >
-                         </div>
+          <div class="col-md-12">
+               <div class="panel panel-primary">
+                       <div class="panel-heading">
+                <i class="glyphicon glyphicon-th"> </i> 
+                    Informacion del Doctor/Clinica 
+                <i class="glyphicon glyphicon-chevron-down pull-right"></i>
                        </div>
-                     </div>
-                    </div>  
-             </div> <!--End of Patient Panel -->
-            </div><!--End of Patient first column 8 -->
-            </div> <!--End of Patient row -->
-              <div class="row ">    
-            </div><!--End of doctor Row  -->
-           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-                  <div class="panel panel-success">
-                             <div class="panel-heading">
-                          <i class="glyphicon glyphicon-th"> </i> 
-                          Alta Order
-                      <i class="glyphicon glyphicon-chevron-down pull-right"></i>
-                             </div>
-              <form name="procForm" id="procForm" >
-               <div class="col-sm-5">
-                     <div class="row rowcontrolmargin OrdersrowTopmargin">
-              <div class="row">
-              <div class="col-sm-12">
-                  <div class="form-group">
-                  <label for="IC" class="col-sm-2 control-label">Procs:</label>
-                  <div class="col-sm-10">
-                   <div class="float1">
-                <select ui-select2 allowClear:true  data-ng-model="createCtrl.procs" id="procs" class="selec2Big"  ng-change="setProcsDetail()"  name="procs" data-placeholder="-- Selecione Procs --"  ng-required="true" >
-                <option value=""></option>
-                    <option ng-repeat="value in procedimeinto" value="{{value._id}}">{{value.name}}</option>                        
-                  </select> 
-                  </div>
-                  
-                  <div>
-                  <button class="btn btn-sm btn-info" ng-click="addOrderProcs(createCtrl.procs); clearProcForm()" 
-                    ng-disabled = "createCtrl.procs == undefined"><i class="glyphicon glyphicon-chevron-right"></i></button>
-                  </div>
 
-    
+        <div class="row rowcontrolmargin OrdersrowTopmargin">
+         <div class="col-sm-12">
+          <div class="row rowcontrolmargin">
 
-                  </div>
-                </div>
-              </div>
-            </div>
-
-           <div class="row rowcontrolmargin">
-             <div class="col-sm-5">
-                <div class="form-group">
-                  <label for="IC" class="col-sm-3 control-label">#</label>
-                  <div class="col-sm-9">
-                    <input type="text"  data-ng-model="rprocs.ID" class="form-control" id="ID"  ng-disabled = "rprocs.proType == 'B' || rprocs.proType == 'BL'"
-                           placeholder="ID">
-                  </div>
-                </div>
-
-             </div>
-
-              <div class="col-sm-7">
-                <div class="form-group">
-                  <label for="IE" class="col-sm-3 control-label">Costo:</label>
-                  <div class="col-sm-9">
-                    <input type="number" data-ng-model="rprocs.costo" class="form-control" id="costo" readonly
-                           placeholder="Costo">
-                  </div>
-                </div>
-
-             </div>
-         </div>
-
-           <!-- <div class="row rowcontrolmargin">
-             <div class="col-sm-6">
-              <button class="btn btn-danger form-control" ng-click="createCtrl.clearProcForm()"><i class="glyphicon glyphicon-trash"></i> Limpiar</button>
-             </div>
-
-              
-         </div> -->
-
-
-           </div>
-
-               </div>
-        </form>
-
-               <div class="col-sm-7">
-       
-              <div ng-show="!isNotSave">
-               <div class="row OrdersrowTopmargin">
-                <div class="col-sm-12">
-                 <table ng-table="tableParams" class="table">
-                    <tr ng-repeat="order in $data">
-                        <td data-title="'#'">
-                            <span ng-if="!order.$edit">{{order.id}}</span>
-                            <div ng-if="order.$edit"><span>{{order.id}}</span></div>
-                        </td>
-                        <td data-title="'Nombre'">
-                            <span ng-if="!order.$edit">{{order.name}}</span>
-                             <div ng-if="order.$edit"><span>{{order.name}}</span></div>
-                        </td>
-                        <td data-title="'Costo'">
-                            <span ng-if="!order.$edit">{{order.costo }}</span>
-                            <div ng-if="order.$edit"><input class="form-control" type="text" ng-change="getTotal()" ng-model="order.costo" /></div>
-                        </td>
-                        <td data-title="'Pago'">
-                            <span ng-if="!order.$edit">{{order.pago}}</span>
-                            <div ng-if="order.$edit"><input class="form-control" type="text" ng-change="getTotal()" ng-model="order.pago" /></div>
-                        </td>
-                        <td data-title="'Actions'">
-                            <a ng-if="!order.$edit" href="" class="btn btn-default btn-xs" ng-click="order.$edit = true">Editar</a>
-                            <a ng-if="!order.$edit" href="" class="btn btn-danger btn-xs" ng-click="createCtrl.deleteProcs($index)"><i class="glyphicon glyphicon-trash"></i></a>
-                            <a ng-if="order.$edit" href="" class="btn btn-primary btn-xs" ng-click="order.$edit = false"> <i class="glyphicon glyphicon-ok"></i> Guardar</a>
-                        </td>
-                    </tr>
-            </table>
-                  <!--  <table class="table">
-                   <thead>
-                     Detalles de Orden
-                   </thead>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Costo</th>
-                        <th>Desc</th>
-                        <th>SubTotal</th>
-                        <tr ng-repeat="orderd in orderDetail">
-                          <td> {{orderd.id}} </td>
-                          <td> {{orderd.name}} </td>
-                          <td> {{orderd.costo }} </td>
-                          <td> <input type="number" data-ng-model="orderDesc" class="form-control" id="ID"
-                           > </td>
-                           <td> {{orderd.costo - orderDesc }}  </td>
-                        </tr>
-                   </table> -->
-
-                </div>
-               </div>
-               <div class="row">
-                   <div class="col-sm-6">
-                     <textarea rows="2" ng-trim="false" ng-model="note" name: "note" id="note" maxlength="200" class="form-control" placeholder="Nota">
-                     </textarea>
-                     <span>{{200 - note.length}} Restante</span>
-                   </div>
-
-                   <div class="col-sm-6">
-                      <div class="row rowcontrolmargin">
-                        <div class="col-sm-6">
-                          <span class="label label-default label-large">Monto</span>
-
-                      </div>
-                      <div class="col-sm-6">
-                         <label ng-model="total" class="label-order pull-right">{{total  | currency}}</label>
-                      </div>
-                      </div>
-                      <div class="row rowcontrolmargin">
-                        <div class="col-sm-6">
-                          <span class="label label-default label-large">Pago</span>
-
-                      </div>
-                      <div class="col-sm-6">
-                         <label ng-model="total" class="label-order pull-right">{{pago  | currency}}</label>
-                      </div>
-                      </div>
-                      <div class="row rowcontrolmargin">
-                        <div class="col-sm-6">
-                          <span class="label label-default label-large">Debe</span>
-
-                      </div>
-                      <div class="col-sm-6">
-                         <label ng-model="total" class="label-order pull-right">{{debe  | currency}}</label>
-                      </div>
-                      </div>
-<!-- 
-                      <div class="row rowcontrolmargin">
-                        <div class="col-sm-5">
-                         <label class="pull-left">D. Valida</label>
-
-                      </div>
-                      <div class="col-sm-7">
-                         
-                        <div class="form-group">                  
-                           <div class="controls">
-                                <input ui-date="dateOptions" name="duedate" data-ng-model="duedate"  class="form-control">
-                            </div>
-                        </div>
-
-                      </div>
-                      </div> -->
-
-                        <div class="row rowcontrolmargin">
-                        <div class="col-sm-6">
-                         <button class="btn btn-danger form-control" ng-click="modelRemove();"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
-                        </div>
-                      <div class="col-sm-6">
-                        <button class="btn btn-success form-control" ng-disabled="tableParams.data == ''"  ng-click="createCtrl.create(); cleanForm()"><i class="glyphicon glyphicon-saved"  ></i> Guardar</button>
-
-                      </div>
-                      
-                  
-                      </div>
-                    <!--   <div class="row rowcontrolmargin">
-                       <div class="col-sm-12">
-                      
-                      </div>
-                      </div> -->
-                   </div>
-               </div>
+           <div class="col-sm-6">
+            <div class="form-group">
+            <label for="IC" class="col-sm-2 control-label">Doctores:</label>
+            <div class="col-sm-10">
+            <div class="float1">
+            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctorSelected" id="doctor" class="selec2Big"  ng-change="createCtrl.setDoctorDetail(orders.selectedOrder.doctorSelected)"  name="doctor" data-placeholder="-- Selecione Cliente --" >
+              <option value=""></option>
+              <option ng-repeat="value in orders.doctorList" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
+             </select> 
               </div>
                
-               <md-progress-circular class="md-hue-2" ng-if="isNotSave" md-mode="indeterminate"></md-progress-circular>
-
-               </div>
+            <div data-ng-controller="doctorsController as doctorsCtrl" >
+              <button  type="submit" class="btn btn-sm btn-primary text-center pull-right " ng-click="doctorsCtrl.modelCreate('lg')"><i class="glyphicon glyphicon-plus"></i>
+              </button>
               </div>
-             </div>
+            </div>
+          </div>
         </div>
-        </form>
-        <br>
-        <br>
+        <div class="col-sm-6">
+            <div class="form-group">
+            <label for="IC" class="col-sm-2 control-label">Clinica:</label>
+            <div class="col-sm-10">
+            <div class="float1">
+            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.clinicaListSelected" id="clientes" class="selec2Big"  ng-change="createCtrl.setClinicaDetail(orders.selectedOrder.clinicaListSelected)"  name="clientes"  >
+              <option ng-repeat="value in orders.clinicaList" value="{{value.id}}">{{value.clinica}}</option>
+             </select> 
+              </div>
+               
+              <!-- <div data-ng-controller="clienteController as clienteCtrl" >
+              <button  type="submit" class="btn btn-sm btn-primary text-center pull-right " ng-click="clienteCtrl.modelCreate('lg')"><i class="glyphicon glyphicon-plus"></i>
+              </button>
+              </div> -->
+         
 
-       <div class="row" ng-if="!isSaving">
-         <div class="col-sm-12">
-             <div>
-             <result-list></result-list>
+            </div>
+          </div>
+        </div>
+       </div>
+      
+<!--        <div class="row rowcontrolmargin">
+        <div class="col-sm-6">
+            <div class="form-group">
+            <label for="IC" class="col-sm-2 control-label">ID:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" data-ng-model="rcliente.ID"  id="id" readonly
+                     >
+            </div>
+          </div>
+        </div>
+       <div class="col-sm-6">
+          <div class="form-group">
+            <label for="IC" class="col-sm-3 control-label">Telefono:</label>
+            <div class="col-sm-9">
+              <input type="" class="form-control" data-ng-model="rcliente.telefono"  id="telefono" readonly
+                    >
+            </div>
+          </div>
+       </div>
+     </div> -->
+<!-- 
+     <div class="row rowcontrolmargin">
+        <div class="col-sm-6">
+        </div>
+      
+     </div>
+-->
+      </div><!--End of col-10 -->
+     </div>
+
+
+      </div>
+       </div>
+      </div>  <!-- End of first row -->
+      <div class="row rowcontrolmargin">
+        <div class="col-sm-12">
+        <div class="panel panel-info"> <!--Begin of Patient Panel -->
+                <div class="panel-heading">
+                    <i class="glyphicon glyphicon-th"> </i> 
+                    Informacion Paciente
+                <i class="glyphicon glyphicon-chevron-down pull-right"></i>
+                    </div>
+          <div class="row rowcontrolmargin OrdersrowTopmargin">
+            <div class="col-sm-12">
+               <div class="row rowcontrolmargin">
+                <div class="col-sm-6">
+               <div class="form-group">
+               <label for="IC" class="col-sm-2 control-label" >Paciente:</label>
+               <div class="col-sm-10">
+                  <div class="float1">
+                  <select ui-select2 id="selectedPatient" data-ng-model="orders.selectedOrder.patient" id="patients" class="selec2Big"  ng-change="createCtrl.setPatientDetail(orders.selectedOrder.patient)"  name="patients" data-placeholder="-- Selecione Paciente --">
+                  <option value=""></option>
+                      <option ng-repeat="value in orders.patientList" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
+                  </select> 
+                </div>
+                  <div data-ng-controller="pacientsController as pacientsCtrl" >
+                     <button type="submit" class="btn btn-sm btn-info text-center pull-right" ng-click="pacientsCtrl.modelCreate('lg');">
+                     <i class="glyphicon glyphicon-plus"></i></button>
+                 </div>                      
+                  </div>
+                   </div>
+                   </div>
+                </div>
+      <!-- Aqui es donde va -->
+            </div>
+        </div><!--End of Patient First Row -->
+           <div class="row rowcontrolmargin">
+                 <div class="col-sm-2">
+                  <div class="form-group">
+                    <label for="email" class="col-sm-1 control-label">ID:</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" data-ng-model="orders.selectedPatient.patientId"  id="ID" readonly
+                             >
+                    </div>
+                  </div>
+               </div>
+
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="IC" class="col-sm-3 control-label">Tel:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" data-ng-model="orders.selectedPatient.patientTelefono" readonly  id="telefono"
+                             >
+                    </div>
+                  </div>
+               </div>
+
+               <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="polisa" class="col-sm-3 control-label">Polisa:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" data-ng-model="orders.selectedPatient.patientPolisa"  id="polisa" readonly
+                             >
+                    </div>
+                  </div>
+               </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="aseguradora" class="col-sm-3 control-label">Seguro:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" data-ng-model="orders.selectedPatient.locations.name" readonly  id="aseguradora"
+                            >
+                   </div>
+                 </div>
+               </div>
+              </div>  
+       </div> <!--End of Patient Panel -->
+      </div><!--End of Patient first column 8 -->
+      </div> <!--End of Patient row -->
+        <div class="row ">    
+      </div><!--End of doctor Row  -->
+     </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+            <div class="panel panel-success">
+                       <div class="panel-heading">
+                    <i class="glyphicon glyphicon-th"> </i> 
+                    Alta Order
+                <i class="glyphicon glyphicon-chevron-down pull-right"></i>
+                       </div>
+        <form name="procForm" id="procForm" >
+         <div class="col-sm-5">
+               <div class="row rowcontrolmargin OrdersrowTopmargin">
+        <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+            <label for="IC" class="col-sm-2 control-label">Procs:</label>
+            <div class="col-sm-10">
+             <div class="float1">
+          <select ui-select2 allowClear:true  data-ng-model="orders.selectedOrder.procs" id="procs" class="selec2Big" name="procs" data-placeholder="-- Selecione Procs --"  ng-required="true" >
+          <option value=""></option>
+              <option ng-repeat="value in orders.procList" value="{{value._id}}">{{value.name}}</option>                        
+            </select> 
+            </div>
+            
+            <div>
+            <button class="btn btn-sm btn-info" ng-click="addOrderProcs(orders.selectedOrder.procs); clearProcForm()" 
+              ng-disabled = "orders.selectedOrder.procs == undefined"><i class="glyphicon glyphicon-chevron-right"></i></button>
+            </div>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!--  <div class="row rowcontrolmargin">
+       <div class="col-sm-5">
+          <div class="form-group">
+            <label for="IC" class="col-sm-3 control-label">#</label>
+            <div class="col-sm-9">
+              <input type="text"  data-ng-model="rprocs.ID" class="form-control" id="ID"  ng-disabled = "rprocs.proType == 'B' || rprocs.proType == 'BL'"
+                     placeholder="ID">
+            </div>
+          </div>
+
+       </div>
+
+        <div class="col-sm-7">
+          <div class="form-group">
+            <label for="IE" class="col-sm-3 control-label">Costo:</label>
+            <div class="col-sm-9">
+              <input type="number" data-ng-model="orders.selectedProc.costo" class="form-control" id="costo" readonly
+                     placeholder="Costo">
+            </div>
+          </div>
+
+       </div>
+   </div> -->
+
+     <!-- <div class="row rowcontrolmargin">
+       <div class="col-sm-6">
+        <button class="btn btn-danger form-control" ng-click="createCtrl.clearProcForm()"><i class="glyphicon glyphicon-trash"></i> Limpiar</button>
+       </div>
+
+        
+   </div> -->
+
+
+     </div>
+
+         </div>
+  </form>
+
+         <div class="col-sm-7">
+ 
+        <div ng-show="!isNotSave">
+         <div class="row OrdersrowTopmargin">
+          <div class="col-sm-12">
+           <table class="table">
+           <th>#</th>
+           <th>Name</th>
+           <th>Costo</th>
+           <th>Pago</th>
+              <tr ng-repeat="order in orderDetail">
+                  <td data-title="'#'">
+                      <span ng-if="!order.$edit">{{order.id}}</span>
+                      <div ng-if="order.$edit"><span>{{order.id}}</span></div>
+                  </td>
+                  <td data-title="'Nombre'">
+                      <span ng-if="!order.$edit">{{order.name}}</span>
+                       <div ng-if="order.$edit"><span>{{order.name}}</span></div>
+                  </td>
+                  <td data-title="'Costo'">
+                      <span ng-if="!order.$edit">{{order.costo | currency}}</span>
+                      <div ng-if="order.$edit"><input class="form-control" type="text" ng-change="getTotal()" ng-model="order.costo" /></div>
+                  </td>
+                  <td data-title="'Pago'">
+                      <span ng-if="!order.$edit">{{order.pago | currency}}</span>
+                      <div ng-if="order.$edit"><input class="form-control" type="text" ng-change="getTotal()" ng-model="order.pago" /></div>
+                  </td>
+                  <td data-title="'Actions'">
+                      <a ng-if="!order.$edit" href="" class="btn btn-default btn-xs" ng-click="order.$edit = true">Editar</a>
+                      <a ng-if="!order.$edit" href="" class="btn btn-danger btn-xs" ng-click="createCtrl.deleteProcs($index)"><i class="glyphicon glyphicon-trash"></i></a>
+                      <a ng-if="order.$edit" href="" class="btn btn-primary btn-xs" ng-click="order.$edit = false"> <i class="glyphicon glyphicon-ok"></i> Guardar</a>
+                  </td>
+              </tr>
+      </table>
+            <!--  <table class="table">
+             <thead>
+               Detalles de Orden
+             </thead>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Costo</th>
+                  <th>Desc</th>
+                  <th>SubTotal</th>
+                  <tr ng-repeat="orderd in orderDetail">
+                    <td> {{orderd.id}} </td>
+                    <td> {{orderd.name}} </td>
+                    <td> {{orderd.costo }} </td>
+                    <td> <input type="number" data-ng-model="orderDesc" class="form-control" id="ID"
+                     > </td>
+                     <td> {{orderd.costo - orderDesc }}  </td>
+                  </tr>
+             </table> -->
+
+          </div>
+         </div>
+         <div class="row">
+             <div class="col-sm-6">
+               <textarea rows="2" ng-trim="false" ng-model="orders.selectedOrder.nota" name: "nota" id="nota" maxlength="200" class="form-control" placeholder="Nota">
+               </textarea>
+               <span>{{200 - orders.selectedOrder.length}} Restante</span>
+             </div>
+
+             <div class="col-sm-6">
+                <div class="row rowcontrolmargin">
+                  <div class="col-sm-6">
+                    <span class="label label-default label-large">Monto</span>
+
+                </div>
+                <div class="col-sm-6">
+                   <label ng-model="orders.selectedOrder.total" class="label-order pull-right">{{orders.selectedOrder.total  | currency}}</label>
+                </div>
+                </div>
+                <div class="row rowcontrolmargin">
+                  <div class="col-sm-6">
+                    <span class="label label-default label-large">Pago</span>
+
+                </div>
+                <div class="col-sm-6">
+                   <label ng-model="total" class="label-order pull-right">{{orders.selectedOrder.pago  | currency}}</label>
+                </div>
+                </div>
+                <div class="row rowcontrolmargin">
+                  <div class="col-sm-6">
+                    <span class="label label-default label-large">Debe</span>
+
+                </div>
+                <div class="col-sm-6">
+                   <label ng-model="total" class="label-order pull-right">{{orders.selectedOrder.debe  | currency}}</label>
+                </div>
+                </div>
+                  <div class="row rowcontrolmargin">
+                  <div class="col-sm-6">
+<button class="btn btn-danger form-control" ng-click="modelRemove();"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
+                  </div>
+                <div class="col-sm-6">
+
+                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctorSelected == undefined || orders.selectedOrder.patient == undefined"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved"  ></i> Guardar</button>
+
+                </div>
+                
+            
+                </div>
              </div>
          </div>
-       </div>   
+        </div>
+         
+         <md-progress-circular class="md-hue-2" ng-if="isNotSave" md-mode="indeterminate"></md-progress-circular>
+
+         </div>
+        </div>
+       </div>
+  </div>
+  </form>
+  <br>
+  <br>
+
+ <div class="row" ng-if="!orders.isSaving">
+   <div class="col-sm-12">
+       <div>
+       <result-list></result-list>
+       </div>
+   </div>
+ </div>   
 </section>

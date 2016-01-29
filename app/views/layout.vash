@@ -8,6 +8,7 @@
 <link href="/css/angular.css" rel="stylesheet"></link>
 <link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
 <link href="/css/font-awesome.min.css" rel="stylesheet"></link>
+
 <link href="/css/patients.css" rel="stylesheet"></link>
 <link href="/css/imprimir.css" rel="stylesheet"></link>
 <link href="/lib/select2/select2.css"  rel="stylesheet" ></link>
@@ -17,6 +18,7 @@
 <link rel="stylesheet" href="lib/fullcalendar/dist/fullcalendar.css"/>
 <link href="lib/alertifyjs/css/alertify.min.css"  rel="stylesheet" ></link>
 <link href="lib/alertifyjs/css/themes/default.css"  rel="stylesheet" ></link>
+
      @html.block("head")
  </head>
   <body>

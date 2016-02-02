@@ -1,3 +1,5 @@
+'use strinct';
+
 var mainApplicationModuleName = 'mean';
 
 var mainApplicationModule = angular.module('mean', 
@@ -35,6 +37,8 @@ var mainApplicationModule = angular.module('mean',
 mainApplicationModule.config(['$locationProvider',
  function($locationProvider){
 	$locationProvider.hashPrefix('!');
+	
+
 }
 ]);
 

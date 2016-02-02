@@ -182,8 +182,8 @@ procsModule.controller('modalResutl',  function ($scope, $modalInstance) {
 });
 
 
-procsModule.controller('procsCreateController', ['$scope',  'Procs', 'Notify', '$mdToast', '$animate',
-	function($scope, Procs, Notify, $mdToast, $animate) {
+procsModule.controller('procsCreateController', ['$scope',  'Procs', 'NotifyPatient', '$mdToast', '$animate',
+	function($scope, Procs, NotifyPatient, $mdToast, $animate) {
 
 	  	// // Create new Pai
 	  this.create = function() {
@@ -196,9 +196,13 @@ procsModule.controller('procsCreateController', ['$scope',  'Procs', 'Notify', '
 
 			// // Redirect after save
 	     procse.$save(function(response) {
-             Notify.sendMsg('newPis', {'id': response._id});
+             NotifyPatient.sendMsg('procsaved', {procSavedInfo: response});
 			}, function(errorResponse) {
-				//console.log (errorResponse);
+				if(errorResponse.status === 401){
+					alertify.error('Este nombre ya existe!!');
+				}else{
+					alertify.error('No se pudo completar la operación!!');
+				}
 				$scope.error = errorResponse.data.message;
 			});
 		};

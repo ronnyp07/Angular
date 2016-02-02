@@ -2,13 +2,13 @@
 <html >
  <head>
    <title>@model.title</title>
-<link href="/css/bootstrap.min.css"  rel="stylesheet"></link>
-
-<link href="/css/bootstrap-theme.min.css" rel="stylesheet"></link> 
+<!-- <link href="/css/bootstrap.min.css"  rel="stylesheet"></link> -->
+<link href="/css/cerulian.css"  rel="stylesheet"></link>
+<!-- <link href="/css/bootstrap-theme.min.css" rel="stylesheet"></link>  -->
 <link href="/css/angular.css" rel="stylesheet"></link>
-<link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
+<link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet"/>
+<link href="lib/bootstrap-additions/dist/bootstrap-additions.min.css" rel="stylesheet"/>
 <link href="/css/font-awesome.min.css" rel="stylesheet"></link>
-
 <link href="/css/patients.css" rel="stylesheet"></link>
 <link href="/css/imprimir.css" rel="stylesheet"></link>
 <link href="/lib/select2/select2.css"  rel="stylesheet" ></link>
@@ -100,6 +100,10 @@
 <script type="text/javascript" src="lib/select2/select2.min.js"></script>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="lib/angular-aria/angular-aria.min.js"></script>
+<script type="text/javascript" src="js/angular-locale_es-es.js"></script>
+<script src="lib/angular-strap/dist/angular-strap.min.js" ></script>
+<script src="lib/angular-strap/dist/angular-strap.tpl.min.js" ></script>
+
 <script src="lib/ng-lodash/build/ng-lodash.min.js"></script>
 <script type="text/javascript" src="lib/moment/min/moment.min.js"></script>
 <script type="text/javascript" src="lib/ng-lodash/build/ng-lodash.min.js"></script>

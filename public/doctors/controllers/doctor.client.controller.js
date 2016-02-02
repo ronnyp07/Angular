@@ -96,6 +96,7 @@ doctorModule.controller
    this.modelUpdate = function (size, selectedDoctor) {
 
         var modalInstance = $modal.open({
+          animation: true,
           templateUrl: 'doctors/views/edit-doctor.client.view.html',
           controller: function ($scope, $modalInstance, doctor) {
             $scope.doctor = doctor;

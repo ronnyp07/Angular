@@ -238,6 +238,11 @@ resultModule.controller('resultController', [
      $scope.setResult = function(result){
              $location.path('/result/:' + result._id);
      };
+
+     $scope.setUpdate = function(proc){
+       Notify.sendMsg('orderUpdate', {resultInfo: proc});
+     };
+
      } 
  ]);
 

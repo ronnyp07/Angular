@@ -108,6 +108,7 @@ patientModule.controller
         //Open the middleware to open a single pais modal.
    this.modelUpdate = function (size, selectedPatient) {
         var modalInstance = $modal.open({
+          animation: true,
           templateUrl: 'patients/views/edit-patient.client.view.html',
           controller: function ($scope, $modalInstance, patient) {
                 $scope.patient = patient;

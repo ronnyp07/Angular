@@ -23,7 +23,10 @@
                 <th>Fecha Creacion</th>
                 <th>Paciente</th>
                 <th>Resultado</th>
+                <th>Costo</th>
                 <th>Pago</th>
+                <th>Debe</th>
+                <th>S.M</th>
             </thead>
             <tr dir-paginate="user in users | itemsPerPage: 10" current-page="cPage" total-items="totalUsers">
             
@@ -33,17 +36,19 @@
                     <td data-title="'Estatus'" ><span ng-if="user.reportStatus == 'Pendiente'" class="label label-danger"> {{user.reportStatus}} </span>
         <span ng-if="user.reportStatus == 'Listo'" class="label label-success"> {{user.reportStatus}} </span>
        </td>
-       <td>{{user.total}}</td>
-         <td>
-          <div>
-           <a class="btn btn-info" title="Editar" ng-click="setResult(user)">
-            <span class="glyphicon glyphicon-eye-open"></span><a/> 
-            
-            <!-- <button type="button" class="btn btn-success" title="Facturar" ng-click="clienteCtrl.modelRemove('sm', cliente)"><span class="glyphicon glyphicon-usd "></span></button> -->
-
-           <!--   <button type="button" class="btn btn-primary" title="Imprimir" ng-click="clienteCtrl.modelRemove('sm', cliente)"><span class="glyphicon glyphicon-download-alt"></span></button> -->
-     
-         </div>
+       <td>{{user.costo | currency}}</td>
+       <td>{{user.pago | currency}}</td>
+       <td>{{user.debe | currency}}</td>
+       <td>{{user.seguroDesc}}</td>
+         <td style="width: 11%">
+        <div style="float:left; margin-right: 3px">
+           <a class="btn btn-info" title="Resultado" ng-click="setResult(user)">
+            <span class="glyphicon glyphicon-eye-open"></span><a/>   
+       </div>
+       <div>
+           <a class="btn btn-primary" title="Editar" ng-click="setUpdate(user)">
+            <i class="fa fa-eraser"></i><a/>   
+       </div>
        </td>
                 </tr>
         </table>

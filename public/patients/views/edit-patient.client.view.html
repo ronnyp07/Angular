@@ -1,9 +1,10 @@
 <section data-ng-controller="PatientsUpdateController as UpCtrl" >
     <div class="modal-header">
         <h3 class="modal-title">Actualizar Paciente: {{patient.patientFirstName}} {{patient.patientLastName}} </h3>
+        <h5>Elementos con <span class="requiredIcon">*</span> son requeridos</h5>
     </div>
     <div class="modal-body">
-        <form name="createPatientForm" id="createPatientForm">
+        <form name="updatePatientForm" id="updatePatientForm">
             <fieldset>
                 <div class="row">
                     <div class="form-group">
@@ -31,13 +32,13 @@
                         <div class="form-group">
                             <label class="control-label" for="patientFirstName">Nombres</label>
                             <div class="controls">
-                            <input type="text" data-ng-model="patient.patientFirstName" id="patientFirstName" name="patientFirstName" autocomplete="false" class="form-control">
+                            <input type="text" data-ng-model="patient.patientFirstName" id="patientFirstName" name="patientFirstName" autocomplete="false" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="patientLastName">Apellidos</label>
                             <div class="controls">
-                             <input type="text" data-ng-model="patient.patientLastName" id="patientLastName" name="patientLastName" class="form-control">
+                             <input type="text" data-ng-model="patient.patientLastName" id="patientLastName" name="patientLastName" class="form-control" required>
                             </div>
                         </div>
                          <div class="form-group">
@@ -147,7 +148,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success btn-lg"  ng-click="UpCtrl.update(patient); ok();" ng-disabled="updatePatientForm.$invalid">Save &amp; Close</button>
-        <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-success btn-lg"  ng-click="UpCtrl.update(patient); ok();" ng-disabled="updatePatientForm.$invalid">Guardar &amp; Cerrar</button>
+        <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancelar</button>
     </div>
 </section>

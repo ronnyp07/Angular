@@ -4,7 +4,7 @@
           <h5>Nombre <span class="requiredIcon">*</span> y Apellido <span class="requiredIcon">*</span> son requeridos</h5>
     </div>
     <div class="modal-body">
-        <form name="createDoctorForm" id="createDoctorForm" class="form-horizontal">
+        <form name="updateDoctorForm" id="updateDoctorForm" class="form-horizontal">
                 <div class="row">
                     <div class="form-group">
                         <div data-g-show="error" class="text-center text-danger ng-hide">
@@ -111,7 +111,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success btn-lg"  ng-click="UpCtrl.update(doctor); ok(); UpCtrl.showDoctorSave()" ng-disabled="createDoctorForm.$invalid">Guardar &amp; Cerrar</button>
+        <button class="btn btn-success btn-lg"  ng-click="UpCtrl.update(doctor); ok(); UpCtrl.showDoctorSave()" ng-disabled="updateDoctorForm.$invalid">Guardar &amp; Cerrar</button>
         <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancel</button>
     </div>
 

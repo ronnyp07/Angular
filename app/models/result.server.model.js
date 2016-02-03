@@ -97,7 +97,10 @@ var ResultSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
-
+	procs: {
+        type: Schema.ObjectId,
+		ref: 'Procs'
+	},
 	orders: {
 		type: Schema.ObjectId,
 		ref: 'orders'

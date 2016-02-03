@@ -199,8 +199,15 @@ exports.update = function(req, res) {
       result.reportStatus = req.body.reportStatus;
       result.nota =  req.body.nota;
       result.tecnica = req.body.tecnica;
-      
-      console.log(result);
+      result.costo = req.body.costo;
+      result.pago = req.body.pago;
+      result.debe = req.body.debe;
+      result.patientReport = req.body.patientReport;
+      result.seguroId = req.body.seguroId;
+      result.doctor = req.body.doctor;
+      result.clinica  = req.body.clinica;
+      result.seguroDesc  = req.body.seguroDesc;
+      result.created = req.body.created;
   //   Result.firstName = req.body.firstName;
   //   Result.lastName = req.body.lastName;
   //   Result.ResultEmail = req.body.ResultEmail;

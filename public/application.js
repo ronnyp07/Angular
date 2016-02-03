@@ -32,13 +32,16 @@ var mainApplicationModule = angular.module('mean',
 	 'angularUtils.directives.dirPagination',
 	 'daterangepicker',
 	 'ui.calendar',
+	 'angular-ladda',
 	 'ngLodash']);
 
-mainApplicationModule.config(['$locationProvider',
- function($locationProvider){
+mainApplicationModule.config(['$locationProvider', 'laddaProvider',
+ function($locationProvider, laddaProvider){
 	$locationProvider.hashPrefix('!');
-	
 
+	laddaProvider.setOption({
+		style: 'expand-right'
+	});
 }
 ]);
 

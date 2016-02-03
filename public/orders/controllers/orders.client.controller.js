@@ -167,6 +167,8 @@ ordersModule.controller('ordersController', [
     $scope.orders.selectedOrder.total = 0;
     $scope.orders.selectedOrder.pago = 0;
     $scope.orders.selectedOrder.debe = 0;
+    $scope.orders.createdDate = Date.now();
+    $scope.orders.createMode = true;
     $scope.orders.clinicaList = [];
     };
 
@@ -185,9 +187,7 @@ ordersModule.controller('ordersController', [
         this.valuationDatePickerIsOpen = true;
     };
     
-
-    $scope.init();
-    
+     $scope.init();    
      NotifyPatient.getMsg('patientsaved', function(event, data){ 
    	 $scope.orders.getPatientList();
    	 $scope.orders.selectedOrder.patient = data.patientSavedInfo._id;
@@ -210,15 +210,33 @@ ordersModule.controller('ordersController', [
      });
 
      Notify.getMsg('orderUpdate', function(event, result){ 
-      $scope.orders.createMode = false;
-       $scope.orders.selectedOrder.doctorSelected = result.resultInfo.doctor;
-       console.log(result.resultInfo.patientReport);
-       $scope.orders.selectedOrder.patient = result.resultInfo.patientReport._id;
+       $scope.orders.createMode = false;
+       $scope.orders.updatedProcs = result.resultInfo;
+       $scope.orders.selectedOrder.doctorSelected = $scope.orders.updatedProcs.doctor;
+       $scope.orders.selectedOrder.patient = $scope.orders.updatedProcs.patientReport._id;
+       $scope.orders.selectedOrder.nota = $scope.orders.updatedProcs.nota;
        createCtrl.setPatientDetail($scope.orders.selectedOrder.patient);
        createCtrl.setDoctorDetail($scope.orders.selectedOrder.doctorSelected);
-       $scope.orders.createdDate = result.resultInfo.created;
+       $scope.orders.selectedOrder.clinicaListSelected = $scope.orders.updatedProcs.clinica;
+       $scope.orders.selectedProc = $scope.orders.getProcById($scope.orders.updatedProcs.procs);
+       $scope.orders.createdDate = $scope.orders.updatedProcs.created;
+       $scope.orderDetail = [];
+       $scope.orderDetail.push({'id': result.resultInfo.rSereal, 'procType':$scope.orders.selectedProc.proType,  'name': $scope.orders.selectedProc.name, 'costo': $scope.orders.updatedProcs.costo ? $scope.orders.updatedProcs.costo : 0, 'pago': $scope.orders.updatedProcs.pago ? $scope.orders.updatedProcs.pago : 0});
+       $scope.getTotal();
      });
 
+   $scope.cancelOrder = function(){
+       $scope.orders.isDeleting = true;
+       $scope.orders.clearForm();
+       $scope.init();
+       $timeout(function(){
+          $scope.orders.isDeleting = false;
+           alertify.success('Acción realizada exitosamente!!');
+       }, 2000);
+
+
+       console.log("worked");
+    };
 
  	 var params = {
        page: 1,            
@@ -233,7 +251,6 @@ ordersModule.controller('ordersController', [
    };
 
    $scope.tableParams = new ngTableParams(params, settings);
- 	 
    $scope.addOrderProcs = function (procs) {
     var sereal = $scope.orders.setProcDetail(procs);
     $scope.orderDetail = [];
@@ -390,8 +407,9 @@ ordersModule.controller('ordersController', [
 	    });
   };
 
+ 
 
-    $scope.modelRemove = function (size, selectedcliente) {
+  $scope.modelRemove = function (size, selectedcliente) {
 		    var modalInstance = $modal.open({
 		      templateUrl: 'orders/views/orders-cancel.template.html',
 		      controller: 
@@ -399,7 +417,6 @@ ordersModule.controller('ordersController', [
 		      function ($scope, $modalInstance) {
                   $scope.ok = function () {  
                   //console.log('works');                 
-                  $scope.cleanForm();
                   $modalInstance.close();
 				  };
 
@@ -586,8 +603,10 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         'pInfo': null,
         'bflag': false,
         'blFlag': false,
+        'isDeleting': false,
         'createMode': true,
-        'createdDate': null, 
+        'createdDate': null,
+        'updatedProcs': null, 
         'selectedProc': null,
         'isSaving': false,
         'clinicaList': [],
@@ -606,9 +625,20 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         'patientList': [],
         'listadoClinica':[],
         'orderDetail': [],
+        'clearForm': function(){
+          self.procList = [];
+          self.selectedPatient = {};
+          self.getprocList();
+          self.createdDate = null;
+          self.isSaving = false;
+          self.createMode = true; 
+        },
         'create': function(order){
-          var defer = $q.defer();
+         
+         var defer = $q.defer();
          self.isSaving = true; 
+
+         if(self.createMode){
          var orderSave = new Orders({
                proclist: order,
                nota: self.selectedOrder.nota,
@@ -640,7 +670,8 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
               doctor: self.orderResult.doctor,
               clinica : self.orderResult.cliente,
               seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: null,
-              created: self.createdDate
+              created: self.createdDate,
+              procs: self.selectedProc._id
             });
             report.$save(function(response){
               //console.log(self.bInfo[0]);
@@ -667,22 +698,43 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
                    self.getP();
                   }).error(function(err){
                });
-              
-              self.procList = [];
-              self.selectedPatient = {};
-              self.getprocList();
-              defer.resolve();
-              self.createdDate = null;
-              self.isSaving = false;
-              alertify.success('Acción realizada exitosamente!!'); 
+
+               self.clearForm();
+               alertify.success('Acción realizada exitosamente!!');
+               defer.resolve();
              }, function(errorResponse){  
               defer.reject(errorResponse);
             });
            }
           
-           }, function(error){
-
+           }, function(error){          
            });
+          
+            }else{
+            var report = new Result({
+              _id: self.updatedProcs._id,
+              costo: self.selectedOrder.total,
+              pago: self.selectedOrder.pago,
+              debe: self.selectedOrder.pago > self.selectedOrder.total ? 0 :  self.selectedOrder.total - self.selectedOrder.pago,
+              patientReport: self.selectedPatient._id,
+              seguroId : self.selectedPatient.locations ? self.selectedPatient.locations._id: null,
+              doctor: self.selectedDoctor._id,
+              clinica : self.selectedOrder.clinicaListSelected,
+              nota: self.selectedOrder.nota,
+              reportStatus: self.updatedProcs.reportStatus,
+              seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: null,
+              created: self.createdDate
+            });
+
+            report.$update(function(){
+               self.isSaving = false;
+               self.clearForm();
+               defer.resolve();
+               alertify.success('Acción realizada exitosamente!!');       
+            }, function(){
+              defer.reject(errorResponse);
+            });
+            }
            return defer.promise;
 
         },'getB': function(){
@@ -760,8 +812,8 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         },
         'setProcDetail': function(id){
           self.selectedProc = self.getProcById(id);
-          console.log(id);
-          console.log(self.selectedProc);
+          // console.log(id);
+          // console.log(self.selectedProc);
           if(self.selectedProc){
               if(self.selectedProc.proType === 'B'){
                   if(self.bflag === false){

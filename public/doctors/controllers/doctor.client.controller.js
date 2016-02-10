@@ -55,20 +55,22 @@ doctorModule.controller
     };
 
     $scope.tableParams = new ngTableParams( params, settings);
+    
     //Open the middleware to open a single cliente modal.
-     this.modelRemove = function (size, selectedcliente) {
-          $scope.patient = selectedcliente;
+     this.modelRemove = function (size, selected) {
+        console.log("clikcd");
+        $scope.doctor = selected;
         var modalInstance = $modal.open({
-          templateUrl: 'patients/views/patient-delete.template.html',
+          templateUrl: 'doctors/views/doctor-delete.template.html',
           controller: 
           //'modalDelete',
-          function ($scope, $modalInstance, patient) {
-                 $scope.patient = patient;
+          function ($scope, $modalInstance, doctor) {
+                 $scope.doctor = doctor;
       
                   $scope.ok = function () {
                    //console.log($scope.cliente);
                   // $scope.doSearch();
-                  $modalInstance.close($scope.patient);
+                  $modalInstance.close($scope.doctor);
           };
 
           $scope.cancel = function () {
@@ -78,14 +80,14 @@ doctorModule.controller
           },
           size: size,
           resolve: {
-            patient: function () {
-              return selectedcliente;
+            doctor: function () {
+              return selected;
             }
           }
      });
 
-   modalInstance.result.then(function (selectedcliente) {
-      $scope.selected = selectedcliente;
+   modalInstance.result.then(function (selected) {
+      $scope.selected = selected;
       //console.log($scope.selected);
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
@@ -375,18 +377,16 @@ doctorModule.controller
     }
 ]);
 
-doctorModule.controller('patientDeleteController', ['$scope', 'Authentication', 'Patients', 'Notify', '$mdToast', '$animate',
-  function($scope, Authentication, Patients, Notify, $mdToast, $animate) {
+doctorModule.controller('doctorDeleteController', ['$scope', 'Authentication', 'Doctors', 'Notify', '$mdToast', '$animate',
+  function($scope, Authentication, Doctors, Notify, $mdToast, $animate) {
     $scope.authentication = Authentication;
         this.delete = function(patient) {
           //console.log ('passed');
-         var patient = new Patients({
-                _id: $scope.patient._id
+         var doctor = new Doctors({
+                _id: $scope.doctor._id
          });
 
-         console.log($scope.patient);
-
-         patient.$remove(function(){
+         doctor.$remove(function(){
           Notify.sendMsg('newPis', {'id': 'nada'});
          }, function(errorResponse) {
         $scope.error = errorResponse.data.message;
@@ -397,7 +397,7 @@ doctorModule.controller('patientDeleteController', ['$scope', 'Authentication', 
      this.showSimpleToast = function() {
       $mdToast.show(
         $mdToast.simple()
-          .content('Paciente Eliminado!!')
+          .content('Doctor Eliminado!!')
           .position('bottom right')
           .hideDelay(3000)
       );

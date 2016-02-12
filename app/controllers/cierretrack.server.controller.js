@@ -169,7 +169,6 @@ exports.updateCierre = function(req, res) {
   var requestType = req.body.info.proType;
   if(requestType === 'B'){
     query = {year: req.body.info.year, month:req.body.info.month, proType:req.body.info.proType };
-  console.log(query);
   }else if (requestType === 'BL'){
      query = {year: req.body.info.year,  proType:req.body.info.proType };
   }else {

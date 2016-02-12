@@ -55,11 +55,11 @@ patientModule.controller
       //    $scope.isSaving = true;
       //  });
 
-      // NotifyPatient.getMsg('saved', function(event, data){
-      //    $scope.tableParams.reload(); 
-      //    $scope.isSaving = false;
-      //    // alertify.success('Acción realizada exitosamente!! !!'); 
-      // });
+      NotifyPatient.getMsg('saved', function(event, data){
+         $scope.tableParams.reload(); 
+         $scope.isSaving = false;
+         // alertify.success('Acción realizada exitosamente!! !!'); 
+      });
 
       NotifyPatient.getMsg('updating', function(event, data){
          $scope.isSaving = true;
@@ -252,6 +252,7 @@ patientModule.controller
     patientDOB : this.patientDOB,
     patientEdad: this.patientEdad,
     patientSexo: this.patientSexo,
+    locations:  this.clientes,
     patientEC : this.patientEC,
     patientTelefono: this.patientTelefono,
     clientes: this.clientes,

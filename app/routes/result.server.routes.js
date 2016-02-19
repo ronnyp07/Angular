@@ -15,12 +15,16 @@ module.exports = function(app) {
 
    app.route('/api/result/:resultId')
 	 .get(result.read)
-	 .put(result.update)
+	 .put(result.update);
 	 //.delete(result.delete);
 
    app.route('/api/resultfilter')
 		.get(result.getResultbyOrder)
 		.post(result.getResultbyId);
+
+
+   app.route('/result/getList')
+	   .post(result.getList);
 
    app.param('resultId', result.resultByID);
 };

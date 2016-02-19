@@ -1,43 +1,40 @@
  <div ng-controller="resultController">
-  <div class="container">
-  <form name="createtemplateForm" id="createtemplateForm">
+  <form ng-if ="!resultServices.isPrinting" name="createtemplateForm" id="createtemplateForm">
             <fieldset>
 
   <div class="panel panel-info">
            <div class="panel-heading">
-           <div class="row">
-                 <div class="col-md-12"><h1>Resumen de Reporte {{resultDetails.rSereal}}</h1></div>
-           </div>
+           <h1 class="panel-title text-center">Resumen de Reporte {{resultServices.selectedResult.rSereal}}</h1>           
            </div>
 
-            <div class="row maringTop">
- <div class="col-xs-12 ">
+
+ <div class="row maringTop">
+ <div class="col-xs-12 col-sm-9 col-sm-offset-2">
    <div class="headercontainer">
 <div class="row">
-  <div class="col-xs-6 title-container">
-    <label> Nombre: </label> {{resultDetails.nombre}}
+  <div class="col-xs-12 col-sm-6 title-container">
+    <label> Nombre: </label> {{resultServices.selectedResult.patientReport.patientFirstName}} {{resultServices.selectedResult.patientReport.patientLastName}}
+  </div> 
+  <div class="col-xs-12 col-sm-6 details-container">
+      <label> Fecha </label> {{resultServices.selectedResult.created  | date: 'dd/MM/yyyy'}}
+    </div>  
+  </div> 
+  <div class="row">
+  <div class="col-xs-12 col-sm-6 title-container">
+    <label> Centro: </label> {{resultServices.selectedResult.clinica.name}}
   </div>  
-    <div class="col-xs-6 details-container">
-      <label> Fecha </label> {{resultDetails.created  | date: 'dd/MM/yyyy'}}
+    <div class="col-xs-12 col-sm-6 details-container">
+      <label> Muestra: </label> {{resultServices.selectedResult.tipomuestraDesc}}
     </div>  
 </div>
 <div class="row">
-  <div class="col-xs-6 title-container">
-    <label> Centro: </label> {{resultDetails.clienteName}}
+  <div class="col-xs-12 col-sm-6 title-container">
+    <label> Medico: </label> {{resultServices.selectedResult.doctor.firstName}} {{resultServices.selectedResult.doctor.lastName}}
   </div>  
-    <div class="col-xs-6 details-container">
-      <label> Muestra: </label> {{resultDetails.tipomuestraDesc}}
+    <div class="col-xs-12 col-sm-6 details-container">
+      <label> Edad: </label> {{resultServices.selectedResult.patientReport.patientEdad}}
     </div>  
-</div>
-<div class="row">
-  <div class="col-xs-6 title-container">
-    <label> Medico: </label> {{resultDetails.doctorName}}
-  </div>  
-    <div class="col-xs-6 details-container">
-      <label> Edad: </label> {{resultDetails.patiendEdad}}
-    </div>  
-</div>
-
+</div>  
 </div>
 </div>
 </div>
@@ -47,7 +44,7 @@
                    <div class="form-group">
                      <label class="control-label" for="">No. Autorizacion:</label>
                      <div class="controls">
-                        <input type="text" data-ng-model="resultDetails.noAutho" id="noAutho" name="noAutho" class="form-control">
+                        <input type="text" data-ng-model="resultServices.selectedResult.noAutho" id="noAutho" name="noAutho" class="form-control">
                       </div>
                       </div>
                     </div>
@@ -56,7 +53,7 @@
                      <label class="control-label" for="">Costo:</label>
                      <div class="input-group">
                        <i class="input-group-addon">$</i>
-                        <input type="number" data-ng-model="resultDetails.total" id="reportName" name="reportName" class="form-control">
+                        <input type="number" data-ng-model="resultServices.selectedResult.total" id="reportName" name="reportName" class="form-control">
                          <i class="input-group-addon">.00</i>
                       </div>
                       </div>
@@ -64,7 +61,7 @@
                       <div class="col-sm-4">
                        <label class="control-label" for="">Reporte Estatus:</label>
                     <div class="controls">
-                                <select data-ng-model="resultDetails.reportStatus"  class="form-control"  style=""><option value="" class="">-- Estado Pago --</option><option value="Listo" label="Listo">Listo</option><option value="Pendiente" label="Pendiente">Pendiente</option></select>
+                                <select data-ng-model="resultServices.selectedResult.reportStatus"  class="form-control"  style=""><option value="" class="">-- Estado Pago --</option><option value="Listo" label="Listo">Listo</option><option value="Pendiente" label="Pendiente">Pendiente</option></select>
                           </div>
                     </div>
 
@@ -97,25 +94,28 @@
                    <div class="form-group">
                      <label class="control-label" for="">Nombre Reporte</label>
                      <div class="controls">
-                        <input type="text" data-ng-model="resultDetails.reportName" id="reportName" name="reportName" class="form-control">
+                        <input type="text" data-ng-model="resultServices.reportName" id="reportName" name="reportName" class="form-control">
                       </div>
                       </div>
                     </div>
                 </div>
             <div class="row">
               <div class="col-md-12">
-                 <result-body ng-if="resultDetails.tipomuestra == 'C'"></result-body>
+                 <result-body ng-if="resultServices.selectedResult.tipomuestra == 'C'"></result-body>
                   
-                 <result-bodypop ng-if="resultDetails.tipomuestra == 'P'"></result-bodypop>
+                 <result-bodypop ng-if="resultServices.selectedResult.tipomuestra == 'P'"></result-bodypop>
                 
-                  <result-body ng-if="resultDetails.tipomuestra == 'B'"></result-body> 
+                  <result-body ng-if="resultServices.selectedResult.tipomuestra == 'B'"></result-body> 
 
-                  <result-body ng-if="resultDetails.tipomuestra == 'BL'"></result-body> 
+                  <result-body ng-if="resultServices.selectedResult.tipomuestra == 'BL'"></result-body> 
 
                 </div>
              </div>
 
             </div>
+
+
+
                <div class="row">
                   <div class="col-md-4 buttonPadding">
                   <button class="btn btn-success btn-lg" ng-click="update();" ng-print print-element-id="printThisElement"  ><i class="glyphicon glyphicon-save"></i> Guardar</button> 
@@ -124,14 +124,9 @@
                 </div>
             </fieldset>
         </form>
-
-
 <div ng-show="false">
-<!--  <button class="btn btn-primary" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> Print</button> -->
  <div class="print" id="printThisElement">
  <div class="container">
-
-
 <div class="row">
 <div class="col-xs-12 ">
   <div class="title-containert ">
@@ -143,119 +138,61 @@
       <h2>RNC: 130664854</h2>
   </div>
 </div>
-<!-- <div class="col-xs-9 details-containert heckLine">
-</div>   -->
-<!-- <div class="titlecontainer heckLine">
-     
-</div> -->
-
-
 </div>
 <div class="row">
  <div class="col-xs-12 headerdiv">
    <div class="headercontainer">
 <div class="row">
   <div class="col-xs-6 title-container">
-    <label> No. </label> {{resultDetails.rSereal}}
+    <label> No. </label> {{resultServices.selectedResult.rSereal}}
   </div>  
     <div class="col-xs-6 details-container">
-      <label> Fecha </label> {{resultDetails.created  | date: 'dd/MM/yyyy'}}
+      <label> Fecha </label> {{resultServices.selectedResult.created  | date: 'dd/MM/yyyy'}}
     </div>  
 </div>
 <div class="row">
   <div class="col-xs-6 title-container">
-    <label> Nombre: </label> {{resultDetails.nombre}}
+    <label> Nombre: </label> {{resultServices.selectedResult.patientReport.patientFirstName}} {{resultServices.selectedResult.patientReport.patientLastName}}
   </div>  
     <div class="col-xs-6 details-container">
-      <label> Muestra: </label> {{resultDetails.tipomuestraDesc}}
+      <label> Muestra: </label> {{resultServices.selectedResult.tipomuestraDesc}}
     </div>  
 </div>
 <div class="row">
   <div class="col-xs-6 title-container">
-    <label> Medico: </label> {{resultDetails.doctorName}}
+    <label> Medico: </label> {{resultServices.selectedResult.doctor.firstName}} {{resultServices.selectedResult.doctor.lastName}}
   </div>  
     <div class="col-xs-6 details-container">
-      <label> Edad: </label> {{resultDetails.patiendEdad}} años 
+      <label> Edad: </label> {{resultServices.selectedResult.patientReport.patientEdad}} años 
     </div>  
 </div>
 <div class="row">
   <div class="col-xs-6 title-container">
-    <label> Centro: </label> {{resultDetails.clienteName}}
+    <label> Centro: </label> {{resultServices.selectedResult.clinica.name}}
   </div>  
 </div>
 </div>
 </div>
 </div>
 <br>
-<div ng-if="resultDetails.tipomuestra != 'P'" class="row">
+<div ng-if="resultServices.selectedResult.tipomuestra != 'P'" class="row">
   <div class="col-xs-12 title-reportName">
-    <label class="labelHeader"> {{resultDetails.reportName}}</label>
+    <label class="labelHeader"> {{resultServices.reportName}}</label>
   </div>  
 </div>
-<!-- <br>
-<div class="row resultMargin">
-  <div class="col-xs-12">
-    <div ng-if="resultDetails.tipomuestra == 'C'">
-    <label>RESULTADOS:</label>
-    <div class="row">
-       <div class="col-xs-5 resultContainer" id="resultContainer"> 
-                 <li class="resultItem" ng-repeat = "n in resultDetails.resultadoArray">
-                  {{n}}
-                 </li>
-              </div>
-       </div>
-      </div>
-    <div class="Sresult" ng-if="resultDetails.tipomuestra != 'C'">
-        <div class="row ">
-           <div class="col-xs-12"> 
-                 <div class= "Sresult heckLine"> {{resultDetails.resultado}} </div>
-            </div>
-           </div>
-      </div>
-    </div>
-  </div> 
-  <div class="row tecnicaRow heckLine">
-  <div class="col-xs-12"> 
-      <label>Tecnica: </label></br> 
-      <div class="rTecnica">{{resultDetails.tecnica}}</div>
-  </div>
-  </div>
-  <div class="row" ng-if="resultDetails.tipomuestra != 'C'">
-  <div class="col-xs-12">
-     <div class="stepLine"> Nota: {{resultDetails.nota}} </div>
-  </div>
-  </div>
 
-  <br>
-  <div class="row diagMargin">
-  <div class="col-xs-12">
-    <label class="labelPrint">Diagnostico:</label>
-    <div class="row">
-       <div class="col-xs-12">
-       <div class="diagResult heckLine"> 
-          <div class="stepLine"> {{resultDetails.diagnostico}} </div>
-       </div>
-        </div>
-       </div>
-    </div>
-  </div> 
-<div class=" row footerB">
-<div class="col-xs-12  heckLine">
- <div class="footdir">Av. Coronel Juan Maria Lor Fernandez #189 los Rios, Tels: Ofic. 809-732-0995, Santo Domingo </div>
- </div>
-</div>
- -->
-<div ng-if="resultDetails.tipomuestra == 'C'">
+ 
+<div ng-if="resultServices.selectedResult.tipomuestra == 'C'">
 <print-citologia></print-citologia>
 </div>
-<div class="reportbody" ng-if="resultDetails.tipomuestra == 'P'">
+<div class="reportbody" ng-if="resultServices.selectedResult.tipomuestra == 'P'">
 <!-- <result-bodypop ></result-bodypop> -->
 <result-printpop></result-printpop>
 </div>
-<div class="row" ng-if="resultDetails.tipomuestra == 'B'">
+<div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'B'">
 <print-biopsia></print-biopsia>
 </div>
-<div class="row" ng-if="resultDetails.tipomuestra == 'BL'">
+<div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'BL'">
 <print-biopsia></print-biopsia>
 </div>
 </div>

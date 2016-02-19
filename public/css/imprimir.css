@@ -1,3 +1,10 @@
+
+@page :left {
+  @bottom-left {
+    content: counter(page);
+  }
+}
+
 @media screen {
     #printSection {
         display: none;
@@ -46,8 +53,6 @@ textarea { display: block }
   -ms-user-select: none;
   user-select: none;
 }
-
-
 
 .title-containert{
         float: left;
@@ -99,7 +104,19 @@ textarea { display: block }
 	text-align: center;
   margin-left:  0px
 }
+#top-detail{
+  width: 660px;
+  text-align: center;
+}
 
+#top-detail h1{
+  padding-left: 20px;
+}
+
+#center{
+  width: 1000px;
+  padding-right: 150px;
+}
 .buttonPadding{
     padding:15px;
 }
@@ -122,129 +139,149 @@ textarea { display: block }
 .headercontainer{
 	margin-left: 10px;
 }
+
+.hide{
+  display: block;
 }
+
+/*tr.vendorListHeading {
+    background-color: #1a4567 !important;
+    -webkit-print-color-adjust: exact; 
+  }
+
+    .vendorListHeading th {
+      background-color: #1a4567 
+    color: white !important;
+}*/
+}
+
+
 @media print {
     body * {
         visibility:hidden;
+        -webkit-print-color-adjust: exact;
     }
 
-   html, body { 
+   html{ 
     height: 99%;
-    margin: 0px 0px 0px 0px;  
    }
 
+
+
+/*   tr.vendorListHeading {
+    background-color: #1a4567 !important;
+    -webkit-print-color-adjust: exact; 
+  }
+
+    .vendorListHeading th {
+      background-color: #1a4567 
+    color: red !important;
+}
+*/
 
   /* .print{
     height: 700px;
     }
 */
 
-    #printSection, #printSection * {
-        visibility:visible;
-    }
-    #printSection {
-        position:absolute;
-        left:0;
-        top:0;
-    }
-
-    .stepLine{
-        white-space: pre-wrap;
-    }
-    
-     .title-container {
-        width: 360px;
-        float: left;
-    }
-   
-   .footdir {
-	 font-size: 13px;
-	 margin-top: 0px;
+#printSection, #printSection * {
+    visibility:visible;
 }
-    .details-container {
-        width: 300px;
-        float: right;
-    }
+#printSection {
+position:absolute;
+ height: 99% 
+ left:0;
+  top:0;
+}
 
-    .title-containert {
-        width: 130px;
-        float: left;
-    }
+.stepLine{
+    white-space: pre-wrap;
+}
 
-    .details-containert {
-        width: 660px;
-        padding-top: 20px;
-        padding-left: 0px;
-        text-align: center;
-        margin-left:  0px;
+ .title-container {
+    width: 360px;
+    float: left;
+}
 
-    }
-    
-    .col-padding{
-    margin-left: 10px;
-    }
-    .headerdiv{
-    	border-style: solid;
-        border-width: 1px;
-        -moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		  border-radius: 5px
-		  margin-left: 10px;
-		  margin-top: 8px;
-		  margin-bottom: 10px;
-		  font-size: 14px;
-    }
+.footdir {
+font-size: 13px;
+margin-top: 0px;}
 
-    .headerdiv p {
-    	width: 100%;
-    }
+.details-container {
+    width: 300px;
+    float: right;
+}
 
-    .labelPrint{
-        font-size: 15px;
-    }
+.title-containert {
+    width: 130px;
+    float: left;
+}
 
-    .labelHeader{
-        font-size: 20px;
-    }
-   
-   .maringTopPap{
-    margin-top: 8px;
+.details-containert {
+    width: 660px;
+    padding-top: 20px;
+    padding-left: 0px;
+    text-align: center;
+    margin-left:  0px;
 
-    }
+}
+.col-padding{
+margin-left: 10px;
+}
+.headerdiv{
+  border-left: none;
+  border-right: none;
+	border-style: solid;
+  border-width: 1px;
+ /* -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px*/
+  margin-left: 10px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
 
-    .papDiag{
-      height: 130px;
-    }
+.headerdiv p {
+	width: 100%;}
 
-    .resultContainer {
-	  margin-left: 15px;
-	  margin-top: 10px;
-	  padding: 10px;
-	}
+.labelPrint{
+    font-size: 15px;}
 
-	.resultItem {
-		margin: 10px;
-    width: 400px;
-	}
+.labelHeader{
+    font-size: 20px;}
 
-    .Sresult{
-         width: 100%;
-         height: 110px;
-    }
+.maringTopPap{
+margin-top: 8px;}
 
-	.details-containert h1{
-       font-size: 16px;
-       font-weight: bold;
-    }
-    .details-containert h2{
-       font-size: 12px;
-       font-weight: bold;
-    }
-    .titlecontainer h1,h2 {
-    	margin-top: 0px;
-    }
+.papDiag{
+  height: 130px;
+}
+.resultContainer {
+margin-left: 15px;
+margin-top: 10px;
+padding: 10px;
+}
+.resultItem {
+margin: 10px;
+width: 400px;}
 
-    .title-reportName{
+.Sresult{
+     width: 100%;
+     height: 110px;
+}
+.details-containert h1{
+   font-size: 16px;
+   font-weight: bold;
+}
+.details-containert h2{
+   font-size: 12px;
+   font-weight: bold;
+}
+.titlecontainer h1,h2 {
+	margin-top: 0px;
+}
+.title-reportName{
 	text-align: center;
 }
 .titlecontainer{
@@ -269,6 +306,13 @@ textarea { display: block }
     height: 210px;
 }
 
+#top-detail{
+  text-align: center;
+  font-size: 9px;
+  margin-bottom: 10px;
+}
+
+
 .floatLeft{
     float: left;
 }
@@ -279,8 +323,9 @@ textarea { display: block }
 }
 
 .diagBResultNota{
-   height: 320px; 
-   margin-top: 30px; 
+   height: 280px; 
+   margin-top: 20px;
+   /*border: 2px dotted green; */
 }
 
 .diagtext{
@@ -297,13 +342,22 @@ font-size: 16px;
 }
 
 .footerB {
-    margin-top: 10px;
-    bottom: 0;
+   /* margin-top: 200px;
+    height: 50px;
+    bottom: 10px;
     width: 680px;
     border-top-width: 1px;
     border-top-style: dotted;
     text-align: center;
-    height: 50px;
+    border: 2px dotted green; */
+}
+
+.footdir{
+  margin-top: 10px;
+  text-align: center;
+  width: 700px;
+  border-top-width: 1px;
+  border-top-style: dotted;
 }
 
 .margingdiv{
@@ -325,6 +379,7 @@ font-size: 16px;
 
 .diagMargin{
     margin-top: 10px;
+    height: 20px;
 }
 
 .col-md-6{
@@ -334,8 +389,48 @@ font-size: 16px;
 
 .heckLine{
     border: 1px solid black;
+
 }
 
-    
+.test {
+ border: 1px dotted red; 
 }
+.test2{
+  border: 2px dotted green;
+   /*border: 2px dotted green; */
+}
+
+#listcontainer{
+  padding-bottom: 20px;
+  width: 100%;
+  page-break-after: always
+}
+
+#listTable{
+  width: 1000px;
+}
+#listTable > thead > tr > th  {
+  background-color: #455A64 !important;
+  color:white;
+}
+#listTable > thead > tr > th > span {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color:white !important;
+}
+
+#listTable > tfoot > tr > td  {
+ background-color: #607D8B !important;
+}
+
+#listTable > tfoot > tr > td > span {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color:white !important;
+}
+
+#printThisElement{
+  height:  99%;
+  width: 100%;
+} 
 }

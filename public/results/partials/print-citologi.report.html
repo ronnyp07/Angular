@@ -1,6 +1,5 @@
 <section ng-controller="resultController">
   <div ng-show="false">
-<!--  <button class="btn btn-primary" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> Print</button> -->
  <div id="printThisElement">
  <div class="container">
 
@@ -16,7 +15,6 @@
       <h2>RNC: 130664854</h2>
 </div>
 </div>  
-
 </div>
 <div class="row">
  <div class="col-xs-12 headerdiv">
@@ -31,7 +29,7 @@
 </div>
 <div class="row">
   <div class="col-xs-6 title-container">
-    <label> Nombre: </label> {{name}}
+    <label> Nombre: </label> {{resultServices.selectedResult.patientReport.patientFirstName}} {{resultServices.selectedResult.patientReport.patientLastName}}
   </div>  
     <div class="col-xs-6 details-container">
       <label> Muestra: </label> {{muestra}}

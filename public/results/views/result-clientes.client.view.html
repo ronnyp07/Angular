@@ -65,10 +65,6 @@
               </div>
              <div class="col-sm-6 ">
             <div class="col-sm-12">
-            <!--  <button class="btn btn-danger pull-right" ng-click="clearClientForm();"><i class="glyphicon glyphicon-trash"></i></button> -->
-            <!--    <button type="submit" class="btn btn-large btn-warning text-center" ng-click="clienteCtrl.modelCreate('lg')">
-             <i class="glyphicon glyphicon-globe"></i>
-             <br>Ingresar Cliente</button> -->
             </div>        
              </div>
            </div>
@@ -152,7 +148,6 @@
                       </div>
 
                     <div class="col-sm-12">
-                 <!--   <button class="btn btn-danger pull-right" ng-click="clearPatientForm();"><i class="glyphicon glyphicon-trash"></i></button> -->
                     <div data-ng-controller="pacientsController as pacientsCtrl" >
               <button type="submit" class="btn btn-large btn-primary text-center" ng-click="pacientsCtrl.modelCreate('lg')">
               Ingresar Pacientes</button>
@@ -217,7 +212,6 @@
 
 
                     <div class="col-sm-12">
-                   <!-- <button class="btn btn-danger pull-right" ng-click="clearDoctorForm();"><i class="glyphicon glyphicon-trash"></i></button> -->
             </div>
                 </div>
               
@@ -309,8 +303,6 @@
             ng-disabled = "procForm.$invalid"><i class="glyphicon glyphicon-chevron-right"></i> Agregar</button>
              </div>
          </div>
-
-
            </div>
 
                </div>
@@ -342,24 +334,6 @@
                         </td>
                     </tr>
             </table>
-                  <!--  <table class="table">
-                   <thead>
-                     Detalles de Orden
-                   </thead>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Costo</th>
-                        <th>Desc</th>
-                        <th>SubTotal</th>
-                        <tr ng-repeat="orderd in orderDetail">
-                          <td> {{orderd.id}} </td>
-                          <td> {{orderd.name}} </td>
-                          <td> {{orderd.costo }} </td>
-                          <td> <input type="number" data-ng-model="orderDesc" class="form-control" id="ID"
-                           > </td>
-                           <td> {{orderd.costo - orderDesc }}  </td>
-                        </tr>
-                   </table> -->
 
                 </div>
                </div>
@@ -418,8 +392,7 @@
                          <label class="pull-left">Estado Pago</label>
 
                       </div>
-                      <div class="col-sm-7">
-                         
+                      <div class="col-sm-7">                       
                         <div class="controls">
                                 <select data-ng-model="statusOrder" id="patientSexo" class="form-control" ng-desabled="true" style=""><option value="" class="">-- Estado Pago --</option><option value="Listo" label="Listo">Listo</option><option value="Pendiente" label="Pendiente">Pendiente</option></select>
                           </div>

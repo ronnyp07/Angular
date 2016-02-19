@@ -54,8 +54,7 @@ var ResultSchema = new Schema({
 		type: String,
 		trim: true
 	},
-	resultado: 
-	[{}],
+	resultado: {},
 	seguroDesc: {
 		type: String,
 		trim: true
@@ -77,6 +76,9 @@ var ResultSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+	updateDate: {
+	    type: Date
+	},
 	clinica: {
 		type:Schema.ObjectId,
 		ref: 'Clientes'
@@ -95,6 +97,10 @@ var ResultSchema = new Schema({
 	},
 	user: {
 		type: Schema.ObjectId,
+		ref: 'User'
+	},
+	updatedUser: {
+	    type: Schema.ObjectId,
 		ref: 'User'
 	},
 	procs: {

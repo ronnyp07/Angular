@@ -1,10 +1,9 @@
 <div ng-controller="resultListController">
-<div class="row">
- <div class="col-md-12">
-     <div class="row">
-              <div class="col-sm-6">
-                  <div class="form-group">
-
+ <div class="row">
+  <div class="col-md-12">
+      <div class="row">
+            <div class="col-sm-6">
+            <div class="form-group">
             <input ng-model="q" id="search" class="form-control" placeholder="Filter text" ng-change="pageChanged(1, q)">
             </div>
             </div>
@@ -14,11 +13,16 @@
                   <input date-range-picker   ng-change="dateChange(pagination.current, q)" class="form-control date-picker" type="text" ng-model="date" />
                    </div>
             </div>
-
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                 <button class="btn btn-primary pull-right" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> </button>
             </div>
-            
-        <table class="table table-striped">
-        <thead>
+        </div>
+        
+       <div class="row">
+          <table class="table table-striped">
+           <thead>
                 <th>Sereal</th>
                 <th>Fecha Creacion</th>
                 <th>Paciente</th>
@@ -28,7 +32,7 @@
                 <th>Debe</th>
                 <th>S.M</th>
             </thead>
-            <tr dir-paginate="user in users | itemsPerPage: 10" current-page="cPage" total-items="totalUsers">
+            <tr dir-paginate="user in users | itemsPerPage: usersPerPage" current-page="cPage" total-items="totalUsers">
             
                     <td>{{ user.rSereal }}</td>
                     <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>
@@ -52,9 +56,69 @@
        </td>
                 </tr>
         </table>
+       
   {{pagination.current}}
-    <dir-pagination-controls  on-page-change="pageChanged(newPageNumber, q,  pagination.current)"></dir-pagination-controls>
+    <dir-pagination-controls  on-page-change="pageChanged(newPageNumber, q,  pagination.current)">
+    </dir-pagination-controls>
+    </div>
+     </div>
+</div>
 
-           </div>
+<div class="row">
+<div ng-show="false"> 
+<div  id="printThisElement">
+<top-header></top-header>
+<div class="listcontainer"> 
+    <table id="listTable" class="table">
+           <thead>
+            <tr>
+                <th><span>#</span></th>
+                <th><span>Paciente</span></th>
+                <th><span>Proc</span></th>
+                <th><span>Fecha</span></th>
+                <th><span>Costo</span></th>
+                <th><span>Pago</span></th>
+                <th><span>Debe</span></th>
+                <th><span>S.M</span></th>
+                </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+               <td><span>Costos</span></td>
+               <td><span>Pagados</span></td>
+               <td><span>Deben</span></td>
+               <td><span>Con Seguros</span></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><span>Totales:</span></td>
+               <td><span>{{total.costo | currency}}</span></td>
+               <td><span>{{total.pago | currency}}</span></td>
+               <td><span>{{total.debe | currency}}</span></td>
+               <td><span>{{total.seguro }}</span></td>
+              </tr>
+            </tfoot>
+            <tr ng-repeat="user in printReport">
+          <td>{{ user.rSereal }}</td>
+          <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
+          <td>{{ user.tipomuestraDesc}}</td>
+          <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>                 <td>{{user.costo | currency}}</td>
+         <td>{{user.pago | currency}}</td>
+         <td>{{user.debe | currency}}</td> 
+         <td>{{user.seguroDesc}}</td>
+                </tr>
+          
+        </table>
+        </div>
+ </div>
+ </div>
+ </div>
 </div>
-</div>
+
+ 

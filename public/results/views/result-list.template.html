@@ -23,7 +23,8 @@
        <div class="row">
           <table class="table table-striped">
            <thead>
-                <th>Sereal</th>
+                <th>#</th>
+                <th>Procs</th>
                 <th>Fecha Creacion</th>
                 <th>Paciente</th>
                 <th>Resultado</th>
@@ -35,6 +36,7 @@
             <tr dir-paginate="user in users | itemsPerPage: usersPerPage" current-page="cPage" total-items="totalUsers">
             
                     <td>{{ user.rSereal }}</td>
+                    <td>{{ user.tipomuestraDesc}}</td>
                     <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>
                     <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
                     <td data-title="'Estatus'" ><span ng-if="user.reportStatus == 'Pendiente'" class="label label-danger"> {{user.reportStatus}} </span>
@@ -76,7 +78,6 @@
                 <th><span>Paciente</span></th>
                 <th><span>Proc</span></th>
                 <th><span>Fecha</span></th>
-                <th><span>Costo</span></th>
                 <th><span>Pago</span></th>
                 <th><span>Debe</span></th>
                 <th><span>S.M</span></th>
@@ -88,7 +89,6 @@
                 <td></td>
                 <td></td>
                 <td></td>
-               <td><span>Costos</span></td>
                <td><span>Pagados</span></td>
                <td><span>Deben</span></td>
                <td><span>Con Seguros</span></td>
@@ -98,7 +98,6 @@
                 <td></td>
                 <td></td>
                 <td><span>Totales:</span></td>
-               <td><span>{{total.costo | currency}}</span></td>
                <td><span>{{total.pago | currency}}</span></td>
                <td><span>{{total.debe | currency}}</span></td>
                <td><span>{{total.seguro }}</span></td>
@@ -108,7 +107,7 @@
           <td>{{ user.rSereal }}</td>
           <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
           <td>{{ user.tipomuestraDesc}}</td>
-          <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>                 <td>{{user.costo | currency}}</td>
+          <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>
          <td>{{user.pago | currency}}</td>
          <td>{{user.debe | currency}}</td> 
          <td>{{user.seguroDesc}}</td>

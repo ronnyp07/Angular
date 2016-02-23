@@ -131,6 +131,7 @@ exports.listpage = function(req, res) {
     .populate('orders')
     .populate('patientReport')
     .populate('patientReport.locations')
+    .populate('doctor')
     //.deepPopulate('comments.user')
     .filter(filter)
     .order(sort)
@@ -217,26 +218,24 @@ exports.resultByID = function(req, res, next, id) {
 exports.update = function(req, res) {
   var result = req.result;
   // res.status(200);
-       result.resultado = req.body.resultado;
-       result.diagnostico = req.body.diagnostico;
-       result.noAutho = req.body.noAutho;
+       result.resultado = req.body.resultado ?  req.body.resultado: result.resultado;
+       result.diagnostico = req.body.diagnostico ? req.body.diagnostico : result.diagnostico;
+       result.noAutho = req.body.noAutho ? req.body.noAutho : result.noAutho;
        result.updateDate = new Date();
-       result.updatedUser = req.body.updatedUser;
-       result.reportStatus = req.body.reportStatus;
-      // result.noAutho = req.body.noAutho;
-      // result.total = req.body.total;
-      // result.reportStatus = req.body.reportStatus;
-      // result.nota =  req.body.nota;
-      // result.tecnica = req.body.tecnica;
-      // result.costo = req.body.costo;
-      // result.pago = req.body.pago;
-      // result.debe = req.body.debe;
-      // result.patientReport = req.body.patientReport;
-      // result.seguroId = req.body.seguroId;
-      // result.doctor = req.body.doctor;
-      // result.clinica  = req.body.clinica;
-      // result.seguroDesc  = req.body.seguroDesc;
-      // result.created = req.body.created;
+       result.updatedUser = req.body.updatedUser ? req.body.updatedUser: result.updatedUser;
+       result.reportStatus = req.body.reportStatus ? req.body.reportStatus : result.reportStatus;
+       result.total = req.body.total ? req.body.total : result.total;
+       result.nota =  req.body.nota ? req.body.nota : result.nota;
+       result.tecnica = req.body.tecnica ? req.body.tecnica : result.tecnica;
+       result.costo = req.body.costo ? req.body.costo : result.costo;
+       result.pago = req.body.pago ? req.body.pago : result.pago;
+       result.debe = req.body.debe ? req.body.debe: result.debe;
+       result.patientReport = req.body.patientReport ? req.body.patientReport : result.patientReport;
+       result.seguroId = req.body.seguroId ? req.body.seguroId  : result.seguroId;
+       result.doctor = req.body.doctor ? req.body.doctor : result.doctor;
+       result.clinica  = req.body.clinica ? req.body.clinica : result.clinica;
+       result.seguroDesc  = req.body.seguroDesc ? req.body.seguroDesc : result.seguroDesc;
+       result.created = req.body.created ? req.body.created : result.created;
       // result.updateDate = req.body.updateDate;
       // result.updatedUser = req.body.updatedUser;
   

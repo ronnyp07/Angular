@@ -38,8 +38,10 @@ resultModule.controller('resultController', [
   
 
 	$scope.update = function(){
-          $scope.resultServices.update($scope.resultServices.muestra);
-
+          $scope.resultServices.update($scope.resultServices.muestra).then(function(){
+              $location.path('/orders');
+          });
+         
           //$scope.resultServices.create($scope.muestra, $scope.resultDetails);
           //console.log($scope.resultServices.selectedResult);
       
@@ -251,6 +253,7 @@ resultModule.controller('resultController', [
     })
     .then(function(totalResult) {
       $scope.printReport = totalResult.data.results;
+      console.log($scope.printReport);
       $scope.total = {
           costo: 0,
           pago : 0,
@@ -382,6 +385,7 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
           }
         },
       'update': function(muestra){
+        var defer = $q.defer();
          var updateResult = new Result({
             _id: self.selectedResult._id,
             resultado: self.resultado,
@@ -391,9 +395,13 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
          });
 
           updateResult.$update(function(){ 
+            defer.resolve();
              }, function(errorResponse) {
+              defer.reject();
               console.log(errorResponse);
           });
+
+          return defer.promise;
           
       },
    };

@@ -76,6 +76,7 @@
             <tr>
                 <th><span>#</span></th>
                 <th><span>Paciente</span></th>
+                <th><span>Doctor</span></th>
                 <th><span>Proc</span></th>
                 <th><span>Fecha</span></th>
                 <th><span>Pago</span></th>
@@ -89,11 +90,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                <td><span>Pagados</span></td>
                <td><span>Deben</span></td>
                <td><span>Con Seguros</span></td>
               </tr>
               <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -106,6 +109,7 @@
             <tr ng-repeat="user in printReport">
           <td>{{ user.rSereal }}</td>
           <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
+           <td>{{user.doctor.firstName}} {{user.doctor.lastName}}</td>
           <td>{{ user.tipomuestraDesc}}</td>
           <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>
          <td>{{user.pago | currency}}</td>

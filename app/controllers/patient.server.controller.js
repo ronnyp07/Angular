@@ -78,7 +78,7 @@ exports.list = function(req, res) {
      	}
      };
 
-    Patients
+     Patients
     .find()
     .filter(filter)
     .order(sort)

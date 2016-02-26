@@ -210,14 +210,16 @@ ordersModule.controller('ordersController', [
      });
 
      Notify.getMsg('orderUpdate', function(event, result){ 
+      console.log(result);
        $scope.orders.createMode = false;
        $scope.orders.updatedProcs = result.resultInfo;
-       $scope.orders.selectedOrder.doctorSelected = $scope.orders.updatedProcs.doctor;
+       //$scope.orders.selectedOrder.doctorSelected = $scope.orders.updatedProcs.doctor;
+       
        $scope.orders.selectedOrder.patient = $scope.orders.updatedProcs.patientReport._id;
        $scope.orders.selectedOrder.nota = $scope.orders.updatedProcs.nota;
        createCtrl.setPatientDetail($scope.orders.selectedOrder.patient);
-       createCtrl.setDoctorDetail($scope.orders.selectedOrder.doctorSelected);
-       $scope.orders.selectedOrder.clinicaListSelected = $scope.orders.updatedProcs.clinica;
+       createCtrl.setDoctorDetail(result.resultInfo.doctor._id);
+       $scope.orders.selectedOrder.clinica = result.resultInfo.clinica;
        $scope.orders.selectedProc = $scope.orders.getProcById($scope.orders.updatedProcs.procs);
        $scope.orders.createdDate = $scope.orders.updatedProcs.created;
        $scope.orderDetail = [];
@@ -302,11 +304,14 @@ ordersModule.controller('ordersController', [
     };
 
    this.setDoctorDetail = function(doctorparamId){
+    console.log(doctorparamId);
       var sDoctor = doctorparamId;
-      $scope.orders.selectedDoctor = $scope.orders.getDoctorById(sDoctor);   
+     $scope.orders.selectedOrder.doctor = doctorparamId;
+     $scope.orders.selectedDoctor = $scope.orders.getDoctorById(sDoctor);   
      if($scope.orders.selectedDoctor){
       if($scope.orders.selectedDoctor.clinicaList.length >= 0){
           $scope.orders.clinicaList = $scope.orders.selectedDoctor.clinicaList;
+          $scope.orders.selectedOrder.clinica = $scope.orders.updatedProcs.clinica._id;
       }
     }
   };
@@ -648,7 +653,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
                clienteName: self.selectedClinica.name,
                doctorName : self.selectedDoctor.firstName + ' ' + self.selectedDoctor.lastName,
                patientEdad : self.selectedPatient ?  self.selectedPatient.patientEdad : null,
-               cliente: self.selectedOrder.clinicaListSelected,
+               cliente: self.selectedOrder.clinica,
                doctor: self.selectedOrder.doctorSelected,
                patients: self.selectedOrder.patient,
                created: self.createdDate
@@ -719,7 +724,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
               patientReport: self.selectedPatient._id,
               seguroId : self.selectedPatient.locations ? self.selectedPatient.locations._id: null,
               doctor: self.selectedDoctor._id,
-              clinica : self.selectedOrder.clinicaListSelected,
+              clinica : self.selectedOrder.clinica,
               nota: self.selectedOrder.nota,
               reportStatus: self.updatedProcs.reportStatus,
               seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: null,

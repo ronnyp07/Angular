@@ -33,7 +33,7 @@
             <label for="IC" class="col-sm-2 control-label">Doctores:</label>
             <div class="col-sm-10">
             <div class="float1">
-            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctorSelected" id="doctor" class="selec2Big"  ng-change="createCtrl.setDoctorDetail(orders.selectedOrder.doctorSelected)"  name="doctor" data-placeholder="-- Selecione Cliente --" >
+            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctor" id="doctor" class="selec2Big"  ng-change="createCtrl.setDoctorDetail(orders.selectedOrder.doctor)"  name="doctor" data-placeholder="-- Selecione Cliente --" >
               <option value=""></option>
               <option ng-repeat="value in orders.doctorList" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
              </select> 
@@ -51,7 +51,7 @@
             <label for="IC" class="col-sm-2 control-label">Clinica:</label>
             <div class="col-sm-10">
             <div class="float1">
-            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.clinicaListSelected" id="clientes" class="selec2Big"  ng-change="createCtrl.setClinicaDetail(orders.selectedOrder.clinicaListSelected)"  name="clientes"  >
+            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.clinica" id="clientes" class="selec2Big"  ng-change="createCtrl.setClinicaDetail(orders.selectedOrder.clinica)"  name="clientes"  >
               <option ng-repeat="value in orders.clinicaList" value="{{value.id}}">{{value.clinica}}</option>
              </select> 
               </div>
@@ -284,7 +284,7 @@
                 ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctorSelected == undefined || orders.selectedOrder.patient == undefined"  ng-click="cancelOrder();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
                   </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctorSelected == undefined || orders.selectedOrder.patient == undefined"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved"  ></i> Guardar</button>
+                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.patient == undefined || orders.selectedOrder.clinica == undefined"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved"  ></i> Guardar</button>
                 </div>          
                 </div>
              </div>

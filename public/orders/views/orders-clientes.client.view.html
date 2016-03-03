@@ -90,7 +90,36 @@
             </div>
         </div><!--End of Patient First Row -->
            <div class="row rowcontrolmargin">
-                 <div class="col-sm-2">
+                 <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">Nombre:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" ng-change="createCtrl.setNewPatient()" data-ng-model="orders.newPatient.patientFirstName" placeholder="Insertar Nombre"  id="patientName" >
+                    </div>
+                  </div>
+               </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="IC" class="col-sm-3 control-label">Apellido:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" placeholder="Insertar Apellido" data-ng-model="orders.newPatient.patientLastName" id="telefono"
+                             >
+                    </div>
+                  </div>
+               </div>
+
+               <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="polisa" class="col-sm-3 control-label">Edad:</label>
+                    <div class="col-sm-9">
+                      <input type="Number" placeholder="Insertar Edad" class="form-control" data-ng-model="orders.newPatient.patientEdad"  id="patientEdad" >
+                    </div>
+                  </div>
+               </div>
+              </div> 
+           <div class="row rowcontrolmargin">
+            <!--      <div class="col-sm-2">
                   <div class="form-group">
                     <label for="email" class="col-sm-1 control-label">ID:</label>
                     <div class="col-sm-8">
@@ -98,19 +127,19 @@
                              >
                     </div>
                   </div>
-               </div>
+               </div> -->
 
-                <div class="col-sm-3">
+                <div class="col-sm-4 col-md-4">
                   <div class="form-group">
-                    <label for="IC" class="col-sm-3 control-label">Tel:</label>
-                    <div class="col-sm-9">
+                    <label for="IC" class="col-sm-3 col-md-3 control-label">Tel:</label>
+                    <div class="col-sm-9 col-md-9">
                       <input type="text" class="form-control" data-ng-model="orders.selectedPatient.patientTelefono" readonly  id="telefono"
                              >
                     </div>
                   </div>
                </div>
 
-               <div class="col-sm-3">
+               <div class="col-sm-4 col-md-4">
                   <div class="form-group">
                     <label for="polisa" class="col-sm-3 control-label">Polisa:</label>
                     <div class="col-sm-9">
@@ -120,7 +149,7 @@
                   </div>
                </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-4 col-md-4">
                   <div class="form-group">
                     <label for="aseguradora" class="col-sm-3 control-label">Seguro:</label>
                     <div class="col-sm-9">
@@ -157,10 +186,12 @@
                <div class="row rowcontrolmargin OrdersrowTopmargin">
         <div class="row">
         <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12">
             <div class="form-group">
             <div class="col-sm-12">
              <div style="float:left; width: 80%; margin-right: 3px">
-          <select ui-select2 allowClear:true  data-ng-model="orders.selectedOrder.procs" id="procs" class="selec2Big" name="procs" data-placeholder="-- Selecione Procs --"  ng-required="true" >
+          <select ui-select2 allowClear:true  data-ng-model="orders.selectedOrder.procs" id="procs" ng-change="setProcsDetail(orders.selectedOrder.procs)" class="selec2Big" name="procs" data-placeholder="-- Selecione Procs --"  ng-required="true" >
           <option value=""></option>
               <option ng-repeat="value in orders.procList" value="{{value._id}}">{{value.name}}</option>                        
             </select> 
@@ -177,15 +208,26 @@
 
             </div>
           </div>
+          </div>
+          </div>
+
+          <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+                     <label class="col-sm-4 control-label" for="patientFirstName">Numeracion <span class=" requiredIcon">*</span> :</label>
+                    <div class="col-sm-12 col-md-12">
+            <input type="text" class="form-control" data-ng-model="orders.rSereal"  id="rSereal">
+                    </div>
+              </div>
+          </div>
+          </div>
         </div>
       </div>
      </div>
-
-         </div>
+   </div>
   </form>
 
          <div class="col-sm-7">
- 
         <div ng-show="!isNotSave">
          <div class="row OrdersrowTopmargin">
           <div class="col-sm-12">
@@ -284,7 +326,7 @@
                 ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctorSelected == undefined || orders.selectedOrder.patient == undefined"  ng-click="cancelOrder();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
                   </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.patient == undefined || orders.selectedOrder.clinica == undefined"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved"  ></i> Guardar</button>
+                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || (orders.selectedOrder.patient == undefined || orders.newPatient.firstName =='') || orders.selectedOrder.clinica == undefined"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved"  ></i> Guardar</button>
                 </div>          
                 </div>
              </div>

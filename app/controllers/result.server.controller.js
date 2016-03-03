@@ -35,15 +35,11 @@ var getErrorMessage = function(err) {
   return message;
 };
 
-
-
-
 /**
  * Create a Pai
  */
 exports.create = function(req, res) {
   var result = new Result(req.body);
-  console.log(result);
   result.user = req.user;
   result.save(function(err) {
     if (err) {
@@ -53,7 +49,7 @@ exports.create = function(req, res) {
           });
             }else {
       return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+        message: getErrorMessage(err)
       });
       }
     } else {
@@ -87,14 +83,16 @@ exports.getList = function(req, res) {
  * Get list pagination
  */
 exports.listpage = function(req, res) { 
-     var count = req.query.count || 5;
+     var count = req.query.count || 25;
      var page = req.query.page || 1;
-     var endDate = new Date(req.query.endDate);
+     var dates = JSON.parse(req.query.date);
+     var search = JSON.parse(req.query.search);
+     var endDate = new Date(dates.endDate);
      var endDateYear = endDate.getFullYear();
      var endDateMonth = endDate.getMonth();
      var endDateDay = endDate.getDate() + 1;
 
-     var startDate = new Date(req.query.startDate);
+     var startDate = new Date(dates.startDate);
      var startDateYear = startDate.getFullYear();
      var startDateMonth = startDate.getMonth();
      var startDateDay = startDate.getDate() + 1;
@@ -109,13 +107,31 @@ exports.listpage = function(req, res) {
         desc: '_id'
       }
      };
+     // + search.sereal ? search.sereal : ''
+    var contains = {};
+    if(search.doctor && !search.paciente){
+      contains = { rSereal : search.sereal ? search.sereal : '',
+                   seguroDesc: search.seguro ? search.seguro: '',
+                   doctor: mongoose.Types.ObjectId(search.doctor)};
+    }else if(search.paciente && !search.doctor){
+      contains = { rSereal : search.sereal ? search.sereal : '',
+                   seguroDesc: search.seguro ? search.seguro: '',
+                   patientReport: mongoose.Types.ObjectId(search.paciente)};
+    }else if(search.paciente && search.doctor){
+      contains = { rSereal : search.sereal ? search.sereal : '',
+                   seguroDesc: search.seguro ? search.seguro: '',
+                   doctor: mongoose.Types.ObjectId(search.doctor),
+                   patientReport: mongoose.Types.ObjectId(search.paciente)};
+    }else{
+       contains =  {rSereal : search.sereal ? search.sereal : '',
+                     seguroDesc: search.seguro ? search.seguro: null || ''};
+    }
+
     
     var filter = {
       filters: {
            mandatory : {
-            contains : {
-                rSereal : req.query.filter
-            },
+             contains,
                greaterThanEqual : {
                 created : new Date(startDateYear, startDateMonth, startDateDay)
              },
@@ -123,6 +139,11 @@ exports.listpage = function(req, res) {
                 created : new Date(endDateYear, endDateMonth, endDateDay)
             }
        }
+       // madatory  : {
+       //      contains : {
+       //           doctor: search.doctor ? mongoose.Types.ObjectId(search.doctor) : null 
+       //      }
+       //  }
      }
    };
 
@@ -141,7 +162,6 @@ exports.listpage = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(tempate);
     Result.populate(tempate, {
       path: 'patientReport.locations',
       model: 'locations'
@@ -160,7 +180,6 @@ exports.listpage = function(req, res) {
 
 exports.getResultbyOrder = function(req, res){
       var orderId = req.query.orderId;
-      console.log(orderId);
        Result
        .find({orders: req.query.orderId}).exec(function(err, patient){
           if (err) {
@@ -175,6 +194,7 @@ exports.getResultbyOrder = function(req, res){
 
 exports.getResultbyId = function(req, res){
       var resultId = req.body.resultId;
+       
        Result
        .find({_id: resultId})
        .populate('user', 'displayName')
@@ -183,6 +203,46 @@ exports.getResultbyId = function(req, res){
        .populate('seguroId')
        .populate('clinica')
        .populate('doctor')
+       .exec(function(err, result){
+          if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(result);
+        }
+      });
+};
+
+exports.getResultBy = function(req, res){
+      var resultId = req.query;
+      console.log(resultId);
+  
+       Result
+       .find(resultId)
+       .populate('user', 'displayName')
+       .populate('orders')
+       .populate('patientReport')
+       .populate('seguroId')
+       .populate('clinica')
+       .populate('doctor')
+       .exec(function(err, result){
+          if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(result);
+        }
+      });
+};
+
+exports.getResultMaxByType = function(req, res){
+      var resultId = req.body.resultType;
+       Result
+       .find({tipomuestra: resultId})
+       .sort({created: -1})
+       .limit(1)
        .exec(function(err, result){
           if (err) {
           return res.status(400).send({

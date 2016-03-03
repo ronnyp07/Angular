@@ -171,9 +171,7 @@ ordersModule.controller('ordersController', [
     $scope.orders.createMode = true;
     $scope.orders.clinicaList = [];
     };
-
-     //createCtrl.valuationDate = new Date();
-     createCtrl.valuationDatePickerIsOpen = false;
+    createCtrl.valuationDatePickerIsOpen = false;
     $scope.$watch(function () {
          return createCtrl.valuationDatePickerIsOpen;
      },function(value){  
@@ -206,15 +204,11 @@ ordersModule.controller('ordersController', [
      NotifyPatient.getMsg('procsaved', function(event, data){ 
      $scope.orders.getprocList();
      $scope.orders.selectedOrder.procs = data.procSavedInfo._id;
-     //createCtrl.setPatientDetail($scope.orders.selectedOrder.patient);
      });
 
      Notify.getMsg('orderUpdate', function(event, result){ 
-      console.log(result);
        $scope.orders.createMode = false;
        $scope.orders.updatedProcs = result.resultInfo;
-       //$scope.orders.selectedOrder.doctorSelected = $scope.orders.updatedProcs.doctor;
-       
        $scope.orders.selectedOrder.patient = $scope.orders.updatedProcs.patientReport._id;
        $scope.orders.selectedOrder.nota = $scope.orders.updatedProcs.nota;
        createCtrl.setPatientDetail($scope.orders.selectedOrder.patient);
@@ -235,9 +229,6 @@ ordersModule.controller('ordersController', [
           $scope.orders.isDeleting = false;
            alertify.success('Acción realizada exitosamente!!');
        }, 2000);
-
-
-       console.log("worked");
     };
 
  	 var params = {
@@ -254,64 +245,44 @@ ordersModule.controller('ordersController', [
 
    $scope.tableParams = new ngTableParams(params, settings);
    $scope.addOrderProcs = function (procs) {
-    var sereal = $scope.orders.setProcDetail(procs);
-    $scope.orderDetail = [];
-    $scope.orderDetail.push({'id': sereal, 'procType':$scope.orders.selectedProc.proType,  'name': $scope.orders.selectedProc.name, 'costo': $scope.orders.selectedProc.costo ? $scope.orders.selectedProc.costo : 0, 'pago': $scope.orders.selectedProc.pago ? $scope.orders.selectedProc.pago : 0});
- 		
-    // Procs.get({ procsId: procs }, function(procsResult){
-    //          var costo = 0; 
-   //          var pago = 0;  
-		 //  $scope.orderDetail.push({"id": $scope.nserie, "procType":procsResult.proType,  "name": procsResult.name, "costo": procsResult.costo ? procsResult.costo : 0, 'pago': procsResult.pago ? procsResult.pago : 0});
-	     
-	  //    getProcInit();
-	  //    $scope.doSearch();
 
-	  //    if(procsResult.proType === 'B'){
-	  //    	 if($scope.InitFlag === true){
-	  //    	 	$scope.BcounterIncrement = $scope.BcounterIncrement + 1;
-	  //    	 	$scope.InitFlag = false;
-	  //    	 	console.log($scope.BcounterIncrement);
-	  //    	 } else {
-	  //    	 	$scope.BcounterIncrement +=  1;
-	
-	  //    	 }    	
-	
-	  //    	$scope.flag = true;
-	  //    }else if (procsResult.proType === 'BL'){
-	  //    	if($scope.InitFlag === true){
-	  //    	 	$scope.BLcounterIncrement = $scope.BLcounterIncrement + 1;
-	  //    	 	$scope.InitFlag = false;
-	  //    	 } else {
-	  //    	 	$scope.BLcounterIncrement +=  1;
-	  //    	 } 
-	  //    	 $scope.BLflag = true;     	
-	  //    }else {
-	  //    	if($scope.InitFlag ===true){
-	  //    	 	$scope.PcounterIncrement = $scope.PcounterIncrement + 1;
-	  //    	 	$scope.InitFlag = false;
-	  //    	 } else {
-	  //    	 	$scope.PcounterIncrement +=  1;
-	  //    	 }    	
-	  //    	$scope.Pflag = true;
-	  //    }
-
-	      $scope.getTotal();
+    $http.get('api/resultFilterBy', {params: {rSereal: $scope.orders.rSereal}}).then(function(result){
+           if(result.data.length === 0){
+             var sereal = $scope.orders.setProcDetail(procs);
+              $scope.orderDetail = [];
+              $scope.orderDetail.push({'id': $scope.orders.rSereal, 'procType':$scope.orders.selectedProc.proType,  'name': $scope.orders.selectedProc.name, 'costo': $scope.orders.selectedProc.costo ? $scope.orders.selectedProc.costo : 0, 'pago': $scope.orders.selectedProc.pago ? $scope.orders.selectedProc.pago : 0});
+              $scope.getTotal();
+          }else{
+             alertify.error($scope.orders.rSereal + ' ya existe')
+          };
+    });
+   
  		
  	};
-    this.setPatientDetail = function(patientParam){
+  
+  this.setPatientDetail = function(patientParam){
         var sPatient = patientParam;
+        $scope.orders.newPatient = {};
         $scope.orders.selectedPatient = $scope.orders.getPatientById(sPatient);
-    };
+   };
 
-   this.setDoctorDetail = function(doctorparamId){
-    console.log(doctorparamId);
+   createCtrl.setNewPatient = function(){
+        $scope.orders.selectedPatient = {};
+        $scope.orders.selectedOrder.patient = {};
+   };
+
+   
+
+  this.setDoctorDetail = function(doctorparamId){
       var sDoctor = doctorparamId;
      $scope.orders.selectedOrder.doctor = doctorparamId;
      $scope.orders.selectedDoctor = $scope.orders.getDoctorById(sDoctor);   
      if($scope.orders.selectedDoctor){
       if($scope.orders.selectedDoctor.clinicaList.length >= 0){
           $scope.orders.clinicaList = $scope.orders.selectedDoctor.clinicaList;
+          if($scope.orders.selectedOrder.clinica){
           $scope.orders.selectedOrder.clinica = $scope.orders.updatedProcs.clinica._id;
+        }
       }
     }
   };
@@ -321,65 +292,8 @@ ordersModule.controller('ordersController', [
         $scope.orders.selectedClinica = $scope.orders.getClinicaById(sClinica);     
     };
 
-     $scope.setProcsDetail = function(){
-	      var sProcs = createCtrl.procs;
-        var nserie = '';
-        $scope.orders.setProcDetail(sProcs);
-
-     //    Procs.get({ procsId: sProcs }, function(procsResult){
-		   //  $scope.rprocs = procsResult;
-     //    $scope.presultType = $scope.rprocs.proType;
-     //    if($scope.presultType === 'C'){
-     //      	$scope.presultType = 'P';
-     //    }
-
-
-
-
-	    //   var currentB = CierreControl.getActiveCurrentMonth($scope.presultType);
-	    //   currentB.then(function(r){
-
-	    //    $scope.currentB = r[0];
-	    //    if($scope.currentB) {
-     //      	   if($scope.rprocs.proType === 'B'){         	   
-     //      	   	if($scope.flag === true){
-		   //       	  $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BcounterIncrement) + 1);
-		   //       	  $scope.Bcounter = $scope.currentB.counter + $scope.BcounterIncrement;
-
-		   //       	}else{   	  	 
-		   //       	 $scope.currentCount = parseInt($scope.currentB.counter);
-		   //       	 $scope.Bcounter = $scope.currentCount + 1;		                	
-		   //       	 $scope.nserie = $scope.currentB.month + $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + $scope.Bcounter;
-		          
-		   //           }
-     //      	   } else if ($scope.rprocs.proType === 'BL') {
-     //                if($scope.BLflag === true){
-		   //       	  $scope.nserie = $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.BLcounterIncrement) + 1);
-		   //       	  $scope.BLcounter = $scope.currentB.counter + $scope.BLcounterIncrement;
-		         	
-		   //       	}else{
-		   //       	 $scope.blcurrentCount = parseInt($scope.currentB.counter);
-		   //       	 $scope.BLcounter = $scope.blcurrentCount + 1;         	
-		   //       	 $scope.nserie =    $scope.rprocs.proType  + $scope.currentB.year.substring(2, 4) + '-' + $scope.BLcounter;
-		   //          }
-
-		   //     } else {     	   
-		   //     	   if($scope.Pflag === true){
-		   //       	$scope.nserie = $scope.presultType + $scope.currentB.year.substring(2, 4) + '-' + (parseInt($scope.currentB.counter) + parseInt($scope.PcounterIncrement) + 1);
-		   //       	$scope.Pcounter = $scope.currentB.counter + $scope.PcounterIncrement;
-		   //       	}else{
-		   //       	$scope.pcurrentCount = parseInt($scope.currentB.counter);
-		   //       	$scope.Pcounter = $scope.pcurrentCount + 1;
-		   //       	$scope.nserie =  $scope.presultType  + $scope.currentB.year.substring(2, 4) + '-' + $scope.Pcounter;
-
-		   //            } 
-		   //     }        
-		   //         $scope.rprocs.ID = $scope.nserie;
-		   // }   
-	    //   });
-	    //   $scope.p = $scope.currentB;
-     //    console.log($scope.p);
-	    // });
+     $scope.setProcsDetail = function(procs){
+        $scope.orders.setProcDetail(procs);
     };
     
     $scope.getTotal = function(){
@@ -412,14 +326,10 @@ ordersModule.controller('ordersController', [
 	    });
   };
 
- 
-
   $scope.modelRemove = function (size, selectedcliente) {
 		    var modalInstance = $modal.open({
 		      templateUrl: 'orders/views/orders-cancel.template.html',
-		      controller: 
-		      //'modalDelete',
-		      function ($scope, $modalInstance) {
+		      controller: function ($scope, $modalInstance) {
                   $scope.ok = function () {  
                   //console.log('works');                 
                   $modalInstance.close();
@@ -440,131 +350,20 @@ ordersModule.controller('ordersController', [
 	    });
 	};
 
-    // Create new Pai
+  // Create new Orden
  	this.create = function(param) {
+   if($scope.orders.newPatient.patientFirstName){
+      $scope.orders.createNewPatient().then(function(){
+               $scope.orders.create(param).then(function(){
+               $scope.init();
+               });
+        });      
+    }else{
     $scope.orders.create(param).then(function(){
       $scope.init();
+      Notify.sendMsg('newOrderPost', {'id': 'nada'});
     });
- 		// $scope.isSaving = true;
-   //          var patientClient = false;
-   //          if(createCtrl.clientes === ''){
-   //          	patientClient = true;
-   //          }
-
- 	 //        var orders = new Orders({
-   //             clienteId: createCtrl.clientes,
-   //             proclist: $scope.orderDetail,
-   //             nota: $scope.note,
-   //             total: $scope.total,
-   //             patientName: $scope.rpaciente.FullName,
-   //             patientId: $scope.rpaciente.ID,
-   //             patientsClient : patientClient,
-   //             patientEdad: $scope.rpaciente.age,
-   //             doctorName : $scope.doctorName,
-   //             doctorId: $scope.rdoctor.ID,
-   //             cliente: createCtrl.clientes,
-   //             //doctor: $scope.rdoctor._id,
-   //             doctor: createCtrl.doctorSelected,
-   //             patients: createCtrl.patient
- 	 //      });
-   //      $scope.orderResult = orders;
-   //      //console.log($scope.orderResult);   
-
-   //      var d = new Date();
-	  //     var y = d.getFullYear();
-		 //    var m = d.getMonth();
-		 //    var year = y.toString();
-        
-   //      if($scope.Bcounter){
-			//   var info = {
-			//     	year: $scope.p.year,
-			//     	month: $scope.p.month,
-			//     	proType: 'B',
-			//     	newCount: $scope.Bcounter
-		 //   };
-        
-   //      $http.post('/api/count', {info: info})
-   //      .success(function(){
-   //      	$scope.BcounterIncrement = 0;
-   //      }).error(function(err){
-		 //     	//console.log(err);
-		 // });
-	  //  }
-
-	  //   if($scope.Pcounter){
-			// var info = {
-			//     	year: $scope.p.year,
-			//     	month: $scope.p.month,
-			//     	proType: 'P',
-			//     	newCount: $scope.Pcounter 
-		 //       };
-   //      $http.post('/api/count', {info: info})
-   //      .success(function(){
-   //      	$scope.PcounterIncrement = 0;
-   //      }).error(function(err){
-		 //     	//console.log(err);
-		 // });
-	  //  }
-
-	  //   if($scope.BLcounter){
-			//     var info = {
-			//     	year: $scope.p.year,
-			//     	month: $scope.p.month,
-			//     	proType: 'BL',
-			//     	newCount: $scope.BLcounter 
-		 //       };
-   //      $http.post('/api/count', {info: info})
-   //      .success(function(){
-   //      	$scope.BLcounterIncrement = 0;
-   //      }).error(function(err){
-		 //     	console.log(err);
-		 // });
-	  //  }
-
- 	 //       var patientId = $scope.orders.selectedOrder.patientid;
-   //       var seguroId = $scope.orders.selectedOrder.patientID;
-   //       var clinica = createCtrl.clientes;
-   //       var doctor = createCtrl.doctorSelected;
-   //       var seguroDesc = $scope.rpaciente.aseguradora;
- 	 //       orders.$save(function(response){
-	  //      Notify.sendMsg('newPis', {'id': 'nada'});
-	  //      $scope.orderResponse = response;
-   //       //console.log(patientId);
-   //       for(var i = 0; i < $scope.orderResponse.proclist.length; i++ ){
-   //        var report = new Result({
-	  //         rSereal: $scope.orderResponse.proclist[i].id,
-	  //         tipomuestra : $scope.orderResponse.proclist[i].procType,
-	  //         tipomuestraDesc: $scope.orderResponse.proclist[i].name,
-	  //         reportStatus: 'Pendiente',
-	  //         orders: $scope.orderResponse._id,
-   //          costo: $scope.orderResponse.proclist[i].costo,
-   //          pago: $scope.orderResponse.proclist[i].pago,
-   //          debe: $scope.orderResponse.proclist[i].pago > $scope.orderResponse.proclist[i].costo ? 0 :  $scope.orderResponse.proclist[i].costo - $scope.orderResponse.proclist[i].pago,
-   //          patientReport: patientId,
-   //          seguroId : seguroId,
-   //          doctor: doctor,
-   //          clinica : clinica,
-   //          seguroDesc : seguroDesc
-   //         }); 
-
-   //       report.$save(function(response){
-   //       	 $timeout(function(){
-	  //        	 $scope.isSaving = false;
-	  //        	 alertify.success('Acción realizada exitosamente!! !!');
-   //       	   Notify.sendMsg('newOrderPost', {'id': 'nada'});
-   //         }, 2000);
-   //          $scope.init();
-   //          createCtrl.procs = {};
-   //        }, function(errorResponse){
-	  //      // En otro caso, presentar al usuario el mensaje de error
-	  //       alertify.error('Se ha producido un error en el sistema!!');
-           
-	  //     });
-   //       }
-         
-	  //   }, function(errorResponse) {
-	  //      alertify.error('Se ha producido un error en el sistema!!');
-	  //  });
+    }
  	};
 	}
  ]);
@@ -580,8 +379,7 @@ ordersModule.directive('orderList', ['Orders', 'Notify', function(Orders, Notify
     restrict: 'E',
     transclude: true,
     templateUrl: 'orders/views/orders-list.template.html',
-     link: function(scope, element, attr){          // when a new cliente is added update the cliente List..
-
+     link: function(scope, element, attr){          // when a new cliente 
             Notify.getMsg('newPis', function(event, data){                 	
          });
     }
@@ -593,21 +391,21 @@ ordersModule.directive('resultList', ['Orders', 'Notify', 'Result', function(Ord
     restrict: 'E',
     transclude: true,
     templateUrl: 'results/views/result-list.template.html',
-     link: function(scope, element, attr){          // when a new cliente is added update the cliente List..
-
+     link: function(scope, element, attr){          // when a new cliente 
             Notify.getMsg('newPis', function(event, data){                 	
          });
     }
    };
  }]);
 
-ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result', function($q, $http, Procs, Orders, Result){
+ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result', 'Patients', function($q, $http, Procs, Orders, Result, Patients){
       var self = {
         'bInfo': null,
         'blInfo': null,
         'pInfo': null,
         'bflag': false,
         'blFlag': false,
+        'newPatient': {},
         'isDeleting': false,
         'createMode': true,
         'createdDate': null,
@@ -616,6 +414,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         'isSaving': false,
         'clinicaList': [],
         'selectedOrder': null,
+        'rSereal': null,
         'selectedDoctor': null,
         'selectedClinica': null,
         'selectedPatient': null,
@@ -635,14 +434,25 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
           self.selectedPatient = {};
           self.getprocList();
           self.createdDate = null;
+          self.rSereal = null;
           self.isSaving = false;
           self.createMode = true; 
         },
+        'createNewPatient': function(){
+            var defer = $q.defer();
+            var patient = new Patients(self.newPatient);
+            patient.$save(function(data){
+              self.selectedPatient = data;
+              self.selectedOrder.patient = data._id;
+              defer.resolve(data);
+            }, function(err){
+              defer.reject();
+            });
+            return defer.promise;
+        },
         'create': function(order){
-         
          var defer = $q.defer();
          self.isSaving = true; 
-
          if(self.createMode){
          var orderSave = new Orders({
                proclist: order,
@@ -654,7 +464,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
                doctorName : self.selectedDoctor.firstName + ' ' + self.selectedDoctor.lastName,
                patientEdad : self.selectedPatient ?  self.selectedPatient.patientEdad : null,
                cliente: self.selectedOrder.clinica,
-               doctor: self.selectedOrder.doctorSelected,
+               doctor: self.selectedOrder.doctor,
                patients: self.selectedOrder.patient,
                created: self.createdDate
            });
@@ -674,12 +484,11 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
               seguroId : self.selectedPatient.locations ? self.selectedPatient.locations._id: null,
               doctor: self.orderResult.doctor,
               clinica : self.orderResult.cliente,
-              seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: null,
+              seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: '',
               created: self.createdDate,
               procs: self.selectedProc._id
             });
             report.$save(function(response){
-              //console.log(self.bInfo[0]);
               var newCounter = 0;
               if(response.tipomuestra === 'B'){
                 newCounter = self.bCunter;
@@ -737,9 +546,11 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
                defer.resolve();
                alertify.success('Acción realizada exitosamente!!');       
             }, function(){
+              self.isSaving = false; 
+              alertify.error('Se ha producido un error'); 
               defer.reject(errorResponse);
             });
-            }
+           }
            return defer.promise;
 
         },'getB': function(){
@@ -817,28 +628,28 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         },
         'setProcDetail': function(id){
           self.selectedProc = self.getProcById(id);
-          // console.log(id);
-          // console.log(self.selectedProc);
           if(self.selectedProc){
-              if(self.selectedProc.proType === 'B'){
-                  if(self.bflag === false){
-                    self.bCunter = parseInt(self.bInfo[0].counter) + 1;
-                    var sereal = self.bInfo[0].month + self.bInfo[0].proType  + self.bInfo[0].year.substring(2, 4) + '-' + self.bCunter;
-                    return sereal;
-                  }
-              }else if(self.selectedProc.proType === 'BL'){
-                    self.blCunter = parseInt(self.blInfo[0].counter) + 1;
-                    var blSereal = self.bInfo[0].month + self.blInfo[0].proType  + self.blInfo[0].year.substring(2, 4) + '-' + self.blCunter;
-                    return blSereal;
-              }else{
-                  self.pCunter = parseInt(self.pInfo[0].counter) + 1;
-                    var pSereal =  'P' + self.pInfo[0].year.substring(2, 4) + '-' + self.pCunter;
-                  return pSereal;
-              }
+             $http.post('/api/resultMax', {resultType : self.selectedProc.proType}).then(function(result){
+                  self.rSereal = result.data[0].rSereal;
+             });
+              // if(self.selectedProc.proType === 'B'){
+              //     if(self.bflag === false){
+              //       self.bCunter = parseInt(self.bInfo[0].counter) + 1;
+              //       var sereal = self.bInfo[0].month + self.bInfo[0].proType  + self.bInfo[0].year.substring(2, 4) + '-' + self.bCunter;
+              //       return sereal;
+              //     }
+              // }else if(self.selectedProc.proType === 'BL'){
+              //       self.blCunter = parseInt(self.blInfo[0].counter) + 1;
+              //       var blSereal = self.bInfo[0].month + self.blInfo[0].proType  + self.blInfo[0].year.substring(2, 4) + '-' + self.blCunter;
+              //       return blSereal;
+              // }else{
+              //     self.pCunter = parseInt(self.pInfo[0].counter) + 1;
+              //       var pSereal =  'P' + self.pInfo[0].year.substring(2, 4) + '-' + self.pCunter;
+              //     return pSereal;
           }
         },
         'getProcById': function(procId){
-          self.getprocList();
+          // self.getprocList();
           for (var i = 0; i < self.procList.length; i++) {
               var obj = self.procList[i];
               if (obj._id === procId) {

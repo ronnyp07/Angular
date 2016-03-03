@@ -19,8 +19,7 @@ resultModule.controller('resultController', [
   'resultServices',
 	function($scope, $http, $stateParams, $location, Authentication, Result, Orders, Notify, ngTableParams, $modal, $log, ConvertArray, GetResults, resultServices) {
  	this.authentication = Authentication;
-  
-   
+
    var param1= $stateParams.resultId;
     $scope.resultId = $stateParams.resultId.replace(':', '');
     $scope.resultServices = resultServices;
@@ -32,84 +31,13 @@ resultModule.controller('resultController', [
       $scope.resultServices.reportName = 'Reporte Histopatológico';
     };
     $scope.resultServices.resultado = $scope.resultServices.selectedResult.resultado;
-    
-
    });
   
 
 	$scope.update = function(){
           $scope.resultServices.update($scope.resultServices.muestra).then(function(){
               $location.path('/orders');
-          });
-         
-          //$scope.resultServices.create($scope.muestra, $scope.resultDetails);
-          //console.log($scope.resultServices.selectedResult);
-      
-          // $scope.resultData.resultado = $scope.muestra;
-          // $scope.resultData.diagnostico = $scope.resultDetails.diagnostico
-        
-        // var resultSaveAccion = {
-        //       clinica : $scope.resultData.clinica_id,
-        //       costo: $scope.resultData.costo,
-        //       debe: $scope.resultData.debe,
-        //       pago: $scope.resultData.pago,
-        //       doctor: $scope.resultData.doctor_id,
-        //       orders: $scope.resultData.orders._id ,
-        //       patientReport: $scope.resultData.patientReport._id,
-        //       procs: $scope.resultData.procs,
-        //       rSereal: $scope.resultData.rSereal,
-        //       reportStatus: 'Listo',
-        //       resultado : $scope.resultDetails.tipomuestra === 'P' ? $scope.muestra : resultado,
-        //       seguroDesc : $scope.resultData.seguroDesc,
-        //       seguroId : $scope.resultData.seguroId_id,
-        //       tipomuestra: $scope.resultData.tipomuestra,
-        //       tipomuestraDesc: $scope.resultData.tipomuestraDesc,
-        //       diagnostico : $scope.resultDetails.diagnostico,          
-        //       nota:$scope.resultDetails.nota,
-        //       created: $scope.resultData.created,
-        //       pdateDate : Date.now,
-        //       noAutho : $scope.resultDetails.noAutho,
-        //       updatedUser: this.authentication.user
-        // };
-
-         //console.log($scope.resultData);
-        // console.log($scope.muestra);
-         // var resultupdate = new Result({
-         //     	 _id: resultId,
-         //       resultado: resultado,
-         //       diagnostico:  $scope.resultDetails.diagnostico,
-         //       noAutho: $scope.resultDetails.noAutho,
-         //       total: $scope.resultDetails.total,
-         //       reportStatus: 'Listo',
-         //       nota: $scope.resultDetails.nota,
-         //       tecnica: $scope.resultDetails.tecnica
-         //     });
-
-         //  if($scope.resultDetails.tipomuestra === 'P'){
-
-         //    var muestra = $scope.muestra;
-         //    console.log(muestra); 
-         //    var resultPap = new Result({
-         //       _id: resultId,
-         //       resultado: muestra,
-         //       diagnostico:  $scope.resultDetails.diagnostico,
-         //       noAutho: $scope.resultDetails.noAutho,
-         //       total: $scope.resultDetails.total,
-         //       reportStatus: 'Listo'
-         //     });
-
-         //    resultPap.$update(function(){ 
-         //     }, function(errorResponse) {
-         //      console.log(errorResponse);
-         //    });
-          
-         //  }else {
-         //  resultupdate.$update(function(){ 
-	        //  }, function(errorResponse) {
-	        // $scope.error = errorResponse.data.message
-	        // });
-         //  }
-         //  $location.path('/ordenesList');
+          });   
 		};
 
 	 }
@@ -158,6 +86,8 @@ resultModule.controller('resultController', [
  	'$modal', 
 	'$log',
 	'$location',
+  'resultServices',
+  'OrderServices',
   'lodash',
  	function(
  	 $scope, 
@@ -171,33 +101,33 @@ resultModule.controller('resultController', [
  	 $modal,
  	 $log,
  	 $location,
+   resultServices,
+   OrderServices,
    lodash
  		) {
 
-   $scope.date = {
-        //startDate: moment().subtract("months", 1),
-        startDate: moment().subtract("days", 1),
-        endDate: moment()
+   $scope.services = resultServices;
+   $scope.orders = OrderServices;
+   $scope.services.date.startDate = moment().subtract("days", 1);
+   $scope.services.date.endDate = moment();
+
+    $scope.loadMore = function(newPage, oldPage){
+       $scope.services.page = newPage;
+       $scope.services.loadResult(newPage);
     };
-  
-   $scope.getDatecurrentPage = 1;
-   $scope.pageSize = 25;
-   
-    $scope.q = "";
 
-    $scope.users = [];
-    $scope.totalUsers = 0;
-    $scope.usersPerPage = 25; // this should match however many results your API puts on one page
-    getResultsPage(1, $scope.q, setDateVariables());
+    $scope.resetSearchForm = function(){
+      $scope.services.date.startDate = moment().subtract("days", 1);
+      $scope.services.date.endDate = moment();
+      $scope.services.resetForm();
+    };
 
-
-    function loadGrid(){
-    getResultsPage(1, $scope.q, setDateVariables());
-    }
-    loadGrid();
+    $scope.filterResult = function(){
+      $scope.services.filterResult();
+    };
 
      Notify.getMsg('newOrderPost', function(event, data ){
-     loadGrid();
+       $scope.filterResult();
      });
 
     $scope.dateChange = function(pagination, filter){
@@ -242,7 +172,7 @@ resultModule.controller('resultController', [
        $scope.users = result.data.results;
        $scope.totalUsers = result.data.total;
 
-      $http.get('/api/result',  {
+      $http.get('/api/result', {
         params: {
         page: 1,
         count: $scope.totalUsers,
@@ -253,7 +183,6 @@ resultModule.controller('resultController', [
     })
     .then(function(totalResult) {
       $scope.printReport = totalResult.data.results;
-      console.log($scope.printReport);
       $scope.total = {
           costo: 0,
           pago : 0,
@@ -269,27 +198,6 @@ resultModule.controller('resultController', [
             $scope.total.seguro = parseInt($scope.total.seguro) + parseInt(totalResult.data.results[i].seguroId ? 1: 0);
       }
      });
-
-       // $scope.dataTotal = lodash.chain($scope.users)
-       //                  .map(function(item){
-       //                 var totalCosto = getTotalCosto(item.costo);
-       //                return {
-       //                  totalCosto: totalCosto
-                       
-       //                };
-       //              })
-       //              .value();
-
-       // function getTotalCosto(item){
-       //  //console.log(item);
-       //    var costo = 0;
-       //    if(item){
-       //    costo = costo  + parseInt(item);
-       //    }
-       //    return costo;
-       // }
-
-       //console.log($scope.dataTotal.totalCosto);
 
     });
     }
@@ -347,15 +255,90 @@ resultModule.directive('ngPrint', function(){
 
 });
 
-resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Authentication', function($q, $timeout, $http, Result, Authentication){
+resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Authentication', '$rootScope', function($q, $timeout, $http, Result, Authentication, $rootScope){
 
    var self = {
    'resultList' : [],
+   'Results': [],
+   'search': {},
+   'date': {},
+   'params': {},
+   'totales': {},
+   'paramsPrint': {},
+   'hasMore': true,
+   'page': 1,
+   'total': 0,
+   'count': 25,
    'selectedResult': null,
    'isPrinting': false,
    'resultado': {},
    'reportName': null,
    'papObservation': null,
+   'loadResult': function(){
+    var defer = $q.defer();
+      self.params = {
+        'page': self.page,
+        'search': self.search,
+        'date': self.date,
+        'ordering': self.ordering
+      };
+      Result.get(self.params, function(data){
+        self.total = data.total;
+        
+        console.log(data);
+        defer.resolve(data);
+        self.Results = [];
+       if(data.results){
+           angular.forEach(data.results, function(item){
+                self.Results.push(item);  
+           });
+           self.paramsPrint = {
+              'page': 1,
+              'search': self.search,
+              'date': self.date,
+              'count': self.total
+           };
+        Result.get(self.paramsPrint, function(totalResult){
+          console.log(totalResult);
+           self.printReport = totalResult.results;
+           self.totales = {
+                costo: 0,
+                pago : 0,
+                debe: 0,
+                seguro: 0
+            };  
+
+        for(var i = 0; i < totalResult.results.length; i++){
+           self.totales.costo = parseInt(self.totales.costo) + parseInt(totalResult.results[i].costo ? totalResult.results[i].costo: 0);
+           self.totales.pago = parseInt(self.totales.pago) + parseInt(totalResult.results[i].pago ? totalResult.results[i].pago: 0);
+           self.totales.debe = parseInt(self.totales.debe) + parseInt(totalResult.results[i].debe ? totalResult.results[i].debe: 0);
+           self.totales.seguro = parseInt(self.totales.seguro) + parseInt(totalResult.results[i].seguroId ? 1: 0);
+      }
+        });
+        }
+        if(self.count >= data.total){
+            self.hasMore = false;
+        }
+      }, function(error){
+          defer.reject();
+      });
+      return defer.promise;
+   },
+   'filterResult': function(){
+        self.Results = [];
+        self.count = 25;
+        self.loadResult();
+   },
+   'resetForm': function(){
+    self.search = {};
+    self.filterResult();
+   },
+   'loadMore': function(page){
+        if(self.hasMore){
+            self.count += self.count;
+            self.loadResult();
+        }
+     },
    'getResults' : function(){
     var defer = $q.defer();
      $http.post('result/getList').
@@ -379,7 +362,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
           for (var i = 0; i < self.resultList.length; i++) {
               var obj = self.resultList[i];
               if (obj._id === resultId) {
-                 console.log("completed");
                 return obj;
             }
           }
@@ -404,10 +386,54 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
           return defer.promise;
           
       },
+      'watchFilters': function () {
+          $rootScope.$watch(function () {
+            return self.search.paciente;
+            }, function (newVal) {
+              if(newVal){
+              console.log (newVal);
+              if (angular.isDefined(newVal)) {
+                self.loadResult();
+              }
+          }
+        });
+         $rootScope.$watch(function () {
+            return self.search.doctor;
+            }, function (newVal) {
+              if(newVal){
+              console.log (newVal);
+              if (angular.isDefined(newVal)) {
+                self.loadResult();
+              }
+          }
+        });
+
+        $rootScope.$watch(function () {
+            return self.search.seguro;
+            }, function (newVal) {
+              // if(newVal){
+              console.log (newVal);
+              if (angular.isDefined(newVal)) {
+                self.loadResult();
+              // }
+          }
+        });
+
+        $rootScope.$watch(function () {
+            return self.search.sereal;
+            }, function (newVal) {
+              // if(newVal){
+              console.log (newVal);
+              if (angular.isDefined(newVal)) {
+                self.loadResult();
+              }
+          // }
+        });
+      }
    };
 
-   self.getResults();
-
+   self.loadResult();
+   self.watchFilters();
    return self;
 }
 ]);

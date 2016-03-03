@@ -2,26 +2,63 @@
  <div class="row">
   <div class="col-md-12">
       <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-8">
+                  <div class="form-group">
+           <input date-range-picker   ng-change="filterResult()" class="form-control date-picker" type="text" ng-model="services.date"/>
+                   </div>
+            </div>
+             <div class="col-sm-4">
             <div class="form-group">
-            <input ng-model="q" id="search" class="form-control" placeholder="Filter text" ng-change="pageChanged(1, q)">
+            <input ng-model="services.search.seguro" id="search" class="form-control" placeholder="Filtrar Seguro" >
             </div>
             </div>
 
-            <div class="col-sm-6">
+        </div>
+        <div class="row">
+            
+
+             <div class="col-sm-4">
+            <div class="form-group">
+             <select ui-select2 id="selectedPatient" ng-model="services.search.paciente" id="patients" class="selec2Big"  name="patients"  data-placeholder="-- Filtrar Paciente --">
+                  <option value=""></option>
+                      <option ng-repeat="value in orders.patientList" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
+                  </select> 
+            </div>
+            </div>
+
+             <div class="col-sm-4">
+            <div class="form-group">
+            <select ui-select2="select2Config" data-ng-model="services.search.doctor" id="doctor" class="selec2Big"    name="doctor" data-placeholder="-- Filtrar Doctor --" >
+              <option value=""></option>
+              <option ng-repeat="value in orders.doctorList" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
+             </select> 
+            </div>
+            </div>
+
+            <div class="col-sm-2 col-md-2">
+            <div class="form-group">
+            <input ng-model="services.search.sereal" id="search" class="form-control" placeholder="Filter text">
+            </div>
+            </div>
+
+            <div class="col-sm-2 col-md-2">
+            <div class="form-group pull-right">
+            <button ng-click="resetSearchForm()" class="btn btn-sm btn-warning "><i class="fa fa-refresh"></i> </button>
+            <button class="btn btn-sm btn-primary" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> </button>
+            </div>
+            </div>
+
+
+
+           <!--  <div class="col-sm-6">
                   <div class="form-group">
                   <input date-range-picker   ng-change="dateChange(pagination.current, q)" class="form-control date-picker" type="text" ng-model="date" />
                    </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                 <button class="btn btn-primary pull-right" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> </button>
-            </div>
-        </div>
-        
-       <div class="row">
-          <table class="table table-striped">
+            </div> -->
+    </div>     
+    <div class="row">
+    <div class="col-sm-12">
+       <table class="table table-striped">
            <thead>
                 <th>#</th>
                 <th>Procs</th>
@@ -33,7 +70,7 @@
                 <th>Debe</th>
                 <th>S.M</th>
             </thead>
-            <tr dir-paginate="user in users | itemsPerPage: usersPerPage" current-page="cPage" total-items="totalUsers">
+            <tr dir-paginate="user in services.Results | itemsPerPage: services.count" current-page="services.page" total-items="services.total">
             
                     <td>{{ user.rSereal }}</td>
                     <td>{{ user.tipomuestraDesc}}</td>
@@ -46,25 +83,32 @@
        <td>{{user.pago | currency}}</td>
        <td>{{user.debe | currency}}</td>
        <td>{{user.seguroDesc}}</td>
-         <td style="width: 11%">
-        <div style="float:left; margin-right: 3px">
-           <a class="btn btn-info" title="Resultado" ng-click="setResult(user)">
-            <span class="glyphicon glyphicon-eye-open"></span><a/>   
-       </div>
-       <div>
-           <a class="btn btn-primary" title="Editar" ng-click="setUpdate(user)">
-            <i class="fa fa-eraser"></i><a/>   
+         <td style="width: 12%; padding-right: 0px;">
+        <div class="form-group pull-right">
+           <a class="btn btn-sm btn-info" title="Resultado" ng-click="setResult(user)">
+            <span class="glyphicon glyphicon-eye-open"></span><a/>
+             <a class="btn btn-sm btn-primary" title="Editar" ng-click="setUpdate(user)">
+            <i class="fa fa-eraser"></i><a/>         
        </div>
        </td>
                 </tr>
         </table>
-       
-  {{pagination.current}}
-    <dir-pagination-controls  on-page-change="pageChanged(newPageNumber, q,  pagination.current)">
+
+    <dir-pagination-controls  on-page-change="loadMore(newPageNumber, oldPageNumer)">
     </dir-pagination-controls>
-    </div>
-     </div>
-</div>
+    <div ng-show="services.Results.length == 0">
+       <div class="alert alert-info">
+          <p class="text-center">
+            Ningun resultado encontrado
+          </p>
+       </div>
+   </div>
+
+
+    </div>   
+   </div>
+ </div><!-- End of the first Colunn-->
+</div><!-- End of the first Row-->
 
 <div class="row">
 <div ng-show="false"> 
@@ -93,7 +137,7 @@
                 <td></td>
                <td><span>Pagados</span></td>
                <td><span>Deben</span></td>
-               <td><span>Con Seguros</span></td>
+               <td><span>C/Seguros</span></td>
               </tr>
               <tr>
                 <td></td>
@@ -101,12 +145,12 @@
                 <td></td>
                 <td></td>
                 <td><span>Totales:</span></td>
-               <td><span>{{total.pago | currency}}</span></td>
-               <td><span>{{total.debe | currency}}</span></td>
-               <td><span>{{total.seguro }}</span></td>
+               <td><span>{{services.totales.pago | currency}}</span></td>
+               <td><span>{{services.totales.debe | currency}}</span></td>
+               <td><span>{{services.totales.seguro }}</span></td>
               </tr>
             </tfoot>
-            <tr ng-repeat="user in printReport">
+            <tr ng-repeat="user in services.printReport">
           <td>{{ user.rSereal }}</td>
           <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
            <td>{{user.doctor.firstName}} {{user.doctor.lastName}}</td>

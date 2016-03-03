@@ -22,7 +22,13 @@ module.exports = function(app) {
 		.get(result.getResultbyOrder)
 		.post(result.getResultbyId);
 
-
+   app.route('/api/resultFilterBy')
+		.get(result.getResultBy);
+   
+   app.route('/api/resultMax')
+		.get(result.getResultMaxByType)
+		.post(result.getResultMaxByType);
+		
    app.route('/result/getList')
 	   .post(result.getList);
 

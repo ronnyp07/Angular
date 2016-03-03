@@ -16,7 +16,8 @@ var ResultSchema = new Schema({
 	rSereal: {
 		type: String,
 		required: 'Nombre de reporte requerido',
-		trim: true
+		trim: true,
+		index: {unique: true}
 	},
     tipomuestra: {
     	type: String,
@@ -59,6 +60,7 @@ var ResultSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	is_active: {type: Boolean, default: true},
 
     tecnica: {
         type: String,

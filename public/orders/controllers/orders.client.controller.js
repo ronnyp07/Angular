@@ -168,6 +168,7 @@ ordersModule.controller('ordersController', [
     $scope.orders.selectedOrder.pago = 0;
     $scope.orders.selectedOrder.debe = 0;
     $scope.orders.createdDate = Date.now();
+    $scope.orders.rSereal ="";
     $scope.orders.createMode = true;
     $scope.orders.clinicaList = [];
     };

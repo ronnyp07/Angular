@@ -150,7 +150,7 @@
                <td><span>{{services.totales.seguro }}</span></td>
               </tr>
             </tfoot>
-            <tr ng-repeat="user in services.printReport">
+            <tr class="bodyTable" ng-repeat="user in services.printReport">
           <td>{{ user.rSereal }}</td>
           <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
            <td>{{user.doctor.firstName}} {{user.doctor.lastName}}</td>

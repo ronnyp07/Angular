@@ -7,7 +7,7 @@
 <!-- <link href="/css/bootstrap-theme.min.css" rel="stylesheet"></link>  -->
 <link href="lib/jquery-ui/themes/smoothness/jquery-ui.css" rel="stylesheet" /><link>
 <link href="/css/angular.css" rel="stylesheet"></link>
-<link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet"/>
+
 <link href="lib/bootstrap-additions/dist/bootstrap-additions.min.css" rel="stylesheet"/>
 
 <link href="lib/ladda/dist/ladda-themeless.min.css" rel="stylesheet" >
@@ -20,6 +20,8 @@
 <link rel="stylesheet" href="lib/fullcalendar/dist/fullcalendar.css"/>
 <link href="lib/alertifyjs/css/alertify.min.css"  rel="stylesheet" ></link>
 <link href="lib/alertifyjs/css/themes/default.css"  rel="stylesheet" ></link>
+
+<link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css"  rel="stylesheet" ></link>
 
      @html.block("head")
  </head>
@@ -117,6 +119,10 @@
 <script type="text/javascript" src="lib/angular-ui-calendar/src/calendar.js"></script>
 <script type="text/javascript" src="lib/angular-ui-router/release/angular-ui-router.js"></script>
 <script type="text/javascript" src="lib/fullcalendar/dist/fullcalendar.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="lib/angular-daterangepicker-plus/src/angular-daterangepicker-plus.js"></script>
+
+
 <script type="text/javascript" src="lib/fullcalendar/dist/gcal.js"></script>
 <script type="text/javascript" src="lib/angular-ui-date/src/date.js"></script>
 <script type="text/javascript" src="lib/angular-route/angular-route.js"></script>
@@ -130,7 +136,8 @@
 <script type="text/javascript" src="lib/alertifyjs/alertify.min.js"></script>
 <script src="lib/moment/moment.js"></script>
 <script src="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-<script src="lib/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+<script src="lib/angular-daterangepicker-plus/src/angular-daterangepicker-plus.js"></script>
+
 <script type="text/javascript" src="/examples/example.client.module.js"></script>
 <script type="text/javascript" src="/pais/pais.client.module.js"></script>
 <script type="text/javascript" src="/pais/controllers/pais.client.controller.js"></script>

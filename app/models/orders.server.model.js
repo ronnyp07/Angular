@@ -125,6 +125,9 @@ var OrderSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+	createdDateDoctor: {
+		type:String
+	},
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'

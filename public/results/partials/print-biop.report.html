@@ -10,12 +10,12 @@
   <div class="row tecnicaRow">
   <div class="col-xs-12"> 
       <label>Técnica: </label></br> 
-      <div class="rTecnica stepLine">{{resultServices.resultado.tecnica}}</div>
+      <div class="rTecnica stepLine">{{resultServices.tecnica}}</div>
   </div>
   </div>
-  <div class="row" ng-if="resultServices.resultado.nota">
+  <div class="row" ng-if="resultServices.nota">
   <div class="col-xs-12" >
-     <div class="notaMargin stepLine"> Nota: {{resultServices.resultado.nota}} </div>
+     <div class="notaMargin stepLine"> Nota: {{resultServices.notaResult}} </div>
   </div>
   </div>
   <div class="row  diagMargin">
@@ -31,8 +31,4 @@
        </div>
     </div>
   </div> 
-<div class=" row footerB">
-<div class="col-xs-12">
- <div class="footdir">Av. Coronel Juan Maria Lor Fernandez #189 los Rios, Tels: Ofic. 809-732-0995, Santo Domingo </div>
- </div>
-</div>
+<result-footer></result-footer>

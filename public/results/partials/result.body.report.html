@@ -20,12 +20,12 @@
                     </div>
                 </div>
 
-                 <div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'B'">
+                 <div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'B' || resultServices.selectedResult.tipomuestra == 'BG'">
                    <div class="col-sm-6">
                    <div class="form-group">
                      <label class="control-label" for="">Tecnica</label>
                      <div class="controls">
-                        <textarea rows="7" ng-trim="false" ng-model="resultServices.resultado.tecnica" name = "tecnica" id="Resultado" maxlength="500" class="form-control" placeholder="Insertar Tecnica">
+                        <textarea rows="7" ng-trim="false" ng-model="resultServices.tecnica" name = "tecnica" id="tecnica" maxlength="500" class="form-control" placeholder="Insertar Tecnica">
                      </textarea>
                       </div>
                       </div>
@@ -34,7 +34,7 @@
                    <div class="form-group">
                      <label class="control-label" for="">Nota</label>
                      <div class="controls">
-                        <textarea rows="7" ng-trim="false" ng-model="resultServices.resultado.nota" name= "note" id="nota" maxlength="500" class="form-control" placeholder="Insertar Nota">
+                        <textarea rows="7" ng-trim="false" ng-model="resultServices.notaResult" name= "nota" id="nota" maxlength="500" class="form-control" placeholder="Insertar Nota">
                      </textarea>
                       </div>
                       </div>

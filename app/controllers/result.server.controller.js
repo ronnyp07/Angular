@@ -36,7 +36,7 @@ var getErrorMessage = function(err) {
 };
 
 /**
- * Create a Pai
+ * Create a Resultado
  */
 exports.create = function(req, res) {
   var result = new Result(req.body);
@@ -45,7 +45,7 @@ exports.create = function(req, res) {
     if (err) {
       if(err.code === 11000){
               return res.status(401).send({
-                message: 'Pais ya existe'
+                message: 'Reporte ya existe'
           });
             }else {
       return res.status(400).send({
@@ -90,13 +90,15 @@ exports.listpage = function(req, res) {
      var endDate = new Date(dates.endDate);
      var endDateYear = endDate.getFullYear();
      var endDateMonth = endDate.getMonth();
-     var endDateDay = endDate.getDate() + 1;
-
+     var endDateDay = endDate.getDate();
+  
      var startDate = new Date(dates.startDate);
      var startDateYear = startDate.getFullYear();
      var startDateMonth = startDate.getMonth();
-     var startDateDay = startDate.getDate() + 1;
-
+     var startDateDay = startDate.getDate();
+     
+     var sDateResult = startDateYear + '-' + ('0'+(startDateMonth + 1)).slice(-2) + '-' + ('0'+(startDateDay)).slice(-2);
+     var eDateResult = endDateYear + '-' +  ('0'+(endDateMonth + 1)).slice(-2)+ '-' + ('0'+(endDateDay)).slice(-2);
      var pagination = {
       start : (page - 1) * count,
       count : count
@@ -104,26 +106,26 @@ exports.listpage = function(req, res) {
 
     var sort ={
       sort: {
-        desc: '_id'
+        created: '-1'
       }
      };
-     // + search.sereal ? search.sereal : ''
+
     var contains = {};
     if(search.doctor && !search.paciente){
-      contains = { rSereal : search.sereal ? search.sereal : '',
+      contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
                    doctor: mongoose.Types.ObjectId(search.doctor)};
     }else if(search.paciente && !search.doctor){
-      contains = { rSereal : search.sereal ? search.sereal : '',
+      contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
                    patientReport: mongoose.Types.ObjectId(search.paciente)};
     }else if(search.paciente && search.doctor){
-      contains = { rSereal : search.sereal ? search.sereal : '',
+      contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
                    doctor: mongoose.Types.ObjectId(search.doctor),
                    patientReport: mongoose.Types.ObjectId(search.paciente)};
     }else{
-       contains =  {rSereal : search.sereal ? search.sereal : '',
+       contains =  {tipomuestraDesc : search.sereal ? search.sereal : '',
                      seguroDesc: search.seguro ? search.seguro: null || ''};
     }
 
@@ -131,24 +133,20 @@ exports.listpage = function(req, res) {
     var filter = {
       filters: {
            mandatory : {
-             contains,
-               greaterThanEqual : {
-                created : new Date(startDateYear, startDateMonth, startDateDay)
-             },
-            lessThanEqual : {
-                created : new Date(endDateYear, endDateMonth, endDateDay)
-            }
+             contains
+            //  ,
+            // greaterThanEqual : {
+            //     created : sDateResult
+            //  },
+            // lessThanEqual : {
+            //     created : eDateResult
+            // }
        }
-       // madatory  : {
-       //      contains : {
-       //           doctor: search.doctor ? mongoose.Types.ObjectId(search.doctor) : null 
-       //      }
-       //  }
      }
    };
 
     Result
-    .find()
+    .find({created: {'$gte':  sDateResult, '$lte': eDateResult}})
     .populate('orders')
     .populate('patientReport')
     .populate('patientReport.locations')
@@ -241,7 +239,7 @@ exports.getResultMaxByType = function(req, res){
       var resultId = req.body.resultType;
        Result
        .find({tipomuestra: resultId})
-       .sort({created: -1})
+       .sort({ResultId: -1})
        .limit(1)
        .exec(function(err, result){
           if (err) {
@@ -255,7 +253,7 @@ exports.getResultMaxByType = function(req, res){
 };
 
 /**
- * Show the current Pai
+ * Show the current Resultado
  */
 exports.read = function(req, res) {
   res.jsonp(req.result);
@@ -273,11 +271,10 @@ exports.resultByID = function(req, res, next, id) {
 };
 
 /**
- * Update a Pai
+ * Update a Resultado
  */
 exports.update = function(req, res) {
   var result = req.result;
-  // res.status(200);
        result.resultado = req.body.resultado ?  req.body.resultado: result.resultado;
        result.diagnostico = req.body.diagnostico ? req.body.diagnostico : result.diagnostico;
        result.noAutho = req.body.noAutho ? req.body.noAutho : result.noAutho;
@@ -296,9 +293,7 @@ exports.update = function(req, res) {
        result.clinica  = req.body.clinica ? req.body.clinica : result.clinica;
        result.seguroDesc  = req.body.seguroDesc ? req.body.seguroDesc : result.seguroDesc;
        result.created = req.body.created ? req.body.created : result.created;
-      // result.updateDate = req.body.updateDate;
-      // result.updatedUser = req.body.updatedUser;
-  
+       result.createdDateDoctor = req.body.createdDateDoctor ? req.body.createdDateDoctor : result.createdDateDoctor;
   result.save(function(err) {
     if (err) {
       return res.status(400).send({
@@ -310,13 +305,5 @@ exports.update = function(req, res) {
   });
 };
 
-/**
- * Delete an Pai
- */
-
-
-/**
- * List of Pais
- */
 
  

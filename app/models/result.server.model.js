@@ -75,8 +75,10 @@ var ResultSchema = new Schema({
 		trim: true
     },
 	created: {
-		type: Date,
-		default: Date.now
+		type: String
+	},
+	createdDateDoctor: {
+		type: String
 	},
 	updateDate: {
 	    type: Date

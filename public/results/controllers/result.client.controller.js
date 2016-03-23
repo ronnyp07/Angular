@@ -29,9 +29,21 @@ resultModule.controller('resultController', [
       $scope.resultServices.reportName = 'Reporte Citológico';
     }else{
       $scope.resultServices.reportName = 'Reporte Histopatológico';
-    };
-    $scope.resultServices.resultado = $scope.resultServices.selectedResult.resultado;
-   });
+    }
+
+    if($scope.resultServices.selectedResult.tipomuestra === 'B'){
+      $scope.resultServices.tecnica = 'Hematoxilina, Eosina';
+    }else if ($scope.resultServices.selectedResult.tipomuestra === 'BG'){
+      $scope.resultServices.tecnica  = 'Hematoxilina, Eosina ' + '\n' +
+                                       'Histoquímica de Waysson para HP';
+      if(!$scope.resultServices.selectedResult.nota){
+        $scope.resultServices.notaResult = 'La nota para las Biosia Gastrica siempre tendra nota: la técnica histoquímica de Waysson para helicobacter pylori resulto positivo (se identifican moderados microorganismos espiralados igual a 2 en una escala de 0 a 3) y Tecnica';
+      }else{
+        $scope.resultServices.notaResult = $scope.resultServices.selectedResult.nota;
+      } 
+    }
+     $scope.resultServices.resultado = $scope.resultServices.selectedResult.resultado;
+    });
   
 
 	$scope.update = function(){
@@ -213,11 +225,8 @@ resultModule.controller('resultController', [
      } 
  ]);
 
-
 resultModule.directive('ngPrint', function(){
  var printSection = document.getElementById('printSection');
-        // if there is no printing section, create one
-
        if (!printSection) {
             printSection = document.createElement('div');
             printSection.id = 'printSection';  
@@ -265,6 +274,8 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
    'params': {},
    'totales': {},
    'paramsPrint': {},
+   'notaResult': null,
+   'tecnica': null,
    'hasMore': true,
    'page': 1,
    'total': 0,
@@ -272,8 +283,12 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
    'selectedResult': null,
    'isPrinting': false,
    'resultado': {},
+    test: null,
    'reportName': null,
    'papObservation': null,
+   'setResult': function(){
+     self.resultado['tecnica'] = 'mierda';
+   },
    'loadResult': function(){
     var defer = $q.defer();
       self.params = {
@@ -284,8 +299,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
       };
       Result.get(self.params, function(data){
         self.total = data.total;
-        
-        console.log(data);
         defer.resolve(data);
         self.Results = [];
        if(data.results){
@@ -299,7 +312,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
               'count': self.total
            };
         Result.get(self.paramsPrint, function(totalResult){
-          console.log(totalResult);
            self.printReport = totalResult.results;
            self.totales = {
                 costo: 0,
@@ -346,7 +358,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
             if(data){
               self.resultList = [];
                 angular.forEach(data, function(dataresult){
-                 // console.log(dataresult);
                   self.resultList.push(dataresult);
                   defer.resolve();
                 });
@@ -371,6 +382,8 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
          var updateResult = new Result({
             _id: self.selectedResult._id,
             resultado: self.resultado,
+            nota: self.nota,
+            tecnica: self.tecnica,
             noAutho : self.selectedResult.noAutho,
             updatedUser: Authentication.user._id,
             reportStatus: 'Listo'
@@ -391,7 +404,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
             return self.search.paciente;
             }, function (newVal) {
               if(newVal){
-              console.log (newVal);
               if (angular.isDefined(newVal)) {
                 self.loadResult();
               }
@@ -401,7 +413,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
             return self.search.doctor;
             }, function (newVal) {
               if(newVal){
-              console.log (newVal);
               if (angular.isDefined(newVal)) {
                 self.loadResult();
               }
@@ -411,29 +422,24 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
         $rootScope.$watch(function () {
             return self.search.seguro;
             }, function (newVal) {
-              // if(newVal){
-              console.log (newVal);
               if (angular.isDefined(newVal)) {
                 self.loadResult();
-              // }
           }
         });
 
         $rootScope.$watch(function () {
             return self.search.sereal;
             }, function (newVal) {
-              // if(newVal){
-              console.log (newVal);
               if (angular.isDefined(newVal)) {
                 self.loadResult();
               }
-          // }
         });
       }
    };
 
    self.loadResult();
    self.watchFilters();
+   self.setResult();
    return self;
 }
 ]);
@@ -478,6 +484,14 @@ resultModule.directive('resultPrintpop', function(){
     return {
           restrict: 'E',
           templateUrl: 'results/partials/result.body.pap.print.report.html'
+     };
+});
+
+
+resultModule.directive('resultFooter', function(){
+    return {
+          restrict: 'E',
+          templateUrl: 'results/partials/footer.html'
      };
 });
 

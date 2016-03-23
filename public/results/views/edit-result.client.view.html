@@ -105,7 +105,7 @@
                   
                  <result-bodypop ng-if="resultServices.selectedResult.tipomuestra == 'P'"></result-bodypop>
                 
-                  <result-body ng-if="resultServices.selectedResult.tipomuestra == 'B'"></result-body> 
+                  <result-body ng-if="resultServices.selectedResult.tipomuestra == 'B' || resultServices.selectedResult.tipomuestra == 'BG'"></result-body> 
 
                   <result-body ng-if="resultServices.selectedResult.tipomuestra == 'BL'"></result-body> 
 
@@ -133,9 +133,8 @@
   <img src="images\logo1.jpg" width="150px" height="110px">
   </div>
   <div class="details-containert">
-     <h1>LABORATORIO DE ANATOMIA PATOLOGICA Y CITOPATOLOGICA</h1>
-      <h2>DR. BALTAZAR PIMENTEL GOMEZ S.R.L</h2>
-      <h2>RNC: 130664854</h2>
+     <h1>LABORATORIO DE PATOLOGIA DR. PIMENTEL S.R.L</h1>
+     <h2>RNC: 130664854</h2>
   </div>
 </div>
 </div>
@@ -147,7 +146,7 @@
     <label> No. </label> {{resultServices.selectedResult.rSereal}}
   </div>  
     <div class="col-xs-6 details-container">
-      <label> Fecha </label> {{resultServices.selectedResult.created  | date: 'dd/MM/yyyy'}}
+      <label> Fecha </label> {{resultServices.selectedResult.createdDateDoctor  | date: 'dd/MM/yyyy'}}
     </div>  
 </div>
 <div class="row">
@@ -189,7 +188,7 @@
 <!-- <result-bodypop ></result-bodypop> -->
 <result-printpop></result-printpop>
 </div>
-<div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'B'">
+<div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'B' || resultServices.selectedResult.tipomuestra == 'BG'">
 <print-biopsia></print-biopsia>
 </div>
 <div class="row" ng-if="resultServices.selectedResult.tipomuestra == 'BL'">

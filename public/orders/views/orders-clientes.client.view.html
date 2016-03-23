@@ -363,10 +363,10 @@
                   <div class="row rowcontrolmargin">
                   <div class="col-sm-6">
                 <button class="btn btn-danger form-control"
-                ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctorSelected == undefined || orders.selectedOrder.patient == undefined"  ng-click="cancelOrder();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
+                ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined "  ng-click="cancelOrder();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
                   </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-success form-control"   ng-click="createCtrl.create(orderDetail); cleanForm()"></i> Guardar</button>
+                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined || ordersCreate.$invalid"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved" ></i> Guardar</button>
                 </div>          
                 </div>
              </div>

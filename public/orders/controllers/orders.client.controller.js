@@ -459,7 +459,8 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
           self.procList = [];
           self.selectedPatient = {};
           self.getprocList();
-          // self.createdDate = null;
+          self.createdDate = null;
+          self.updatedProcs = null;
           self.createdDateDoctor = null;
           self.rSereal = null;
           self.isSaving = false;

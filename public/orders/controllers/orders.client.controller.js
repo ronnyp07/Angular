@@ -458,7 +458,6 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         'clearForm': function(){
           self.procList = [];
           self.selectedPatient = {};
-          self.getprocList();
           self.createdDate = null;
           self.updatedProcs = null;
           self.createdDateDoctor = null;

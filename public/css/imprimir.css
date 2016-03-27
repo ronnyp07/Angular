@@ -165,24 +165,25 @@ textarea { display: block }
    html{ 
     height: 99%;
    }
-
-
-
-/*   tr.vendorListHeading {
-    background-color: #1a4567 !important;
-    -webkit-print-color-adjust: exact; 
-  }
-
-    .vendorListHeading th {
-      background-color: #1a4567 
-    color: red !important;
+/*
+ tr {
+    page-break-inside: avoid;
+    -webkit-region-break-inside: avoid; 
 }
 */
+
+
+
+.pageBreak{
+    page-break-before: always;
+     page-break-inside:avoid;
+}
 
   /* .print{
     height: 700px;
     }
 */
+
 
 #printSection, #printSection * {
     visibility:visible;

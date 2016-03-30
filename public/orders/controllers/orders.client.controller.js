@@ -153,38 +153,37 @@ ordersModule.controller('ordersController', [
    OrderServices )
    {
     var createCtrl = this;
+     $scope.orders = OrderServices;
+     $scope.loadDropDown = function(){
+      $scope.orders.getprocList();
+      $scope.orders.getClinicaList();
+      $scope.orders.getPatientList();
+      $scope.orders.getDoctorList();
+    };
+
     
     $scope.init = function(){
     $scope.orderDetail = [];
-    $scope.orders = OrderServices;
-    $scope.orders.selectedOrder = {};
+    $scope.orders.selectedOrder = {}; 
     $scope.orders.selectedDoctor = {};
-    $scope.orders.getDoctorList();
-    $scope.orders.getprocList();
-    $scope.orders.getClinicaList();
-    $scope.orders.getPatientList();
     $scope.orders.selectedPatient = {};
     $scope.orders.selectedOrder.total = 0;
     $scope.orders.selectedOrder.pago = 0;
     $scope.orders.selectedOrder.debe = 0;
     $scope.orders.createdDate = moment().format();   
     $scope.orders.createdDateDoctor = moment().format(); 
-    console.log(moment().format('YYYY-MM-DD'));
     $scope.orders.rSereal ='';
     $scope.orders.createMode = true;
     $scope.orders.clinicaList = [];
-
     };
 
     createCtrl.valuationDatePickerIsOpen = false;
-    // createCtrl.valuationDatePickerIsOpen1 = false;
     $scope.$watch(function () {
          return createCtrl.valuationDatePickerIsOpen;
      },function(value){ 
     });
 
     $scope.log = function(param){
-      console.log(param);
       $scope.orders.createdD = param;
     };
 
@@ -192,7 +191,6 @@ ordersModule.controller('ordersController', [
      return createCtrl.valuationDatePickerIsOpen1;
      },function(value){  
     });
-    
     
     createCtrl.valuationDatePickerOpen = function ($event) {
         if ($event) {
@@ -211,6 +209,7 @@ ordersModule.controller('ordersController', [
     };
     
      $scope.init();    
+     $scope.loadDropDown();
      NotifyPatient.getMsg('patientsaved', function(event, data){ 
    	 $scope.orders.getPatientList();
    	 $scope.orders.selectedOrder.patient = data.patientSavedInfo._id;
@@ -376,10 +375,12 @@ ordersModule.controller('ordersController', [
  	this.create = function(param) {
    if($scope.orders.newPatient.patientFirstName){
       $scope.orders.createNewPatient().then(function(){
-               $scope.orders.create(param).then(function(){
+              $scope.orders.create(param).then(function(){
                $scope.init();
-               });
-        });      
+               Notify.sendMsg('newOrderPost', {'id': 'nada'});   
+            });
+        });
+
     }else{
     $scope.orders.create(param).then(function(){
       $scope.init();
@@ -420,7 +421,7 @@ ordersModule.directive('resultList', ['Orders', 'Notify', 'Result', function(Ord
    };
  }]);
 
-ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result', 'Patients', 'Cliente', function($q, $http, Procs, Orders, Result, Patients, Cliente){
+ordersModule.service('OrderServices', ['$q','$timeout', '$http', 'Procs', 'Orders', 'Result', 'Patients', 'Cliente', function($q, $timeout, $http, Procs, Orders, Result, Patients, Cliente){
       var self = {
         'bInfo': null,
         'blInfo': null,
@@ -456,8 +457,8 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
         'listadoClinica':[],
         'orderDetail': [],
         'clearForm': function(){
-          self.procList = [];
           self.selectedPatient = {};
+          self.newPatient = {};
           self.createdDate = null;
           self.updatedProcs = null;
           self.createdDateDoctor = null;
@@ -475,10 +476,14 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
             self.newPatient.PatientCI = PatientCI;
             var patient = new Patients(self.newPatient);
 
+            console.log(patient);
             patient.$save(function(data){
-              self.selectedPatient = data;
               self.selectedOrder.patient = data._id;
-              defer.resolve(data);
+              self.getPatientList().then(function(){
+                self.selectedPatient = self.getPatientById(self.selectedOrder.patient);
+                defer.resolve(data);
+              });        
+              
           }, function(err){
               defer.reject();
             });
@@ -523,6 +528,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
               createdDateDoctor: self.getDate(new Date(self.createdDateDoctor)),
               procs: self.selectedProc._id
             });
+             console.log(report);
             report.$save(function(response){
               var newCounter = 0;
               if(response.tipomuestra === 'B'){
@@ -560,8 +566,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
            });
           
             }else{
-              // var createdDate = self.getDate(new Date(self.createdDate));
-              // console.log(createdDate);
+
             var report = new Result({
               _id: self.updatedProcs._id,
               costo: self.selectedOrder.total,
@@ -573,11 +578,10 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
               clinica : self.selectedOrder.clinica,
               nota: self.selectedOrder.nota,
               reportStatus: self.updatedProcs.reportStatus,
-              seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: null,
+              seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: '',
               created: moment(self.createdDate).format('YYYY-MM-DD'),
               createdDateDoctor:  moment(self.createdDateDoctor).format('YYYY-MM-DD')
             });
-            console.log(report);
             report.$update(function(){
                self.isSaving = false;
                self.clearForm();
@@ -626,6 +630,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
          });
         },
         'getDoctorList': function(){
+          console.log('called');
           $http.post('doctor/getList').
             success(function(data){
             if(data){
@@ -639,6 +644,7 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
            });
         },
         'getPatientList': function(){
+          var defer  = $q.defer();
           $http.post('patient/getList').
             success(function(data){
             if(data){
@@ -646,10 +652,12 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
                 angular.forEach(data, function(dataresult){
                   self.patientList.push(dataresult);
                 });
+                defer.resolve();
               }
              }).
              error(function(err){
            });
+          return defer.promise;
         },
         'getClinicaList': function(){
           $http.post('cliente/getList').
@@ -726,14 +734,14 @@ ordersModule.service('OrderServices', ['$q', '$http', 'Procs', 'Orders', 'Result
           return new Date(param.getTime() + param.getTimezoneOffset()*60000);
         }
       };
+
       self.getSeguroList();
       self.selectedOrder = {};
-      self.getDoctorList();
-      self.getprocList();
+      // self.getDoctorList();
+      // self.getprocList();
       self.getB();
       self.getP();
       self.getBL();
-      self.getClinicaList();
-      self.getPatientList();
+      // self.getPatientList();
       return self;
 }]);

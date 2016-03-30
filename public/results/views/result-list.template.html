@@ -2,7 +2,7 @@
  <div class="row">
   <div class="col-md-12">
       <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                   <div class="input-group">
                   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
            <input date-range-picker   ng-change="filterResult()" class="form-control date-picker" type="text" ng-model="services.date"/>
@@ -10,6 +10,11 @@
 
                    </div>
             </div>
+          <div class="col-sm-4">
+              <div class="controls">
+                <select data-ng-model="services.search.status" ng-change="filterResult()"  class="form-control"> <option value="" class="">-- Filtrar Estatus --</option><option value="Pendiente">Pendiente</option><option value="Listo">Listo</option></select>
+                    </div>
+              </div>
              <div class="col-sm-4">
             <div class="form-group">
             <input ng-model="services.search.seguro" id="search" class="form-control" placeholder="Filtrar Seguro" >

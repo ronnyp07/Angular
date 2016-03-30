@@ -128,18 +128,18 @@ exports.list = function(req, res) {
      			contains: req.query.filter
      		}
      	}
-     }
+     };
 
      var pagination = {
      	start : (page - 1) * count,
      	count : count
-     }
+     };
 
      var sort ={
      	sort: {
-     		desc: '_id'
+     		asc: 'firstName'
      	}
-     }
+     };
     
     Doctor
     .find()

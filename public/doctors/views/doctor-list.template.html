@@ -1,7 +1,8 @@
 <div>
   <table ng-table="tableParams" show-filter="true" class="table table-striped">
         <tr ng-repeat="doctor in $data">
-         <td data-title="'Nombre'" filter="{'firstName': 'text' }">{{doctor.firstName}} {{doctor.lastName}}</td>
+         <td data-title="'Nombre'" filter="{'firstName': 'text' }">{{doctor.firstName}}</td>
+          <td data-title="'Apellido'" filter="{'lastName': 'text' }">{{doctor.lastName}}</td>
        <td data-title="'#'"  >{{doctor.DoctorId}}</td>
        <td data-title="'Telefono'">{{doctor.DoctorTelefono}} </td>
        <td data-title="'Email'">{{doctor.DoctorEmail}} </td>

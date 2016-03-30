@@ -106,7 +106,7 @@ exports.listpage = function(req, res) {
 
     var sort ={
       sort: {
-        created: '-1'
+        ResultId: '-1'
       }
      };
 
@@ -114,18 +114,22 @@ exports.listpage = function(req, res) {
     if(search.doctor && !search.paciente){
       contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
+                   reportStatus: search.status,
                    doctor: mongoose.Types.ObjectId(search.doctor)};
     }else if(search.paciente && !search.doctor){
       contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
+                   reportStatus: search.status ? search.status: null || '',
                    patientReport: mongoose.Types.ObjectId(search.paciente)};
     }else if(search.paciente && search.doctor){
       contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
+                   reportStatus: search.status ? search.status: null || '',
                    doctor: mongoose.Types.ObjectId(search.doctor),
                    patientReport: mongoose.Types.ObjectId(search.paciente)};
     }else{
-       contains =  {tipomuestraDesc : search.sereal ? search.sereal : '',
+       contains =  { tipomuestraDesc : search.sereal ? search.sereal : '',
+                     reportStatus: search.status ? search.status: null || '',
                      seguroDesc: search.seguro ? search.seguro: null || ''};
     }
 
@@ -144,14 +148,13 @@ exports.listpage = function(req, res) {
        }
      }
    };
-
+  
     Result
     .find({created: {'$gte':  sDateResult, '$lte': eDateResult}})
     .populate('orders')
     .populate('patientReport')
     .populate('patientReport.locations')
     .populate('doctor')
-    //.deepPopulate('comments.user')
     .filter(filter)
     .order(sort)
     .page(pagination, function(err,tempate){

@@ -57,9 +57,8 @@ angular.module('clientes')
           });        
         return defer.promise;
      };
-     return{
-        resultActions
-     };
+
+     return resultActions;
 }
 ]).service('ClienteService',['$http', '$q', function($http, $q){
     var self = {

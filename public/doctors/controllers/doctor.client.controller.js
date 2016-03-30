@@ -27,24 +27,27 @@ doctorModule.controller
           page: 1,            
           count: 15,
           filter: {             
-              name: name
+              name: name,
+              clinica: ''
         }
        };
 
        var settings = {
-      //  groupBy: 'tipo',
          total: 0,  
          counts: [15,20,25],        
          getData: function($defer, params) {
          Doctors.get(params.url(), function(response){     
                 params.total(response.total);
                 $defer.resolve(response.results);
+
+              for (var i = 0; i < response.results.length; i++) {
+                response.results[i].clinica = ''; //initialization of new property 
+                response.results[i].clinica = response.results[i].clinicaList.length > 0 ? response.results[i].clinicaList[0].clinica : '';  //set the data from nested obj into new property
+              }
                 $scope.total = response.total;
-               // console.log(response);
           });
-        
-          }
-       };
+       }
+    };
 
     $scope.calculateAge = function calculateAge(birthday) { 
     // birthday is a date
@@ -58,26 +61,21 @@ doctorModule.controller
     
     //Open the middleware to open a single cliente modal.
      this.modelRemove = function (size, selected) {
-        console.log("clikcd");
         $scope.doctor = selected;
         var modalInstance = $modal.open({
           templateUrl: 'doctors/views/doctor-delete.template.html',
-          controller: 
-          //'modalDelete',
-          function ($scope, $modalInstance, doctor) {
+          controller: function ($scope, $modalInstance, doctor) {
                  $scope.doctor = doctor;
-      
-                  $scope.ok = function () {
+                 $scope.ok = function () {
                    //console.log($scope.cliente);
                   // $scope.doSearch();
                   $modalInstance.close($scope.doctor);
           };
-
           $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
           };
-
           },
+
           size: size,
           resolve: {
             doctor: function () {
@@ -88,7 +86,6 @@ doctorModule.controller
 
    modalInstance.result.then(function (selected) {
       $scope.selected = selected;
-      //console.log($scope.selected);
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
@@ -96,26 +93,22 @@ doctorModule.controller
 
         //Open the middleware to open a single pais modal.
    this.modelUpdate = function (size, selectedDoctor) {
-
         var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'doctors/views/edit-doctor.client.view.html',
           controller: function ($scope, $modalInstance, doctor) {
             $scope.doctor = doctor;
-            console.log(selectedDoctor);
             $scope.doctor.rClinicaList = selectedDoctor.clinicaList;
             $scope.doctor.rpais = selectedDoctor.pais;
             $scope.doctor.rciudad = selectedDoctor.ciudad;
             $scope.doctor.rsector = selectedDoctor.sector;
-                // console.log($scope.doctor.rsector);
+            $scope.ok = function () {  
+                $modalInstance.close($scope.doctor);
+            };
 
-          $scope.ok = function () {  
-              $modalInstance.close($scope.doctor);
-          };
-
-          $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-          };
+            $scope.cancel = function () {
+              $modalInstance.dismiss('cancel');
+            };
 
           },
           size: size,
@@ -134,22 +127,40 @@ doctorModule.controller
     };
 
 
-    this.modelCreate = function (size) {
+    this.modelCreate = function (size, createdDoctor) {
         var modalInstance = $modal.open({
           templateUrl: 'doctors/views/create-doctor.client.view.html',
-          controller: 'modalResutl',
-          size: size
+          controller: function ($scope, $modalInstance, doctor) {
+            $scope.ok = function () {  
+                $modalInstance.close($scope.doctor);
+            };
+            $scope.cancel = function () {
+              $modalInstance.dismiss('cancel');
+            };
+          },
+
+          size: size,
+          resolve: {
+              doctor: function () {
+              return createdDoctor;
+            }
+          }
      });
 
      modalInstance.result.then(function (selectedItem) {
+      $scope.createdDoctor = selectedItem;
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
     };
 
-    this.doSearch = function () {
+    $scope.doSearch = function(){
         $scope.tableParams.reload();
     };  
+
+     NotifyPatient.getMsg('doctorsaved', function(event, doctor){
+       $scope.doSearch();
+     });
  }
 ]);
 
@@ -159,17 +170,36 @@ doctorModule.controller
    '$http', 
    '$routeParams',  
    'Authentication', 
+   'DoctorsService',
    'Doctors',
    'Pais',
    'Ciudad',
    'Sector',
    'Cliente',
-   'Notify', '$mdToast', '$animate', 'NotifyPatient',
-   function($scope, $http, $routeParams,  Authentication, 
+   'Notify', 
+   '$mdToast', 
+   '$animate', 
+   'NotifyPatient',
+   '$modal',
+   function(
+    $scope, 
+    $http, 
+    $routeParams,  
+    Authentication, 
+    DoctorsService,
     Doctors, 
-    Pais, Ciudad, Sector, Cliente, Notify, $mdToast, $animate, NotifyPatient) {
-    
+    Pais, 
+    Ciudad, 
+    Sector, 
+    Cliente, 
+    Notify, 
+    $mdToast, 
+    $animate, 
+    NotifyPatient,
+    $modal){
+
      var vm = this;
+     $scope.doctorServices = DoctorsService;
      vm.ClinicaList = [];
      vm.pais = Pais.query();
      vm.ciudad = Ciudad.query();
@@ -181,11 +211,11 @@ doctorModule.controller
       loadClientes();
     });
 
+   
 
-   vm.AddClinica = function(){
+    vm.AddClinica = function(){
        var skillsSelect = document.getElementById('clinicaDoctor');
        var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
-
       if(vm.ClinicaList.length <= 0) {
          vm.ClinicaList.push({id: this.clientes, clinica: selectedText});
        }else{
@@ -195,7 +225,7 @@ doctorModule.controller
             return;
           }
         }
-        //console.log(vm.clientes);
+
         vm.ClinicaList.push({id: vm.clientes, clinica: selectedText});
        }
    };
@@ -225,7 +255,6 @@ doctorModule.controller
     vm.DoctorCI = {};
     $scope.authentication = Authentication;
     $scope.referred = true;
-    //$scope.seguros = Seguros.query();
 
     vm.showPatientSave = function() {
       $mdToast.show(
@@ -236,27 +265,30 @@ doctorModule.controller
       );
     };
 
-   vm.create = function(){
-     this.DoctorCI = {
-      tipo: this.DoctorCI.tipo, 
-      value: this.DoctorCI.value 
-     };
-
+   vm.create = function(param){
+    $scope.doctorServices.checkDoctor(param).then(function(create){
+      if(create === true){
+         alertify.error('Doctor ya existe!!');
+      }else{
+        $scope.ok();
+      var DoctorCI = {
+        tipo: vm.DoctorCI ? vm.DoctorCI.tipo : '' , 
+        value: vm.DoctorCI ? vm.DoctorCI.value : '' 
+        };
       var doctor = new Doctors({
-      DoctorCI: this.DoctorCI,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      DoctorTelefono : this.DoctorTelefono,
-      DoctorTelefonoOff: this.DoctorTelefonoOff,
-      DoctorSexo : this.DoctorSexo,
-      DoctorEmail: this.DoctorEmail,
-      DoctorDireccion: this.DoctorDireccion,   
-      pais: this.doctorPais,
-      ciudad: this.doctorCiudad,
-      sector: this.doctorSector,
-      clinicaList : this.ClinicaList
+      DoctorCI: DoctorCI,
+      firstName: vm.firstName,
+      lastName: vm.lastName,
+      DoctorTelefono : vm.DoctorTelefono,
+      DoctorTelefonoOff: vm.DoctorTelefonoOff,
+      DoctorSexo : vm.DoctorSexo,
+      DoctorEmail: vm.DoctorEmail,
+      DoctorDireccion: vm.DoctorDireccion,   
+      pais: vm.doctorPais,
+      ciudad: vm.doctorCiudad,
+      sector: vm.doctorSector,
+      clinicaList : vm.ClinicaList
       });
-      
       // Usar el método '$save' de Patient para enviar una petición POST apropiada
       doctor.$save(function(response){ 
       NotifyPatient.sendMsg('doctorsaved', {doctorSavedInfo: response});
@@ -265,6 +297,10 @@ doctorModule.controller
        $scope.error = errorResponse.data.message;
        console.log($scope.error);
        });
+      }
+
+
+    });
     };
     }
 ]);

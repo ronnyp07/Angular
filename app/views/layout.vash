@@ -3,25 +3,25 @@
  <head>
    <title>@model.title</title>
 <!-- <link href="/css/bootstrap.min.css"  rel="stylesheet"></link> -->
-<link href="/css/cerulian.css"  rel="stylesheet"></link>
+<link href="/css/cerulian.css"  rel="stylesheet">
 <!-- <link href="/css/bootstrap-theme.min.css" rel="stylesheet"></link>  -->
-<link href="lib/jquery-ui/themes/smoothness/jquery-ui.css" rel="stylesheet" /><link>
-<link href="/css/angular.css" rel="stylesheet"></link>
+<link href="lib/jquery-ui/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<link href="/css/angular.css" rel="stylesheet">
 
 <link href="lib/bootstrap-additions/dist/bootstrap-additions.min.css" rel="stylesheet"/>
 
 <link href="lib/ladda/dist/ladda-themeless.min.css" rel="stylesheet" >
-<link href="/css/font-awesome.min.css" rel="stylesheet"></link>
-<link href="/css/patients.css" rel="stylesheet"></link>
-<link href="/css/imprimir.css" rel="stylesheet"></link>
-<link href="/lib/select2/select2.css"  rel="stylesheet" ></link>
-<link href="lib/ng-table/dist/ng-table.min.css"  rel="stylesheet" ></link>
-<link href="lib/angular-material/angular-material.min.css"  rel="stylesheet" ></link>
+<link href="/css/font-awesome.min.css" rel="stylesheet">
+<link href="/css/patients.css" rel="stylesheet">
+<link href="/css/imprimir.css" rel="stylesheet">
+<link href="/lib/select2/select2.css"  rel="stylesheet" >
+<link href="lib/ng-table/dist/ng-table.min.css"  rel="stylesheet" >
+<link href="lib/angular-material/angular-material.min.css"  rel="stylesheet" >
 <link rel="stylesheet" href="lib/fullcalendar/dist/fullcalendar.css"/>
-<link href="lib/alertifyjs/css/alertify.min.css"  rel="stylesheet" ></link>
-<link href="lib/alertifyjs/css/themes/default.css"  rel="stylesheet" ></link>
+<link href="lib/alertifyjs/css/alertify.min.css"  rel="stylesheet" >
+<link href="lib/alertifyjs/css/themes/default.css"  rel="stylesheet" >
 
-<link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css"  rel="stylesheet" ></link>
+<link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css"  rel="stylesheet" >
 
      @html.block("head")
  </head>

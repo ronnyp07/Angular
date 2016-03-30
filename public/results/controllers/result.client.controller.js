@@ -139,7 +139,7 @@ resultModule.controller('resultController', [
     };
 
      Notify.getMsg('newOrderPost', function(event, data ){
-       $scope.filterResult();
+         $scope.filterResult();
      });
 
     $scope.dateChange = function(pagination, filter){
@@ -436,6 +436,7 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
         });
       }
    };
+
 
    self.loadResult();
    self.watchFilters();

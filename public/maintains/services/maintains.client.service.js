@@ -43,9 +43,8 @@ angular.module('maintains')
                 return defer.promise;
          };
 
-         return {
-              resultActions
-         };
+         return resultActions;
+         
 
 }]).service('MaintainsService', ['$http', '$q', function($http, $q){
         var self = {
@@ -106,8 +105,7 @@ angular.module('maintains')
                 return defer.promise;
          };
 
-         return {
-              resultActions
-         };
+         return resultActions;
+         
 }]);
 

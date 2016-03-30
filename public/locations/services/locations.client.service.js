@@ -55,9 +55,8 @@ angular.module('locations')
           });        
         return defer.promise;
      };
-     return{
-        resultActions
-     };
+     return resultActions;
+  
 }
 
 ]);

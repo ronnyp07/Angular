@@ -289,7 +289,7 @@ exports.update = function(req, res) {
        result.tecnica = req.body.tecnica ? req.body.tecnica : result.tecnica;
        result.costo = req.body.costo ? req.body.costo : result.costo;
        result.pago = req.body.pago ? req.body.pago : result.pago;
-       result.debe = req.body.debe ? req.body.debe: result.debe;
+       result.debe = req.body.debe;
        result.patientReport = req.body.patientReport ? req.body.patientReport : result.patientReport;
        result.seguroId = req.body.seguroId ? req.body.seguroId  : result.seguroId;
        result.doctor = req.body.doctor ? req.body.doctor : result.doctor;
@@ -297,6 +297,7 @@ exports.update = function(req, res) {
        result.seguroDesc  = req.body.seguroDesc ? req.body.seguroDesc : result.seguroDesc;
        result.created = req.body.created ? req.body.created : result.created;
        result.createdDateDoctor = req.body.createdDateDoctor ? req.body.createdDateDoctor : result.createdDateDoctor;
+  console.log(result);
   result.save(function(err) {
     if (err) {
       return res.status(400).send({

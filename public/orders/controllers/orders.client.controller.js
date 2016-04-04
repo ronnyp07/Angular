@@ -571,7 +571,7 @@ ordersModule.service('OrderServices', ['$q','$timeout', '$http', 'Procs', 'Order
               _id: self.updatedProcs._id,
               costo: self.selectedOrder.total,
               pago: self.selectedOrder.pago,
-              debe: self.selectedOrder.pago > self.selectedOrder.costo ? 0 :  self.selectedOrder.costo - self.selectedOrder.pago,
+              debe: self.selectedOrder.debe,
               patientReport: self.selectedPatient._id,
               seguroId : self.selectedPatient.locations ? self.selectedPatient.locations._id: null,
               doctor: self.selectedDoctor._id,

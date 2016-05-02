@@ -67,7 +67,7 @@ procsModule.controller('procsController', [
 	 this.modelUpdate = function (size, selectedprocs) {
 		    var modalInstance = $modal.open({
 		      templateUrl: 'procedimientos/views/edit-procedimientos.client.view.html',
-		      controller: function ($scope, $modalInstance, procs) {
+		      controller: ['$scope', '$modalInstance', 'procs', function ($scope, $modalInstance, procs) {
                  $scope.procs = procs;      
                   Notify.sendbroadCast('noError', 'this is a message');
                   $scope.ok = function () { 	
@@ -78,7 +78,7 @@ procsModule.controller('procsController', [
 				    $modalInstance.dismiss('cancel');
 				  };
 
-		      },
+		      }],
 		      size: size,
 		      resolve: {
 		        procs: function () {

@@ -190,8 +190,8 @@
 <script type="text/javascript" src="/tempresult/controllers/tempresult.client.controller.js"></script>
 <script type="text/javascript" src="/tempresult/services/tempresult.client.service.js"></script>
 <script type="text/javascript" src="/tempresult/config/tempresult.client.route.js"></script>
-
-<!-- <script type="text/javascript" src="/locations/locations.client.module.js"></script>
+<!-- 
+<script type="text/javascript" src="/locations/locations.client.module.js"></script>
 <script type="text/javascript" src="/locations/controllers/locations.client.controller.js"></script>
 <script type="text/javascript" src="/locations/services/locations.client.service.js"></script>
 <script type="text/javascript" src="/locations/config/locations.client.routes.js"></script> -->

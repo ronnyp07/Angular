@@ -260,9 +260,9 @@ resultModule.directive('ngPrint', function(){
         return {
             link: link,
             restrict: 'A',
-            controller: function($scope){
+            controller: ['$scope', function($scope){
               
-            }
+            }]
         };
 
 });

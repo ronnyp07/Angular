@@ -41,7 +41,7 @@ seguroModule.controller('seguroController', [
             console.log(selectedseguro);
         var modalInstance = $modal.open({
           templateUrl: 'seguro/views/edit-seguro.client.view.html',
-          controller: function ($scope, $modalInstance, seguro) {
+          controller: ['$scope', '$modalInstance', 'seguro', function ($scope, $modalInstance, seguro) {
                  $scope.seguro = seguro;
 
                  //$scope.seguro.rpais = selectedseguro.pais._id;
@@ -57,7 +57,7 @@ seguroModule.controller('seguroController', [
             $modalInstance.dismiss('cancel');
           };
 
-          },
+          }],
           size: size,
           resolve: {
             seguro: function () {

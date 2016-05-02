@@ -14,10 +14,10 @@ module.exports = function(grunt) {
   'public/patients/**/*.js',
   'public/procedimientos/*.js',
   'public/procedimientos/**/*.js',
-  'public/results/*.js',
-  'public/results/**/*.js',   
   'public/orders/*.js',
-  'public/orders/**/*.js', 
+  'public/orders/**/*.js',
+  'public/results/*.js',
+  'public/results/**/*.js',  
   'public/locations/*.js',
   'public/locations/**/*.js',  
   '!public/**/tests/*.js'];
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       },
       watch: {
       scripts: {
-        files: ['public/ciudad/*.js',   'public/ciudad/**/*.js', 'public/pais/*.js','public/pais/**/*.js','public/clientes/*.js','public/clientes/**/*.js', 'public/doctors/*.js','public/doctors/**/*.js', 'public/locations/*.js','public/locations/**/*.js',  '!public/**/tests/*.js'],
+        files: filesList,
         tasks: ['jshint', 'uglify'],
         options: {
           spawn: false,

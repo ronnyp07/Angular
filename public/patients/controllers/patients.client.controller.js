@@ -1,4 +1,4 @@
-'use strict';
+
 
 var patientModule = angular.module('patients');
 
@@ -23,6 +23,7 @@ patientModule.controller
  function($scope, $http, $routeParams, $location,  Authentication, Patients, ngTableParams, $modal, $log,
   //Seguros, 
   Pais, Ciudad, Sector, Cliente, NotifyPatient, $timeout) {
+     'use strict';
       $scope.isSaving = false;
 
       // var patient = Patients.query()
@@ -35,7 +36,6 @@ patientModule.controller
        };
 
        var settings = {
-      //  groupBy: 'tipo',
          total: 0,  
          counts: [15,20,25],        
          getData: function($defer, params) {
@@ -43,22 +43,17 @@ patientModule.controller
                 params.total(response.total);
                 $defer.resolve(response.results);
                 $scope.total = response.total;
-               // console.log(response);
           }); 
-        
           }
        };
-
+      
+      /* jshint ignore:start */
       $scope.tableParams = new ngTableParams( params, settings);
-
-      // NotifyPatient.getMsg('saving', function(event, data){
-      //    $scope.isSaving = true;
-      //  });
-
+      /* jshint ignore:end */
+  
       NotifyPatient.getMsg('saved', function(event, data){
          $scope.tableParams.reload(); 
          $scope.isSaving = false;
-         // alertify.success('Acción realizada exitosamente!! !!'); 
       });
 
       NotifyPatient.getMsg('updating', function(event, data){
@@ -110,9 +105,8 @@ patientModule.controller
         var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'patients/views/edit-patient.client.view.html',
-          controller: function ($scope, $modalInstance, patient) {
+          controller: ['$scope', '$modalInstance', 'patient', function ($scope, $modalInstance, patient) {
                 $scope.patient = patient;
-                console.log($scope.patient);
                 $scope.patient.rpais = selectedPatient.pais ? selectedPatient.pais._id : '';
                 $scope.patient.rciudad = selectedPatient.ciudad ? selectedPatient.ciudad._id: '';
                 $scope.patient.rsector = selectedPatient.sector ? selectedPatient.sector._id: '';
@@ -126,7 +120,7 @@ patientModule.controller
             $modalInstance.dismiss('cancel');
           };
 
-          },
+          }],
           size: size,
           resolve: {
             patient: function () {
@@ -179,7 +173,7 @@ patientModule.controller
    'NotifyPatient', '$mdToast', '$animate',
    function($scope, $http, $routeParams,  Authentication, Patients, 
     Pais, Ciudad, Sector, Cliente, NotifyPatient, $mdToast, $animate) {
-
+    'use strict';
     var vm = this;
     this.paisD = Pais.query();
     this.ciudad = Ciudad.query();
@@ -190,19 +184,16 @@ patientModule.controller
      $http.post('locations/getList').
           success(function(data){ 
            vm.cliente = data;
-           console.log(vm.cliente);
            }).
            error(function(err){
      });
      
     this.filterByCity = function() {
-        if(this.pais == null){
-          console.log('pais is null');
+        if(this.pais === null){
            this.ciudad = null;
            this.sector = null;
            this.patientSector = null;
         }else{
-         console.log(this.pais);
          this.ciudad = Ciudad.query();
          this.sector = null;
          this.patientSector = null;
@@ -218,7 +209,6 @@ patientModule.controller
     };
 
     this.calculateAge = function () {
-      console.log('crete');
     // birthday is a date
     // var ageDifMs = Date.now() - birthday.getTime();
     // var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -291,7 +281,7 @@ patientModule.controller
    function($scope, $http, $routeParams,  Authentication, Patients, 
     Pais, Ciudad, Sector, Cliente, NotifyPatient, $mdToast, $animate, $timeout) {
 
-    
+    'use strict';
     var vm = this;
     $scope.dateOptions = {
         changeYear: true,
@@ -312,13 +302,11 @@ patientModule.controller
      });
      
    this.filterByCity = function() {
-        if(this.pais == null){
-          console.log('pais is null');
+        if(this.pais === null){
            this.ciudad = null;
            this.sector = null;
            this.patientSector = null;
         }else{
-         console.log(this.pais);
          this.ciudad = Ciudad.query();
          this.sector = null;
          this.patientSector = null;
@@ -374,11 +362,9 @@ patientModule.controller
       });
 
      // Usar el método '$save' de Patient para enviar una petición POST apropiada
-      patient.$update(function(){ 
-           $timeout(function() {
+      patient.$update(function(patientSaved){ 
             NotifyPatient.sendMsg('updated', {'id': 'nada'});
-           }, 3000);      
-       
+            NotifyPatient.sendMsg('patientsaved', {'patientSavedInfo': patientSaved});     
       }, function(errorResponse) {
          
        });
@@ -388,16 +374,17 @@ patientModule.controller
 
 patientModule.controller('patientDeleteController', ['$scope', 'Authentication', 'Patients', 'NotifyPatient', '$mdToast', '$animate',
   function($scope, Authentication, Patients, NotifyPatient, $mdToast, $animate) {
+    
+    'use strict';
     $scope.authentication = Authentication;
       // Update existing Pai
         
         this.delete = function(patient) {
-          //console.log ('passed');
-         var patient = new Patients({
+         var deletePatient = new Patients({
                 _id: $scope.patient._id
          });
 
-         patient.$remove(function(){
+         deletePatient.$remove(function(){
           NotifyPatient.sendMsg('removed', {'id': 'nada'});
          }, function(errorResponse) {
         $scope.error = errorResponse.data.message;
@@ -418,6 +405,7 @@ patientModule.controller('patientDeleteController', ['$scope', 'Authentication',
 ]);
 
 patientModule.directive('phone', function() {
+    'use strict';
     return {
         restrice: 'A',
         require: 'ngModel',
@@ -427,13 +415,9 @@ patientModule.directive('phone', function() {
                 var value = this.value;
                 if(PHONE_REGEXP.test(value)) {
                     // Valid input
-                    console.log("valid phone number");
                     angular.element(this).next().next().css('display','none');  
-                    console.log(element.next());
                 } else {
-                    // Invalid input  
-                    console.log("invalid phone number");
-                     console.log(angular.element(this).next().next());
+                    // Invalid input 
                     angular.element(this).next().next().css('display','block');                 
                 }
             });              
@@ -443,6 +427,7 @@ patientModule.directive('phone', function() {
 
 
 patientModule.directive('patientList', ['Patients', 'NotifyPatient', function(Cliente, NotifyPatient){
+    'use strict';
     return {
     restrict: 'E',
     transclude: true,

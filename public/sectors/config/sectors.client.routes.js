@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 angular.module('sector').config(['$stateProvider',
 	function($stateProvider) {

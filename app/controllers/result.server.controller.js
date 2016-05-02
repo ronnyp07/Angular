@@ -104,11 +104,12 @@ exports.listpage = function(req, res) {
       count : count
      };
 
-    var sort ={
-      sort: {
-        ResultId: '-1'
-      }
-     };
+    // var sort ={
+    //   sort: {
+    //     tipomuestra: '1',
+    //     ResultId: '-1'
+    //   }
+    //  };
 
     var contains = {};
     if(search.doctor && !search.paciente){
@@ -156,7 +157,7 @@ exports.listpage = function(req, res) {
     .populate('patientReport.locations')
     .populate('doctor')
     .filter(filter)
-    .order(sort)
+    .sort({tipomuestra: 1, tipomuestraDesc: 1, rSereal:1})
     .page(pagination, function(err,tempate){
       if (err) {
       return res.status(400).send({

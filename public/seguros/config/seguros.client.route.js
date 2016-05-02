@@ -1,5 +1,6 @@
-// Invocar modo JavaScript 'strict'
-'use strict';
+/*jshint strict:false */
+'Use strict';
+
 angular.module('seguros').config(['$routeProvider',
 function($routeProvider) {
 		$routeProvider.

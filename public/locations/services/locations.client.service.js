@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 //Locations service used to communicate Locations REST endpoints
 angular.module('locations')
@@ -18,7 +19,6 @@ angular.module('locations')
 	notify.sendbroadCast = function(mgs){
 	  this.msg = mgs;
 	  this.broadCast(mgs);
-	  console.log(this.mgs);
 	};
 
 	notify.broadCast = function(msg){

@@ -1,4 +1,6 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
+
 
 angular.module('procs')
 .factory('Procs', ['$resource', function($resource) {
@@ -20,16 +22,16 @@ angular.module('procs')
     this.msg = mgs;
     this.broadCast(mgs);
     console.log(this.mgs);
-  }
+  };
 
   notify.broadCast = function(msg){
     $rootScope.$broadcast('noError', msg);
-  }
+  };
 
     notify.sendMsg = function(msg, data){
        data = data || {};
        $rootScope.$emit(msg, data);
-    }
+    };
 
     notify.getMsg = function(msg, func, scope){
      var unbind = $rootScope.$on(msg, func);

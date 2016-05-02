@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 //Sectors service used to communicate Sectors REST endpoints
 angular.module('sector')
@@ -21,16 +22,16 @@ angular.module('sector')
       this.msg = mgs;
       this.broadCast(mgs);
       console.log(this.mgs);
-    }
+    };
 
     notify.broadCast = function(msg){
         $rootScope.$broadcast('noError', msg);
-    }
+    };
 
     notify.sendMsg = function(msg, data){
        data = data || {};
        $rootScope.$emit(msg, data);
-    }
+    };
 
     notify.getMsg = function(msg, func, scope){
      var unbind = $rootScope.$on(msg, func);
@@ -43,6 +44,6 @@ angular.module('sector')
     return notify;
     // Usar el service '$resource' para devolver un objeto '$resource' Patients
  
-}])
+}]);
 
 

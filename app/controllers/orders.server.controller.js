@@ -40,6 +40,7 @@ var getErrorMessage = function(err) {
  * Create a Pai
  */
 exports.create = function(req, res) {
+  console.log('from created');
   var order = new Orders(req.body);
   order.user = req.user;
   order.save(function(err) {
@@ -125,18 +126,18 @@ exports.list = function(req, res) {
           contains: req.query.filter
         }
       }
-     }
+     };
 
      var pagination = {
       start : (page - 1) * count,
       count : count
-     }
+     };
 
      var sort ={
       sort: {
         desc: '_id'
       }
-     }
+     };
     
      Orders
     .find()

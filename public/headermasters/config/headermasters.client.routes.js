@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 //Setting up route
 angular.module('headermasters').config(['$stateProvider',

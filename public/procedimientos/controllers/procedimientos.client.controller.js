@@ -1,4 +1,6 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
+
 
 var procsModule = angular.module('procs');
 
@@ -27,7 +29,7 @@ procsModule.controller('procsController', [
 	      filter: {
             name: name
         }
-       }
+       };
 
        var settings = {
        	total: 0,  
@@ -41,7 +43,10 @@ procsModule.controller('procsController', [
 	        }
        };
 
+	  /* jshint ignore:start */
 	  $scope.tableParams = new ngTableParams( params, settings);
+	  /* jshint ignore:end */
+
 
       //Open the middleware to open a single seguro modal.
 	  this.modelCreate = function (size) {
@@ -60,16 +65,10 @@ procsModule.controller('procsController', [
 
      //Open the middleware to open a single seguro modal.
 	 this.modelUpdate = function (size, selectedprocs) {
-
-            console.log(selectedprocs);
 		    var modalInstance = $modal.open({
 		      templateUrl: 'procedimientos/views/edit-procedimientos.client.view.html',
 		      controller: function ($scope, $modalInstance, procs) {
-                 $scope.procs = procs;
-                 
-
-                 //$scope.procedure.rpais = selectedprocs.pais._id;
-      
+                 $scope.procs = procs;      
                   Notify.sendbroadCast('noError', 'this is a message');
                   $scope.ok = function () { 	
                   $modalInstance.close($scope.procs);
@@ -95,7 +94,6 @@ procsModule.controller('procsController', [
 	    });
 	  };
 
-
 	   this.modelRemove = function (size, selectedcliente) {
 	   	    $scope.procs = selectedcliente;
 		    var modalInstance = $modal.open({
@@ -106,8 +104,6 @@ procsModule.controller('procsController', [
                  $scope.procs = procs;
 
                   $scope.ok = function () {
-                   //console.log($scope.cliente);
-                  // $scope.doSearch();
                   $modalInstance.close($scope.procs);
 				  };
 
@@ -126,7 +122,6 @@ procsModule.controller('procsController', [
 
 	 modalInstance.result.then(function (selectedcliente) {
       $scope.selected = selectedcliente;
-      //console.log($scope.selected);
 	    }, function () {
 	      $log.info('Modal dismissed at: ' + new Date());
 	    });
@@ -216,14 +211,12 @@ procsModule.controller('procsDeleteController', ['$scope', 'Authentication', 'Pr
 	    // Update existing Pai
         
 	      this.delete = function(procs) {
-	      	//console.log ('passed');
-	       var procs = new Procs({
+
+	       var procsDelete = new Procs({
                 _id: $scope.procs._id
 	       });
 
-	       console.log($scope.procs);
-
-	       procs.$remove(function(){
+	       procsDelete.$remove(function(){
 	        Notify.sendMsg('newPis', {'id': 'nada'});
 	       }, function(errorResponse) {
 		  	$scope.error = errorResponse.data.message;

@@ -1,16 +1,21 @@
 <div>
   <table ng-table="tableParams" show-filter="true" class="table table-striped">
         <tr ng-repeat="doctor in $data">
+          <!-- <td>{{doctor}}</td> -->
          <td data-title="'Nombre'" filter="{'firstName': 'text' }">{{doctor.firstName}}</td>
           <td data-title="'Apellido'" filter="{'lastName': 'text' }">{{doctor.lastName}}</td>
+          <td data-title="'Clinica'" filter="{'clinicaList.clinica': 'text' }"><div ng-repeat="clinica in doctor.clinicaList">
+            - {{clinica.clinica}}
+       </div></td>
        <td data-title="'#'"  >{{doctor.DoctorId}}</td>
        <td data-title="'Telefono'">{{doctor.DoctorTelefono}} </td>
        <td data-title="'Email'">{{doctor.DoctorEmail}} </td>
-       <td class="pull-right">
+       
+       <td>
           <div>
-           <button type="button" class="btn btn-info" title="Editar" ng-click="doctorsCtrl.modelUpdate('lg', doctor)">
-            <span class="glyphicon glyphicon-eye-open labelBig"></span></button> 
-            <button type="button" class="btn btn-danger" title="Remove" ng-click="doctorsCtrl.modelRemove('sm', doctor)"><span class="glyphicon glyphicon-remove-circle labelBig"></span></button>
+           <button type="button" class="btn btn-sm btn-info" title="Editar" ng-click="doctorsCtrl.modelUpdate('lg', doctor)">
+            <span class="glyphicon glyphicon-eye-open"></span></button> 
+            <button type="button" class="btn btn-sm btn-danger" title="Remove" ng-click="doctorsCtrl.modelRemove('sm', doctor)"><span class="glyphicon glyphicon-remove-circle"></span></button>
          </div>
 
        </td>

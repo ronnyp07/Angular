@@ -1,7 +1,7 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 var locationModule = angular.module('locations');
-
 // location controller
 locationModule.controller('locationController', [
 	'$scope', 
@@ -42,7 +42,10 @@ locationModule.controller('locationController', [
 	        }
        };
 
+	  /* jshint ignore:start */
 	  $scope.tableParams = new ngTableParams( params, settings);
+	  /* jshint ignore:end */
+
       //Open the middleware to open a single location modal.
 	  this.modelCreate = function (size) {
 		    var modalInstance = $modal.open({
@@ -60,23 +63,20 @@ locationModule.controller('locationController', [
 	    this.modelUpdate = function (size, selectedClient) {      
           var modalInstance = $modal.open({
           templateUrl: 'locations/views/edit-location.client.view.html',
-          controller: function ($scope, $modalInstance, location) {
+          controller: ['$scope', '$modalInstance', 'location', function ($scope, $modalInstance, location) {
+           $scope.location = location;
+           $scope.location.rpais = selectedClient.pais;
+           $scope.location.rciudad = selectedClient.ciudad;
+           $scope.location.rsector = selectedClient.sector;
+           $scope.ok = function () {  
+             $modalInstance.close($scope.location);
+           };
 
-          	 console.log(selectedClient);
-               $scope.location = location;
-               $scope.location.rpais = selectedClient.pais;
-               $scope.location.rciudad = selectedClient.ciudad;
-               $scope.location.rsector = selectedClient.sector;
-               console.log($scope.location.rciudad);
-          $scope.ok = function () {  
-            $modalInstance.close($scope.location);
-          };
+           $scope.cancel = function () {
+             $modalInstance.dismiss('cancel');
+           };
 
-          $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-          };
-
-          },
+          }],
           size: size,
           resolve: {
             location: function () {
@@ -107,14 +107,10 @@ locationModule.controller('locationController', [
 	   	    $scope.location = selectedlocation;
 		    var modalInstance = $modal.open({
 		      templateUrl: 'locations/views/delete-location.client.view.html',
-		      controller: 
-		      //'modalDelete',
-		      function ($scope, $modalInstance, location) {
+		      controller: ['$scope', '$modalInstance', 'location', function ($scope, $modalInstance, location) {
                  $scope.location = location;
 
                   $scope.ok = function () {
-                   //console.log($scope.location);
-                  // $scope.doSearch();
                   $modalInstance.close($scope.location);
 				  };
 
@@ -122,7 +118,7 @@ locationModule.controller('locationController', [
 				    $modalInstance.dismiss('cancel');
 				  };
 
-		      },
+		      }],
 		      size: size,
 		      resolve: {
 		        location: function () {
@@ -133,7 +129,6 @@ locationModule.controller('locationController', [
 
 	 modalInstance.result.then(function (selectedlocation) {
       $scope.selected = selectedlocation;
-      //console.log($scope.selected);
 	    }, function () {
 	      $log.info('Modal dismissed at: ' + new Date());
 	    });
@@ -162,11 +157,11 @@ locationModule.controller('locationDeleteController', ['$scope', 'Authentication
 		//$scope.authentication = Authentication;
         
 	      this.delete = function(location) {
-	       var location = new Locations({
+	       var locationDelete = new Locations({
                 _id: $scope.location._id
 	       });
 
-	       location.$remove(function(){
+	       locationDelete.$remove(function(){
 	        Notify.sendMsg('updateLoc', {'id': 'nada'});
 	       }, function(errorResponse) {
 		  	$scope.error = errorResponse.data.message;
@@ -192,8 +187,6 @@ locationModule.controller('locationUpdateController', ['$scope', 'Authentication
 		 };
 	 
 	    this.update = function(updatelocation) {
-	   	     console.log("patientUpdate");
-
 	      	var location  = new Locations ({
 	      		_id: updatelocation._id,
 				name: updatelocation.name,
@@ -205,16 +198,7 @@ locationModule.controller('locationUpdateController', ['$scope', 'Authentication
 	            sector: $scope.location.rsector,
 	            locationDireccion: updatelocation.locationDireccion
 	       });
-
-	 //     this.showSimpleUdpdate = function() {
-		// 	    $mdToast.show(
-		// 	      $mdToast.simple()
-		// 	        .content('Paso!!')
-		// 	        .position('bottom right')
-		// 	        .hideDelay(3000)
-		// 	    );
-		// };
-	
+	      	
 	   location.$update(function() {
 		  	 Notify.sendMsg('updateLoc', {'id': 'update'});
 			}, function(errorResponse) {
@@ -225,18 +209,15 @@ locationModule.controller('locationUpdateController', ['$scope', 'Authentication
 	}
 ]);
 
- locationModule.controller('modalResutl',  function ($scope, $modalInstance) {
-
+ locationModule.controller('modalResutl', ['$scope', '$modalInstance',  function ($scope, $modalInstance) {
    $scope.ok = function () {
      $modalInstance.close();
     };
 
-
    $scope.cancel = function () {
      $modalInstance.dismiss('cancel');
    };
- });
-
+ }]);
 
  locationModule.controller('locationCreateController', 
  	['$scope', 
@@ -248,11 +229,9 @@ locationModule.controller('locationUpdateController', ['$scope', 'Authentication
  	function($scope, Locations, Notify, Pais, Ciudad, Sector) {
 
  	  this.pais = Pais.query();
- 		
  	  this.filterByCity = function() {
         this.ciudad = Ciudad.query();
         this.sector = '';
-        // this.sector = {};
  	  };
 
  	  this.filterSector = function(){
@@ -271,9 +250,6 @@ locationModule.controller('locationUpdateController', ['$scope', 'Authentication
 	            sector: this.locationSector,
 	            locationDireccion: this.locationDireccion
  	   });
-			
-
- 			//console.log(locations);
  			// Redirect after save
 		locations.$save(function(response) {
               Notify.sendMsg('updateLoc', {'id': 'nada'});
@@ -295,13 +271,8 @@ locationModule.directive('locationList', ['Locations', 'Notify', function(locati
     restrict: 'E',
     transclude: true,
     templateUrl: 'locations/views/locations-list.template.html',
-     link: function(scope, element, attr){          // when a new location is added update the location List..
-          // Notify.getMsg('newlocation', function(event, data){
-         // 	scope.rpais = data;
-            
-         // });
-
-            Notify.getMsg('newPis', function(event, data){            	console.log('got the message');
+     link: function(scope, element, attr){
+            Notify.getMsg('newPis', function(event, data){
             scope.locationCtrl.doSearch(); 
          });
     }

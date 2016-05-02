@@ -33,7 +33,7 @@
             <label for="IC" class="col-sm-2 control-label">Doctores:</label>
             <div class="col-sm-10">
             <div class="float1">
-            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctor" id="doctor" class="selec2Big"  ng-change="createCtrl.setDoctorDetail(orders.selectedOrder.doctor)"  name="doctor" data-placeholder="-- Selecione Cliente --" >
+            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctor" id="doctor" class="selec2Big"  ng-change="orders.setDoctorDetail(orders.selectedOrder.doctor)"  name="doctor" data-placeholder="-- Selecione Doctor --" >
               <option value=""></option>
               <option ng-repeat="value in orders.doctorList" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
              </select> 
@@ -63,7 +63,40 @@
             </div>
           </div>
         </div>
+
+        
        </div>
+        <div class="row rowcontrolmargin" ng-if="orders.noClinica ">
+             <div class="col-sm-12">
+                <div class="alert alert-danger patientAlert">
+                  <div class="col-sm-3">
+                     <div class="form-group">
+                       <label  class="col-sm-12 control-label"> <i class="fa fa-info-circle"></i> No Clinica Relacionada</label>
+                    </div>
+                  </div>
+<!-- 
+                   <div class="col-sm-3">
+                     <div class="form-group">
+                       <label class="col-sm-12 control-label">Pólisa: <span ng-if="orders.selectedPatient.patientPolisa" class="patientSpan"> {{orders.selectedPatient.patientPolisa}} </span>
+                       <span ng-if="!orders.selectedPatient.patientPolisa" class="requiredIcon">No Registrado</span></label>
+                    </div>
+                  </div>
+
+                   <div class="col-sm-3">
+                     <div class="form-group">
+                       <label class="col-sm-12 control-label">Seguro:  <span ng-if="orders.selectedPatient.locations.name" class="patientSpan"> {{orders.selectedPatient.locations.name}}</span>
+                       <span ng-if="!orders.selectedPatient.locations.name" class="requiredIcon">No Registrado</span></label>
+                    </div>
+                  </div> -->
+
+                  <div class="col-sm-3" data-ng-controller="doctorsController as doctorsCtrl">
+              <button type="button" class="btn btn-sm btn-info text-center pull-right" title="Editar" ng-click="doctorsCtrl.modelUpdate('lg', orders.selectedDoctor)">
+              <span class="glyphicon glyphicon-eye-open"></span></button> 
+                  </div>
+
+                </div> 
+              </div>
+          </div>
     
       </div><!--End of col-10 -->
      </div>
@@ -86,20 +119,53 @@
                      <button type="submit" class="btn btn-sm btn-info text-center pull-right" ng-click="pacientsCtrl.modelCreate('lg');">
                      <i class="glyphicon glyphicon-plus"></i></button>
                  </div>  -->                     
-                  </div>
-                   </div>
-                   </div>
-
-
+                </div>
+              </div>
+            </div>
             <div class="col-sm-6">
               <div class="form-group">
                     <label for="Cedula" class="col-sm-2 control-label">Cédula:</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" ng-change="createCtrl.setNewPatient()" data-ng-model="orders.newPatient.PatientCI.tipovalue" placeholder="Insertar Cédula"  id="patientCedula" >
                     </div>
+                   </div>
+              </div>
+            </div>
+
+           <div class="row rowcontrolmargin" ng-show="orders.selectedOrder.patient" ng-hide="!orders.selectedOrder.patient">
+             <div class="col-sm-12">
+                <div   class="alert alert-info patientAlert">
+                  <div class="col-sm-3">
+                     <div class="form-group">
+                       <label for="Cedula" class="col-sm-12 control-label">Edad: <span ng-if="orders.selectedPatient.patientEdad" class="patientSpan">{{orders.selectedPatient.patientEdad}}</span>
+                       <span ng-if="!orders.selectedPatient.patientEdad" class="requiredIcon">No Registrado</span></label>
+                    </div>
                   </div>
-        </div>
-                </div>
+
+                   <div class="col-sm-3">
+                     <div class="form-group">
+                       <label class="col-sm-12 control-label">Pólisa: <span ng-if="orders.selectedPatient.patientPolisa" class="patientSpan"> {{orders.selectedPatient.patientPolisa}} </span>
+                       <span ng-if="!orders.selectedPatient.patientPolisa" class="requiredIcon">No Registrado</span></label>
+                    </div>
+                  </div>
+
+                   <div class="col-sm-3">
+                     <div class="form-group">
+                       <label class="col-sm-12 control-label">Seguro:  <span ng-if="orders.selectedPatient.locations.name" class="patientSpan"> {{orders.selectedPatient.locations.name}}</span>
+                       <span ng-if="!orders.selectedPatient.locations.name" class="requiredIcon">No Registrado</span></label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3" data-ng-controller="pacientsController as pacientsCtrl">
+              <button type="button" class="btn btn-sm btn-info text-center pull-right" title="Editar" ng-click="pacientsCtrl.modelUpdate('lg', orders.selectedPatient)">
+              <span class="glyphicon glyphicon-eye-open"></span></button> 
+                  </div>
+
+                </div> 
+              </div>
+          </div>
+
+        
       <!-- Aqui es donde va -->
             </div>
         </div><!--End of Patient First Row -->
@@ -125,7 +191,7 @@
 
                <div class="col-sm-4">
                   <div class="form-group">
-                    <label for="polisa" class="col-sm-3 control-label">Edad:</label>
+                    <label class="col-sm-3 control-label">Edad:</label>
                     <div class="col-sm-9">
                       <input type="Number" placeholder="Insertar Edad" class="form-control" data-ng-model="orders.newPatient.patientEdad"  id="patientEdad" >
                     </div>
@@ -156,7 +222,7 @@
 
                <div class="col-sm-4 col-md-4">
                   <div class="form-group">
-                    <label for="polisa" class="col-sm-3 control-label">Pólisa:</label>
+                    <label class="col-sm-3 control-label">Pólisa:</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" placeholder="Insertar Polisa"  data-ng-model="orders.newPatient.patientPolisa"  id="polisa" 
                              >
@@ -215,7 +281,7 @@
             
             <div style="float:left;">
             <button class="btn btn-sm btn-info" ng-click="addOrderProcs(orders.selectedOrder.procs); clearProcForm()" 
-              ng-disabled = "orders.selectedOrder.procs == undefined || !orders.createMode"><i class="glyphicon glyphicon-chevron-right"></i></button>
+              ng-disabled = "orders.selectedOrder.procs == undefined || !orders.createMode || !orders.rSereal"><i class="glyphicon glyphicon-chevron-right"></i></button>
             </div>
             <div data-ng-controller="procsController as procsCtrl" >
                      <button type="submit" class="btn btn-sm btn-info text-center pull-right" ng-click="procsCtrl.modelCreate('sm');">
@@ -230,8 +296,8 @@
           <div class="row">
           <div class="col-sm-12">
             <div class="form-group">
-                     <label class="col-sm-2 control-label" for="patientFirstName"># <span class=" requiredIcon">*</span> :</label>
-                    <div class="col-sm-10 col-md-12">
+                     <label class="col-sm-4 control-label" for="patientFirstName">Reporte # <span class=" requiredIcon">*</span> :</label>
+                    <div class="col-sm-8 col-md-12">
             <input type="text" class="form-control" data-ng-model="orders.rSereal"  id="rSereal">
                     </div>
               </div>
@@ -252,7 +318,7 @@
            <th>Name</th>
            <th>Costo</th>
            <th>Pago</th>
-              <tr ng-repeat="order in orderDetail">
+              <tr ng-repeat="order in orders.orderDetail">
                   <td data-title="'#'">
                       <span ng-if="!order.$edit">{{order.id}}</span>
                       <div ng-if="order.$edit"><span>{{order.id}}</span></div>
@@ -363,10 +429,10 @@
                   <div class="row rowcontrolmargin">
                   <div class="col-sm-6">
                 <button class="btn btn-danger form-control"
-                ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined "  ng-click="cancelOrder();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
+                ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined "  ng-click="orders.clearForm();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
                   </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined || ordersCreate.$invalid"  ng-click="createCtrl.create(orderDetail); cleanForm()"><i class="glyphicon glyphicon-saved" ></i> Guardar</button>
+                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined || ordersCreate.$invalid"  ng-click="createCtrl.create(orders.orderDetail);"><i class="glyphicon glyphicon-saved" ></i> Guardar</button>
                 </div>          
                 </div>
              </div>

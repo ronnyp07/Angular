@@ -1,4 +1,6 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
+
 
 //Setting up route
 angular.module('result').config(['$stateProvider',

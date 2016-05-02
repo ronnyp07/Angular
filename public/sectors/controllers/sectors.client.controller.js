@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 var sectorModule = angular.module('sector');
 
@@ -26,21 +27,6 @@ sectorModule.controller('sectorController', [
 		    var modalInstance = $modal.open({
 		      templateUrl: 'sectors/views/create-sector.client.view.html',
 		      controller: 'modalResutl',
-
-		    //    function ($scope, $modalInstance) {
-                
-      //            $scope.ok = function (result) {
-      //            	console.log($scope.refered);
-      //            	if(this.refered){
-      //            		$modalInstance.close();
-      //            	}
-				  // };
-
-				  // $scope.cancel = function () {
-				  //   $modalInstance.dismiss('cancel');
-				  // };
-
-		    //   },
 		      size: size
 		 });
 
@@ -60,9 +46,6 @@ sectorModule.controller('sectorController', [
 		      controller: function ($scope, $modalInstance, sector) {
                  $scope.sector = sector;
                  $scope.sector.rciudad = selectedsector.ciudad._id;
-                 
-             
-                 //Notify.sendbroadCast('noError', 'this is a message');
 
                  $scope.ok = function () { 	
                   $modalInstance.close($scope.sector);
@@ -89,19 +72,6 @@ sectorModule.controller('sectorController', [
 	    });
 	  };
 
-/*	  $scope.$on('handleBroadcast', function(){
-
-	  if($scope.returnciudad){
-
-	  	$scope.returnciudad = '';
-	  }
-	  	  // this.ciudad = $scope.ciudad;
-	  });*/
-	  
-	// Notify.getMgs('hola', function(event, data){
-	// 	 console.log('JODETE');
-	// });
-
 	  // Remove existing Pai
 	this.remove = function(sector) {
 			if( sector ) { 
@@ -127,19 +97,16 @@ sectorModule.controller('sectorController', [
 sectorModule.controller('modalResutl',  function ($scope, $modalInstance) {
 
  $scope.$on('noError', function(){
-  	
  });
 
   $scope.ok = function () {	
     $modalInstance.close();
    };
 
-
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
 });
-
 
 sectorModule.controller('sectorCreateController', ['$scope',  'Ciudad', 'Notify', 'Sector',
 	function($scope, Ciudad, Notify, Sector) {
@@ -156,8 +123,6 @@ sectorModule.controller('sectorCreateController', ['$scope',  'Ciudad', 'Notify'
 			// Redirect after save
 	   sector.$save(function(response) {
              Notify.sendMsg('newPis', {'id': response._id});
-            // Notify.sendbroadCast('noError');
-            // this.ciudad = Ciudad.query();
 				// Clear form fields
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
@@ -171,9 +136,7 @@ sectorModule.controller('sectorUpdateController', ['$scope',  'Ciudad', 'Sector'
 		//$scope.authentication = Authentication;
 
           this.ciudad = Ciudad.query();
-          
 	      this.update = function(updateSector) {
-
 	      	var sector  = new Sector ({
 	      		_id: updateSector._id,
 				name: updateSector.name,
@@ -197,11 +160,6 @@ sectorModule.directive('sectorList', ['Sector', 'Notify', function(Sector, Notif
     transclude: true,
     templateUrl: 'sectors/views/sector-list.template.html',
     link: function(scope, element, attr){
-         // when a new ciudad is added update the ciudad List..
-         // Notify.getMsg('newCiudad', function(event, data){
-         // 	scope.rpais = data;
-            
-         // });
            Notify.getMsg('newPis', function(event, data){
            	console.log('got the message');
             scope.sectorCtrl.sector = Sector.query();

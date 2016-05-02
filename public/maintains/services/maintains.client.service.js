@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 //Maintains service used to communicate Maintains REST endpoints
 angular.module('maintains')

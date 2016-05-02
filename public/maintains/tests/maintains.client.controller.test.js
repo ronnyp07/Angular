@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 'use strict';
 
 (function() {
@@ -161,3 +162,4 @@
 		}));
 	});
 }());
+/* jshint ignore:end */

@@ -7,12 +7,12 @@ module.exports = function(app) {
 	// Pais Routes
 	app.route('/api/pais')
 		.get(pais.list)
-		.post(users.requiresLogin, pais.create);
+		.post(pais.create);
 
 	app.route('/api/pais/:paisId')
 		.get(pais.read)
-		.put(users.requiresLogin, pais.hasAuthorization, pais.update)
-		.delete(users.requiresLogin, pais.hasAuthorization, pais.delete);
+		.put(pais.update)
+		.delete(pais.delete);
 
 	// Finish by binding the Pai middleware
 	app.param('paisId', pais.paisByID);

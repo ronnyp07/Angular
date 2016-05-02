@@ -110,6 +110,17 @@
   margin-left: 8px;
 }
 
+.patientAlert{
+    padding-bottom: 40px;
+    margin-left: 15;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.patientSpan{
+  color:darkcyan;
+  font-family: bold;
+}
 
 
 

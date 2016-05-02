@@ -36,7 +36,7 @@ indexModule.controller('indexController', ['$scope','$modal', function($scope, $
 
         // any other event sources...
 
-    ]
+    ];
 
        $scope.modelDetail = function (size, selectedPatient) {
        
@@ -74,7 +74,7 @@ indexModule.controller('indexController', ['$scope','$modal', function($scope, $
 
 	 $scope.alertEventOnClick = function(e){
 	  	console.log('event clicked');
-	  }
+	  };
     
     $scope.openPopover= function(start, end, allDay, jsEvent){
 	var m = moment(end.d);
@@ -84,7 +84,7 @@ indexModule.controller('indexController', ['$scope','$modal', function($scope, $
 	console.log(moment(end).minute());
 
 	 //$("#myPopover").popover('show');
-    }
+    };
 
 	 $scope.calOptions = {
       calendar:{
@@ -105,11 +105,4 @@ indexModule.controller('indexController', ['$scope','$modal', function($scope, $
         eventResize: $scope.alertOnResize
       }
   };
-
-
-
- 
-
-
-
 }]);

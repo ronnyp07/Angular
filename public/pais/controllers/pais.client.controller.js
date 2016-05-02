@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 var paisModule = angular.module('pais');
 
@@ -25,21 +26,6 @@ paisModule.controller('PaisController', [
 		    var modalInstance = $modal.open({
 		      templateUrl: 'pais/views/create-pais.client.view.html',
 		      controller: 'modalResutl',
-
-		    //    function ($scope, $modalInstance) {
-                
-      //            $scope.ok = function (result) {
-      //            	console.log($scope.refered);
-      //            	if(this.refered){
-      //            		$modalInstance.close();
-      //            	}
-				  // };
-
-				  // $scope.cancel = function () {
-				  //   $modalInstance.dismiss('cancel');
-				  // };
-
-		    //   },
 		      size: size
 		 });
 
@@ -51,11 +37,10 @@ paisModule.controller('PaisController', [
 
 
      //Open the middleware to open a single pais modal.
-	 this.modelUpdate = function (size, selectedPais) {
-            console.log(selectedPais);
+	this.modelUpdate = function (size, selectedPais) {
 		    var modalInstance = $modal.open({
 		      templateUrl: 'pais/views/edit-pais.client.view.html',
-		      controller: function ($scope, $modalInstance, pais) {
+		      controller: ['$scope', '$modalInstance', 'pais',  function ($scope, $modalInstance, pais) {
                $scope.pais = pais;
 
                  $scope.ok = function () { 	
@@ -65,8 +50,7 @@ paisModule.controller('PaisController', [
 				  $scope.cancel = function () {
 				    $modalInstance.dismiss('cancel');
 				  };
-
-		      },
+		      }],
 		      size: size,
 		      resolve: {
 		        pais: function () {
@@ -83,20 +67,13 @@ paisModule.controller('PaisController', [
 	  };
 
 	  $scope.$on('handleBroadcast', function(){
-
-	  if($scope.returnPais){
-	  	this.pais = $scope.returnPais;
-	  	console.log(pais);
-	  	$scope.returnPais = '';
-	  }
+		  if($scope.returnPais){
+		  	this.pais = $scope.returnPais;
+		  	$scope.returnPais = '';
+		  }
 	  	  // this.pais = $scope.pais;
 	  });
-	  
-	// Notify.getMgs('hola', function(event, data){
-	// 	 console.log('JODETE');
-	// });
 
-	  // Remove existing Pai
 	this.remove = function(pais) {
 			if( pais ) { 
 				pais.$remove();
@@ -115,10 +92,7 @@ paisModule.controller('PaisController', [
 	 }
 ]);
 
-
-
-
-paisModule.controller('modalResutl',  function ($scope, $modalInstance) {
+paisModule.controller('modalResutl', ['$scope', '$modalInstance',  function ($scope, $modalInstance) {
 
   $scope.$on('noError', function(){
   	$modalInstance.close();
@@ -126,11 +100,10 @@ paisModule.controller('modalResutl',  function ($scope, $modalInstance) {
     };
  });
 
-
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-});
+}]);
 
 
 paisModule.controller('PaisCreateController', ['$scope',  'Pais', 'Notify',
@@ -161,9 +134,6 @@ paisModule.controller('PaisUpdateController', ['$scope', 'Authentication', 'Pais
 	function($scope, Authentication, Pais) {
 		$scope.authentication = Authentication;
 
-	// Update existing Pai
-     
-
 		this.update = function(updatePais) {
           var pais = updatePais;
 
@@ -182,14 +152,12 @@ paisModule.directive('paisList', ['Pais', 'Notify', function(Pais, Notify){
     restrict: 'E',
     transclude: true,
     templateUrl: 'pais/views/pais-list.template.html',
-    link: function(scope, element, attr){
-         // when a new pais is added update the Pais List..
+    link: ['scope', 'element', 'attr', function(scope, element, attr){
+         // wshen a new pais is added update the Pais List..
          Notify.getMsg('newPis', function(event, data){
             scope.paisCtrl.pais = Pais.query();
          });
-         
-       
-    }
+    }]
   };
 }]);
 

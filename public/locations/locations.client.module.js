@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 // Use applicaion configuration module to register a new module
 angular.module('locations', []);

@@ -1,9 +1,10 @@
 // Invocar modo JavaScript 'strict'
-'use strict';
+
 
 // Configurar el módulo routes de 'patients'
 angular.module('patients').config(['$stateProvider',
 	function($stateProvider) {
+		'use strict';
 		$stateProvider.
 		state('patients', {
 			url: '/patients',

@@ -1,4 +1,6 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
+
 
 var resultModule = angular.module('result');
 
@@ -138,8 +140,9 @@ resultModule.controller('resultController', [
       $scope.services.filterResult();
     };
 
-     Notify.getMsg('newOrderPost', function(event, data ){
-         $scope.filterResult();
+      Notify.getMsg('newOrderPost', function(event, result){ 
+       console.log('posted');
+        $scope.services.filterResult();
      });
 
     $scope.dateChange = function(pagination, filter){
@@ -286,9 +289,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
     test: null,
    'reportName': null,
    'papObservation': null,
-   'setResult': function(){
-     self.resultado['tecnica'] = 'mierda';
-   },
    'loadResult': function(){
     var defer = $q.defer();
       self.params = {
@@ -393,7 +393,6 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
             defer.resolve();
              }, function(errorResponse) {
               defer.reject();
-              console.log(errorResponse);
           });
 
           return defer.promise;
@@ -440,7 +439,7 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
 
    self.loadResult();
    self.watchFilters();
-   self.setResult();
+   // self.setResult();
    return self;
 }
 ]);

@@ -1,4 +1,6 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
+
 
 //Setting up route
 angular.module('pais').config(['$stateProvider',
@@ -8,15 +10,5 @@ angular.module('pais').config(['$stateProvider',
 			url: '/pais',
 			templateUrl: 'pais/views/list-pais.client.view.html'
 		});
-		// .
-		// when('/pais/create', {
-		// 	templateUrl: 'pais/views/create-pais.client.view.html'
-		// }).
-		// when('/pais/:paisId', {
-		// 	templateUrl: 'pais/views/view-pais.client.view.html'
-		// }).
-		// when('/pais/:paisId/edit', {
-		// 	templateUrl: 'pais/views/edit-pais.client.view.html'
-		// });
 	}
 ]); 

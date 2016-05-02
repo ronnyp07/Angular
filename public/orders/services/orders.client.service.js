@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 // Crear el service 'patients'
 angular.module('orders')
@@ -21,16 +22,16 @@ angular.module('orders')
 	  this.msg = mgs;
 	  this.broadCast(mgs);
 	  console.log(this.mgs);
-	}
+	};
 
 	notify.broadCast = function(msg){
 		$rootScope.$broadcast('noError', msg);
-	}
+	};
 
     notify.sendMsg = function(msg, data){
        data = data || {};
        $rootScope.$emit(msg, data);
-    }
+    };
 
     notify.getMsg = function(msg, func, scope){
      var unbind = $rootScope.$on(msg, func);

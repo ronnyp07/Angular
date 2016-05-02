@@ -1,5 +1,5 @@
-'use strict';
-
+/*jshint strict:false */
+'Use strict';
 // Maintains controller
 var maintainModule = angular.module('maintains');
 
@@ -55,7 +55,6 @@ maintainModule.controller('MaintainsController',
 	   };
 
      vm.maintainsDetailUpdate = function(index, maintain){
-        console.log(index, maintain);
      };
 
      vm.stateForm = function(param){
@@ -89,7 +88,11 @@ maintainModule.controller('MaintainsController',
           });
           }
        };
+    
+    /* jshint ignore:start */
        vm.tableParams = new ngTableParams( params, settings);
+    /* jshint ignore:end */
+
           function buildToggler(navID) {
 		      return function() {
 		        $mdSidenav(navID)
@@ -124,8 +127,7 @@ maintainModule.controller('MaintainsController',
       this.modelUpdate = function (size, selecteditem) {     
           var modalInstance = $modal.open({
           templateUrl: 'maintains/views/maintain-details.template.html',
-          controller: 
-          function ($scope, $modalInstance, maintain) {
+          controller: ['$scope', '$modalInstance', 'maintain', function ($scope, $modalInstance, maintain) {
           vm.loadDetails = function(){
             MaintainDetailsService.load(maintain._id)
              .then(function(data){
@@ -142,7 +144,7 @@ maintainModule.controller('MaintainsController',
             $modalInstance.dismiss('cancel');
           };
 
-          },
+          }],
           size: size,
           resolve: {
             maintain: function () {
@@ -161,8 +163,7 @@ maintainModule.controller('MaintainsController',
       this.modelUpdateHeader = function (size, selectedHeader) {     
           var modalInstance = $modal.open({
           templateUrl: 'maintains/template/maintains-header.update.html',
-          controller: 
-          function ($scope, $modalInstance, maintainHeader) {
+          controller: ['$scope', '$modalInstance', 'maintainHeader', function ($scope, $modalInstance, maintainHeader) {
           $scope.maintainHeader = maintainHeader;
           $scope.ok = function () {
              $modalInstance.close($scope.patient);
@@ -172,7 +173,7 @@ maintainModule.controller('MaintainsController',
             $modalInstance.dismiss('cancel');
           };
 
-          },
+          }],
           size: size,
           resolve: {
             maintainHeader: function () {
@@ -233,7 +234,6 @@ maintainModule.controller('MaintainsControllerUpdate',
         code: selectedHeader.code,
         desc: selectedHeader.desc
     });
-    console.log(header);
     header.$update(function(data){
       $timeout(function() {
           vm.isSaving = false;

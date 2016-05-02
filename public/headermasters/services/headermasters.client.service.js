@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 //Headermasters service used to communicate Headermasters REST endpoints
 angular.module('headermasters').factory('Headermasters', ['$resource',

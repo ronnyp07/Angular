@@ -1,4 +1,5 @@
-'use strict';
+/*jshint strict:false */
+'Use strict';
 
 // Headermasters controller
 angular.module('headermasters').controller('HeadermastersController', 

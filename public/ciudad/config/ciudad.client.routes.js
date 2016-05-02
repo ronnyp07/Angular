@@ -1,4 +1,4 @@
-'use strict';
+'Use strict';
 
 angular.module('ciudad').config(['$stateProvider',
 	function($stateProvider) {

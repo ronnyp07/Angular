@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
 	var users = require('../../app/controllers/user.server.controller');
-	var doctors = require('../../app/controllers/doctor.server.controller');
+	var doctors = require('../../app/controllers/doctor.server.min.js');
 
 	// doctors Routes
 	app.route('/api/doctors')

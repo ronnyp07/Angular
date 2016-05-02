@@ -137,16 +137,7 @@ exports.listpage = function(req, res) {
     
     var filter = {
       filters: {
-           mandatory : {
-             contains
-            //  ,
-            // greaterThanEqual : {
-            //     created : sDateResult
-            //  },
-            // lessThanEqual : {
-            //     created : eDateResult
-            // }
-       }
+           mandatory :  contains
      }
    };
   

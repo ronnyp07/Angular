@@ -2,7 +2,7 @@
 
 // Cargar las dependencias del módulo
 var users    = require('../../app/controllers/user.server.controller'), 
-    patients = require('../../app/controllers/patient.server.controller');
+    patients = require('../../app/controllers/patient.server.min.js');
 
 // Definir el método routes de module
 module.exports = function(app) {

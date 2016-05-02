@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
 	//var users = require('../../app/controllers/users.server.controller');
-	var locations = require('../../app/controllers/locations.server.controller');
+	var locations = require('../../app/controllers/locations.server.min.js');
 
 	// Locations Routes
 	app.route('/locations')

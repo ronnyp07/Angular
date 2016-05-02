@@ -2,7 +2,7 @@
 'use strict';
 
 	var users = require('../../app/controllers/user.server.controller');
-	var result = require('../../app/controllers/result.server.controller');
+	var result = require('../../app/controllers/result.server.min.js');
 
 module.exports = function(app) {
 	// order Routes

@@ -1,6 +1,6 @@
 'use strict';
 	var users = require('../../app/controllers/user.server.controller');
-	var procs = require('../../app/controllers/procedimiento.server.controller');
+	var procs = require('../../app/controllers/procedimiento.server.min.js');
 module.exports = function(app) {
 
 	// procs Routes

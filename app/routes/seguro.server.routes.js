@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
 	var users = require('../../app/controllers/user.server.controller');
-	var pais = require('../../app/controllers/pais.server.controller');
+	var pais = require('../../app/controllers/pais.server.min.js');
 
 	// Pais Routes
 	app.route('/api/pais')

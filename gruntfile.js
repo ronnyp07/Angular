@@ -14,8 +14,8 @@ module.exports = function(grunt) {
   'public/patients/**/*.js',
   'public/procedimientos/*.js',
   'public/procedimientos/**/*.js',
-  'public/orders/*.js',
-  'public/orders/**/*.js',
+  // 'public/orders/*.js',
+  // 'public/orders/**/*.js',
   'public/results/*.js',
   'public/results/**/*.js',  
   'public/locations/*.js',
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			all: filesList, serverFileList
 		},
 		 // configure nodemon
-       nodemon: {
+     nodemon: {
          dev: {
            script: 'server.js'
         }
@@ -52,16 +52,16 @@ module.exports = function(grunt) {
     //       dest: 'public/dist/js'
     //   }]
     // }
-     target: {
-         files : [{
-            expand: true,
-            cwd: 'app/controllers/',
-            src: serverFileList,
-            dest:'app/controllers/',
-            ext: '.server.min.js'
+     // target: {
+     //     files : [{
+     //        expand: true,
+     //        cwd: 'app/controllers/',
+     //        src: serverFileList,
+     //        dest:'app/controllers/',
+     //        ext: '.server.min.js'
 
-         }]
-      },
+     //     }]
+     //  },
       build: {
         files: {
           'public/dist/js/app.min.js': filesList,

@@ -174,10 +174,10 @@
 <script type="text/javascript" src="/procedimientos/controllers/procedimientos.client.controller.js"></script>
 <script type="text/javascript" src="/procedimientos/services/procedimientos.client.services.js"></script>
 <script type="text/javascript" src="/procedimientos/config/procedimientos.client.routes.js"></script> -->
-<!-- <script type="text/javascript" src="/orders/orders.client.module.js"></script>
+<script type="text/javascript" src="/orders/orders.client.module.js"></script>
 <script type="text/javascript" src="/orders/controllers/orders.client.controller.js"></script>
 <script type="text/javascript" src="/orders/services/orders.client.service.js"></script>
-<script type="text/javascript" src="/orders/config/orders.client.route.js"></script> -->
+<script type="text/javascript" src="/orders/config/orders.client.route.js"></script>
 <script type="text/javascript" src="/cierretrack/cierretrack.client.module.js"></script>
 <script type="text/javascript" src="/cierretrack/controllers/cierretrack.client.controller.js"></script>
 <script type="text/javascript" src="/cierretrack/services/cierretrack.client.services.js"></script>

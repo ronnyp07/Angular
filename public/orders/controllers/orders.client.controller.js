@@ -177,6 +177,13 @@ ordersModule.controller('ordersController', [
     $scope.orders.createMode = true;
     $scope.orders.clinicaList = $scope.orders.clinicaList ? $scope.orders.clinicaList : [];
     };
+    
+
+    $scope.test = [
+       'A',
+       'Lamer',
+       'Ernestor'
+    ];
 
     // $scope.clearForm = function(){
     // $scope.orders.selectedOrder = {}; 
@@ -504,29 +511,29 @@ ordersModule.service('OrderServices', ['$q','$timeout', '$http', 'Procs', 'Order
         'saveReport': function(report){
           var defer = $q.defer();
           report.$save(function(response){
-              var newCounter = 0;
-              if(response.tipomuestra === 'B'){
-                newCounter = self.bCunter;
-              }else if(response.tipomuestra === 'BL'){
-                newCounter = self.blCunter;
-                self.blFlag = true;
-              }else{
-                newCounter = self.pCunter;
-              }
+              // var newCounter = 0;
+              // if(response.tipomuestra === 'B'){
+              //   newCounter = self.bCunter;
+              // }else if(response.tipomuestra === 'BL'){
+              //   newCounter = self.blCunter;
+              //   self.blFlag = true;
+              // }else{
+              //   newCounter = self.pCunter;
+              // }
 
-              var info = {
-                      year: self.bInfo[0].year,
-                      month: self.bInfo[0].month,
-                      proType: response.tipomuestra,
-                      newCount: newCounter
-                 };        
-                  $http.post('/api/count', {info: info})
-                  .success(function(data){
-                   self.getBL();
-                   self.getB();
-                   self.getP();
-                  }).error(function(err){
-               });
+              // var info = {
+              //         year: self.bInfo[0].year,
+              //         month: self.bInfo[0].month,
+              //         proType: response.tipomuestra,
+              //         newCount: newCounter
+              //    };        
+              //     $http.post('/api/count', {info: info})
+              //     .success(function(data){
+              //      self.getBL();
+              //      self.getB();
+              //      self.getP();
+              //     }).error(function(err){
+              //  });
 
                defer.resolve();
              }, function(errorResponse){  

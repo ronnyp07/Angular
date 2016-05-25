@@ -169,6 +169,19 @@ exports.getList = function(req, res) {
     });
 };
 
+exports.getDoctorByName = function(req, res) { 
+   Doctor
+    .find().exec(function(err, doctor){
+    	if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(doctor);
+		}
+    });
+};
+
 
 
 /**

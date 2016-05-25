@@ -177,7 +177,7 @@ ordersModule.controller('ordersController', [
     $scope.orders.createMode = true;
     $scope.orders.clinicaList = $scope.orders.clinicaList ? $scope.orders.clinicaList : [];
     };
-    
+
 
     $scope.test = [
        'A',
@@ -560,27 +560,27 @@ ordersModule.service('OrderServices', ['$q','$timeout', '$http', 'Procs', 'Order
            });
           orderSave.$save(function(data){
             self.orderResult = data;
-            for(var i = 0; i < self.orderResult.proclist.length; i++ ){
-             var report = new Result({
-              rSereal: self.orderResult.proclist[i].id,
-              tipomuestra : self.orderResult.proclist[i].procType,
-              tipomuestraDesc: self.orderResult.proclist[i].name,
-              reportStatus: 'Pendiente',
-              orders: self.orderResult._id,
-              costo: self.orderResult.proclist[i].costo,
-              pago: self.orderResult.proclist[i].pago,
-              debe: self.orderResult.proclist[i].pago > self.orderResult.proclist[i].costo ? 0 :  self.orderResult.proclist[i].costo - self.orderResult.proclist[i].pago,
-              patientReport: self.orderResult.patients,
-              seguroId : self.selectedPatient.locations ? self.selectedPatient.locations._id: null,
-              doctor: self.orderResult.doctor,
-              clinica : self.orderResult.cliente,
-              seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: '',
-              created: self.getDate(new Date(self.createdDate)),
-              createdDateDoctor: self.getDate(new Date(self.createdDateDoctor)),
-              procs: self.selectedProc._id
-            });
-             self.saveReport(report);
-            }
+            // for(var i = 0; i < self.orderResult.proclist.length; i++ ){
+            //  var report = new Result({
+            //   rSereal: self.orderResult.proclist[i].id,
+            //   tipomuestra : self.orderResult.proclist[i].procType,
+            //   tipomuestraDesc: self.orderResult.proclist[i].name,
+            //   reportStatus: 'Pendiente',
+            //   orders: self.orderResult._id,
+            //   costo: self.orderResult.proclist[i].costo,
+            //   pago: self.orderResult.proclist[i].pago,
+            //   debe: self.orderResult.proclist[i].pago > self.orderResult.proclist[i].costo ? 0 :  self.orderResult.proclist[i].costo - self.orderResult.proclist[i].pago,
+            //   patientReport: self.orderResult.patients,
+            //   seguroId : self.selectedPatient.locations ? self.selectedPatient.locations._id: null,
+            //   doctor: self.orderResult.doctor,
+            //   clinica : self.orderResult.cliente,
+            //   seguroDesc : self.selectedPatient.locations ? self.selectedPatient.locations.name: '',
+            //   created: self.getDate(new Date(self.createdDate)),
+            //   createdDateDoctor: self.getDate(new Date(self.createdDateDoctor)),
+            //   procs: self.selectedProc._id
+            // });
+            //  self.saveReport(report);
+            //}
             defer.resolve();
                 
             return defer.promise;

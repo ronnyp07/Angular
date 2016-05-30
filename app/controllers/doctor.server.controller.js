@@ -169,9 +169,10 @@ exports.getList = function(req, res) {
     });
 };
 
-exports.getDoctorByName = function(req, res) { 
-   Doctor
-    .find().exec(function(err, doctor){
+exports.getfilterDoctor = function(req, res){ 
+  console.log(req.body.lastName);
+    Doctor
+    .find({$or: [{firstName: {$regex: req.body.lastName,  $options: '-i' }}, {lastName: {$regex: req.body.lastName,  $options: '-i' }}]}).limit(15).exec(function(err, doctor){
     	if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

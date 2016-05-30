@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="lib/fullcalendar/dist/fullcalendar.css"/>
 <link href="lib/alertifyjs/css/alertify.min.css"  rel="stylesheet" >
 <link href="lib/alertifyjs/css/themes/default.css"  rel="stylesheet" >
-
+<link href="lib/oi.select/dist/select.min.css"  rel="stylesheet" >
 <link href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css"  rel="stylesheet" >
 
      @html.block("head")
@@ -107,6 +107,7 @@
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script src="lib/ladda/dist/spin.min.js"></script>
 <script src="lib/ladda/dist/ladda.min.js"></script>
+<script type="text/javascript" src="lib/oi.select/dist/select-tpls.min.js"></script>
 <script src="lib/angular-ladda/dist/angular-ladda.min.js" ></script>
 <script type="text/javascript" src="lib/angular-aria/angular-aria.min.js"></script>
 <script type="text/javascript" src="js/angular-locale_es-es.js"></script>
@@ -138,6 +139,7 @@
 <script src="lib/angular-daterangepicker-plus/src/angular-daterangepicker-plus.js"></script>
 
 <script type="text/javascript" src="/examples/example.client.module.js"></script>
+''
 <!-- <script type="text/javascript" src="/pais/pais.client.module.js"></script>
 <script type="text/javascript" src="/pais/controllers/pais.client.controller.js"></script>
 <script type="text/javascript" src="/pais/services/pais.client.service.js"></script>

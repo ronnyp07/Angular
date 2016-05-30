@@ -2,7 +2,7 @@
 
 // Cargar las dependencias del módulo
 var users    = require('../../app/controllers/user.server.controller'), 
-    patients = require('../../app/controllers/patient.server.min.js');
+    patients = require('../../app/controllers/patient.server.controller.js');
 
 // Definir el método routes de module
 module.exports = function(app) {
@@ -19,6 +19,10 @@ module.exports = function(app) {
 
 	   	app.route('/patient/getList')
 	   .post(patients.getList);
-	// Configurar el parámetro middleware 'articleId'   
+
+	    app.route('/patient/filter')
+	   .post(patients.getfilterPatient);
+	  
+	  //Configurar el parámetro middleware 'articleId'   
 	  app.param('patientId', patients.patientByID);
 };

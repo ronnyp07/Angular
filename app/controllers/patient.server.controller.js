@@ -146,6 +146,21 @@ exports.update = function(req, res) {
 	});
 };
 
+exports.getfilterPatient = function(req, res){ 
+  console.log(req.body.lastName);
+    Patients
+    .find({$or: [{patientFirstName: {$regex: req.body.lastName,  $options: '-i' }}, {patientLastName: {$regex: req.body.lastName,  $options: '-i' }}]}).populate('locations').limit(15).exec(function(err, patient){
+    	if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(patient);
+		}
+    });
+};
+
+
 
 exports.read = function(req, res) {
 	res.jsonp(req.patient);

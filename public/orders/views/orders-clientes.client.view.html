@@ -34,11 +34,23 @@
             <label for="IC" class="col-sm-2 control-label">Doctores:</label>
             <div class="col-sm-10">
             <div class="float1">
+            {{doctor}}
             <!--  <input type="text" ng-model="selected" typeahead="state for state in test | filter:$viewValue | limitTo:8" class="form-control"> -->
-            <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctor" id="doctor" class="selec2Big"  ng-change="orders.setDoctorDetail(orders.selectedOrder.doctor)"  name="doctor" data-placeholder="-- Selecione Doctor --" >
+             <input type="text" ng-model="orders.selectedDoctor" placeholder="Seleccione Doctor" typeahead="doctor as doctor.lastName + ', ' + doctor.firstName  for doctor in solution($viewValue) | limitTo:8"  
+             typeahead-on-select="onSelectDoctor($item, $model, $label)" typeahead-no-results="noResults" class="form-control">
+   
+            <!--  <oi-select
+            oi-options="item.firstName for item in orders.doctorList | limitTo: 3 "
+            ng-model="orders.selectedOrder.doctor"
+            multiple
+            placeholder="-- Selecione Doctor --"
+            ></oi-select> -->
+
+
+           <!--  <select ui-select2="select2Config" data-ng-model="orders.selectedOrder.doctor" id="doctor" class="selec2Big"  ng-change="orders.setDoctorDetail(orders.selectedOrder.doctor)"  name="doctor" data-placeholder="-- Selecione Doctor --" >
               <option value=""></option>
               <option ng-repeat="value in orders.doctorList" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
-             </select> 
+             </select> --> 
               </div>
                
             <div data-ng-controller="doctorsController as doctorsCtrl" >
@@ -53,14 +65,13 @@
             <label for="IC" class="col-sm-2 control-label">Clinica:</label>
             <div class="col-sm-10">
             <div class="float1">
-           <!--  <select  data-ng-model="orders.selectedOrder.clinica" id="clientes"   ng-change="createCtrl.setClinicaDetail(orders.selectedOrder.clinica)"  name="clientes"  >
-              <option ng-repeat="value in orders.clinicaList" value="{{value.id}}">{{value.clinica}}</option>
-             </select> -->
-
-             <select data-ng-model="orders.selectedOrder.clinica" id="clientes" class="form-control" name="clientes" ng-change="createCtrl.setClinicaDetail(orders.selectedOrder.clinica)" ng-options="value.id as value.clinica for value in orders.clinicaList" >
-                        <option value="" class="">-- Selecione Clinica --</option>
-                        </select>  
+            <select  data-ng-model="orders.selectedOrder.clinica" required id="clientes" class="form-control">
+            <option ng-repeat="item in orders.selectedDoctor.clinicaList" value="{{item.id}}">
+                  {{item.clinica}}
+            </option>
+            </select>
               </div>
+          
 
             </div>
           </div>
@@ -68,7 +79,7 @@
 
         
        </div>
-        <div class="row rowcontrolmargin" ng-if="orders.noClinica ">
+        <div class="row rowcontrolmargin" ng-if="orders.noClinica">
              <div class="col-sm-12">
                 <div class="alert alert-danger patientAlert">
                   <div class="col-sm-3">
@@ -91,10 +102,10 @@
                     </div>
                   </div> -->
 
-                  <div class="col-sm-3" data-ng-controller="doctorsController as doctorsCtrl">
+                <div class="col-sm-3" data-ng-controller="doctorsController as doctorsCtrl">
               <button type="button" class="btn btn-sm btn-info text-center pull-right" title="Editar" ng-click="doctorsCtrl.modelUpdate('lg', orders.selectedDoctor)">
               <span class="glyphicon glyphicon-eye-open"></span></button> 
-                  </div>
+                </div>
 
                 </div> 
               </div>
@@ -112,10 +123,17 @@
                <label for="IC" class="col-sm-2 control-label" >Paciente:</label>
                <div class="col-sm-10">
                   <div class="float1">
-                  <select ui-select2 id="selectedPatient" data-ng-model="orders.selectedOrder.patient" id="patients" class="selec2Big"  ng-change="createCtrl.setPatientDetail(orders.selectedOrder.patient)"  name="patients" data-placeholder="-- Selecione Paciente --">
+                <!--   <select ui-select2 id="selectedPatient" data-ng-model="orders.selectedOrder.patient" id="patients" class="selec2Big"  ng-change="createCtrl.setPatientDetail(orders.selectedOrder.patient)"  name="patients" data-placeholder="-- Selecione Paciente --">
                   <option value=""></option>
                       <option ng-repeat="value in orders.patientList" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
-                  </select> 
+                  </select>  -->
+
+             <input type="text" ng-model="orders.selectedPatient" placeholder="Seleccione Paciente" id="patients" typeahead="patient as patient.patientFirstName + ' ' + patient.patientLastName  for patient in getPatientFilter($viewValue) | limitTo:8" 
+             typeahead-on-select="onSelectPatient($item, $model, $label)" 
+             autocomplete="off"
+             ng-change="validatePatient()"
+             typeahead-select-on-exact = "true"
+             typeahead-no-results="noResults" class="form-control">
                 </div>
                 <!--   <div data-ng-controller="pacientsController as pacientsCtrl" >
                      <button type="submit" class="btn btn-sm btn-info text-center pull-right" ng-click="pacientsCtrl.modelCreate('lg');">
@@ -134,7 +152,7 @@
               </div>
             </div>
 
-           <div class="row rowcontrolmargin" ng-show="orders.selectedOrder.patient" ng-hide="!orders.selectedOrder.patient">
+           <div class="row rowcontrolmargin" ng-show="orders.pSelected" ng-hide="!orders.pSelected">
              <div class="col-sm-12">
                 <div   class="alert alert-info patientAlert">
                   <div class="col-sm-3">
@@ -434,7 +452,7 @@
                 ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined "  ng-click="orders.clearForm();" ladda="orders.isDeleting"><i class=" glyphicon glyphicon-remove" ></i> Cancelar</button>
                   </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedOrder.doctor == undefined || orders.selectedOrder.clinica == undefined || ordersCreate.$invalid"  ng-click="createCtrl.create(orders.orderDetail);"><i class="glyphicon glyphicon-saved" ></i> Guardar</button>
+                  <button class="btn btn-success form-control" ng-disabled="orderDetail.length === 0 || orders.selectedPatient.doctor == '' || ordersCreate.$invalid"  ng-click="createCtrl.create(orders.orderDetail);"><i class="glyphicon glyphicon-saved" ></i> Guardar</button>
                 </div>          
                 </div>
              </div>

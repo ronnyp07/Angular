@@ -52,16 +52,16 @@ module.exports = function(grunt) {
     //       dest: 'public/dist/js'
     //   }]
     // }
-     // target: {
-     //     files : [{
-     //        expand: true,
-     //        cwd: 'app/controllers/',
-     //        src: serverFileList,
-     //        dest:'app/controllers/',
-     //        ext: '.server.min.js'
+     target: {
+         files : [{
+            expand: true,
+            cwd: 'app/controllers/',
+            src: serverFileList,
+            dest:'app/controllers/',
+            ext: '.server.min.js'
 
-     //     }]
-     //  },
+         }]
+      },
       build: {
         files: {
           'public/dist/js/app.min.js': filesList,

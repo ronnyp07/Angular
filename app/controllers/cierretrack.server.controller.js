@@ -102,6 +102,7 @@ exports.getMaxB = function(req, res){
       });
     } else {
       //console.log(result);
+      
       res.jsonp(result);
     }
 

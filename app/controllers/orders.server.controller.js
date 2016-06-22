@@ -41,7 +41,6 @@ var getErrorMessage = function(err) {
  * Create a Pai
  */
 exports.create = function(req, res) {
-  console.log('from created');
   var order = new Orders(req.body);
   order.user = req.user;
   order.save(function(err) {

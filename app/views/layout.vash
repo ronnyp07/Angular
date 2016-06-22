@@ -103,6 +103,7 @@
 <script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="lib/jquery-ui/ui/minified/i18n/datepicker-es.min.js"></script>
  <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+ <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="lib/select2/select2.min.js"></script>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script src="lib/ladda/dist/spin.min.js"></script>
@@ -139,7 +140,7 @@
 <script src="lib/angular-daterangepicker-plus/src/angular-daterangepicker-plus.js"></script>
 
 <script type="text/javascript" src="/examples/example.client.module.js"></script>
-''
+
 <!-- <script type="text/javascript" src="/pais/pais.client.module.js"></script>
 <script type="text/javascript" src="/pais/controllers/pais.client.controller.js"></script>
 <script type="text/javascript" src="/pais/services/pais.client.service.js"></script>
@@ -184,10 +185,10 @@
 <script type="text/javascript" src="/cierretrack/controllers/cierretrack.client.controller.js"></script>
 <script type="text/javascript" src="/cierretrack/services/cierretrack.client.services.js"></script>
 <script type="text/javascript" src="/cierretrack/config/cierretrack.client.router.js"></script>
-<!-- <script type="text/javascript" src="/results/result.client.module.js"></script>
+<script type="text/javascript" src="/results/result.client.module.js"></script>
 <script type="text/javascript" src="/results/controllers/result.client.controller.js"></script>
 <script type="text/javascript" src="/results/services/result.client.service.js"></script>
-<script type="text/javascript" src="/results/config/result.client.route.js"></script> -->
+<script type="text/javascript" src="/results/config/result.client.route.js"></script>
 <script type="text/javascript" src="/tempresult/tempresult.client.module.js"></script>
 <script type="text/javascript" src="/tempresult/controllers/tempresult.client.controller.js"></script>
 <script type="text/javascript" src="/tempresult/services/tempresult.client.service.js"></script>

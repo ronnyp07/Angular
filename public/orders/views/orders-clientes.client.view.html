@@ -1,5 +1,5 @@
 <section data-ng-controller="ordersCreateController as createCtrl" >
-
+<navegation-menu></navegation-menu>
 <div id="createtemplateForm">
 <h1 class="panel-title" ng-if="orders.createMode"><i class="glyphicon glyphicon-user"></i> Crear Reporte</h1>   
 
@@ -71,13 +71,9 @@
             </option>
             </select>
               </div>
-          
-
             </div>
           </div>
-        </div>
-
-        
+       </div> 
        </div>
         <div class="row rowcontrolmargin" ng-if="orders.noClinica">
              <div class="col-sm-12">
@@ -128,7 +124,7 @@
                       <option ng-repeat="value in orders.patientList" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
                   </select>  -->
 
-             <input type="text" ng-model="orders.selectedPatient" placeholder="Seleccione Paciente" id="patients" typeahead="patient as patient.patientFirstName + ' ' + patient.patientLastName  for patient in getPatientFilter($viewValue) | limitTo:8" 
+             <input type="text" ng-model="orders.selectedPatient" placeholder="Seleccione Paciente" id="patients" typeahead="patient as patient.patientFirstName + ' ' + patient.patientLastName  for patient in orders.getPatientFilter($viewValue) | limitTo:8" 
              typeahead-on-select="onSelectPatient($item, $model, $label)" 
              autocomplete="off"
              ng-change="validatePatient()"
@@ -203,7 +199,7 @@
                   <div class="form-group">
                     <label for="IC" class="col-sm-3 control-label">Apellido:</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" placeholder="Insertar Apellido" data-ng-model="orders.newPatient.patientLastName" id="Apellido"
+                      <input type="text" class="form-control" placeholder="Insertar Apellido" ng-change="createCtrl.setNewPatient()" data-ng-model="orders.newPatient.patientLastName" id="Apellido"
                              >
                     </div>
                   </div>
@@ -213,7 +209,7 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Edad:</label>
                     <div class="col-sm-9">
-                      <input type="Number" placeholder="Insertar Edad" class="form-control" data-ng-model="orders.newPatient.patientEdad"  id="patientEdad" >
+                      <input type="Number" ng-change="createCtrl.setNewPatient()" placeholder="Insertar Edad" class="form-control" data-ng-model="orders.newPatient.patientEdad"  id="patientEdad" >
                     </div>
                   </div>
                </div>
@@ -233,7 +229,7 @@
                   <div class="form-group">
                     <label for="IC" class="col-sm-3 col-md-3 control-label">Tel:</label>
                     <div class="col-sm-9 col-md-9">
-                      <input type="text" class="form-control" placeholder="Insertar Telefono" name="telefono" data-ng-model="orders.newPatient.patientTelefono"   id="telefono"
+                      <input type="text" ng-change="createCtrl.setNewPatient()" class="form-control" placeholder="Insertar Telefono" name="telefono" data-ng-model="orders.newPatient.patientTelefono"   id="telefono"
                              ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/" class="form-control">
                              <span class="requiredIcon" ng-show="ordersCreate.telefono.$dirty && ordersCreate.telefono.$invalid">Numero de teléfono inválido</span>  
                     </div>
@@ -244,7 +240,7 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Pólisa:</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" placeholder="Insertar Polisa"  data-ng-model="orders.newPatient.patientPolisa"  id="polisa" 
+                      <input type="text" ng-change="createCtrl.setNewPatient()" class="form-control" placeholder="Insertar Polisa"  data-ng-model="orders.newPatient.patientPolisa"  id="polisa" 
                              >
                     </div>
                   </div>
@@ -254,15 +250,13 @@
                   <div class="form-group">
                     <label for="aseguradora" class="col-sm-3 control-label">Seguro:</label>
                     <div class="col-sm-9">
-                      <select data-ng-model="orders.newPatient.locations" id="locations" class="form-control" name="seguroId" ng-options="value._id as value.name for value in orders.seguroList" >
+                      <select data-ng-model="orders.newPatientlocations" id="locations" class="form-control" nng-change="createCtrl.setNewPatient()" name="seguroId" ng-options="value as value.name for value in orders.seguroList" >
                         <option value="" class="">-- Selecione Seguro --</option>
                       </select> 
                    </div>
                  </div>
                </div>
               </div> 
-
-
       </div>
        </div>
       </div>  <!-- End of first row -->
@@ -467,12 +461,12 @@
   <br>
   <br>
 
- <!-- <div class="row" ng-if="!orders.isSaving">
+ <div class="row" ng-if="!orders.isSaving">
    <div class="col-sm-12">
        <div>
-       <result-list></result-list>
+         <result-list filter-date="orders.filtrarCurrent"></result-list>
        </div>
    </div>
- </div>  --> 
+ </div>  
  </div> 
 </section>

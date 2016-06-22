@@ -106,3 +106,10 @@ indexModule.controller('indexController', ['$scope','$modal', function($scope, $
       }
   };
 }]);
+
+indexModule.directive('navegationMenu', function(){
+    return {
+          restrict: 'E',
+          templateUrl: 'index/views/navegationmenu.html'
+     };
+});

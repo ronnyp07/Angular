@@ -7,6 +7,8 @@ var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
   Result = mongoose.model('Result'),
   deepPopulate = require('mongoose-deep-populate')(mongoose);
+  // http = require('http').Server(app),
+  // io = require('socket.io')(http);
 // Crear un nuevo método controller manejador de errores
 var getErrorMessage = function(err) {
   // Definir la variable de error message
@@ -40,6 +42,8 @@ var getErrorMessage = function(err) {
  */
 exports.create = function(req, res) {
   var result = new Result(req.body);
+  var socketio = req.app.get('socketio'); // tacke out socket instance from the app container
+ // emit an event for all connected clients
   result.user = req.user;
   result.save(function(err) {
     if (err) {
@@ -53,6 +57,8 @@ exports.create = function(req, res) {
       });
       }
     } else {
+      console.log('emit');
+      socketio.sockets.emit('result.created', result);
       res.jsonp(result);
     }
   });
@@ -85,20 +91,19 @@ exports.getList = function(req, res) {
 exports.listpage = function(req, res) { 
      var count = req.query.count || 25;
      var page = req.query.page || 1;
-     var dates = JSON.parse(req.query.date);
      var search = JSON.parse(req.query.search);
-     var endDate = new Date(dates.endDate);
-     var endDateYear = endDate.getFullYear();
-     var endDateMonth = endDate.getMonth();
-     var endDateDay = endDate.getDate();
+     // var endDate = new Date(dates.endDate);
+     // var endDateYear = endDate.getFullYear();
+     // var endDateMonth = endDate.getMonth();
+     // var endDateDay = endDate.getDate();
   
-     var startDate = new Date(dates.startDate);
-     var startDateYear = startDate.getFullYear();
-     var startDateMonth = startDate.getMonth();
-     var startDateDay = startDate.getDate();
+     // var startDate = new Date(dates.startDate);
+     // var startDateYear = startDate.getFullYear();
+     // var startDateMonth = startDate.getMonth();
+     // var startDateDay = startDate.getDate();
      
-     var sDateResult = startDateYear + '-' + ('0'+(startDateMonth + 1)).slice(-2) + '-' + ('0'+(startDateDay)).slice(-2);
-     var eDateResult = endDateYear + '-' +  ('0'+(endDateMonth + 1)).slice(-2)+ '-' + ('0'+(endDateDay)).slice(-2);
+     // var sDateResult = startDateYear + '-' + ('0'+(startDateMonth + 1)).slice(-2) + '-' + ('0'+(startDateDay)).slice(-2);
+     // var eDateResult = endDateYear + '-' +  ('0'+(endDateMonth + 1)).slice(-2)+ '-' + ('0'+(endDateDay)).slice(-2);
      var pagination = {
       start : (page - 1) * count,
       count : count
@@ -111,43 +116,89 @@ exports.listpage = function(req, res) {
     //   }
     //  };
 
-    var contains = {};
-    if(search.doctor && !search.paciente){
-      contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
-                   seguroDesc: search.seguro ? search.seguro: '',
-                   reportStatus: search.status,
-                   doctor: mongoose.Types.ObjectId(search.doctor)};
-    }else if(search.paciente && !search.doctor){
+    var contains = {},
+        greaterThanEqual =  {},
+        lessThanEqual =  {};
+
+    if(req.query.startDate || req.query.endDate){
+       greaterThanEqual =  {created: req.query.startDate};
+       lessThanEqual = { created: req.query.endDate};
+    }
+
+     if(!search.doctor && search.paciente){
+      contains = { 
+                    reportStatus: search.status ? search.status: null || '',
+                    tipomuestraDesc : search.sereal ? search.sereal : '',
+                    patientReport: mongoose.Types.ObjectId(search.paciente),
+                    seguroDesc: search.seguro ? search.seguro:  ''
+                 };
+      
+    }else if(!search.paciente && search.doctor){
       contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
                    reportStatus: search.status ? search.status: null || '',
-                   patientReport: mongoose.Types.ObjectId(search.paciente)};
+                   doctor: mongoose.Types.ObjectId(search.doctor)};
     }else if(search.paciente && search.doctor){
       contains = { tipomuestraDesc : search.sereal ? search.sereal : '',
                    seguroDesc: search.seguro ? search.seguro: '',
                    reportStatus: search.status ? search.status: null || '',
                    doctor: mongoose.Types.ObjectId(search.doctor),
                    patientReport: mongoose.Types.ObjectId(search.paciente)};
-    }else{
-       contains =  { tipomuestraDesc : search.sereal ? search.sereal : '',
+    }
+    else {
+       contains =  { 
+                     tipomuestraDesc : search.sereal ? search.sereal : '',
                      reportStatus: search.status ? search.status: null || '',
                      seguroDesc: search.seguro ? search.seguro: null || ''};
     }
 
+
+                   // doctor: mongoose.Types.ObjectId(search.doctor)};
+       // }else{
+    //    contains =  { tipomuestraDesc : search.sereal ? search.sereal : '',
+    //                  reportStatus: search.status ? search.status: null || '',
+    //                  seguroDesc: search.seguro ? search.seguro: null || ''};
+    // }
+
     
     var filter = {
       filters: {
-           mandatory :  contains
-     }
+        mandatory: {
+          contains,
+         
+          //   created: req.query.startDate ? req.query.startDate : '2016-01-01'
+          // }
+          // contains:{
+          //   reportStatus: search.status ? search.status: ''
+            
+
+          // },
+           greaterThanEqual,
+           lessThanEqual
+          //: {
+          //   created: req.query.startDate ? req.query.startDate : '2016-01-01'
+          // },
+          // lessThanEqual:{
+          //   created: req.query.endDate ? req.query.endDate: '2016-01-01'
+          // },
+
+        }
+           // optional :  {
+           //      greaterThanEqual: {
+           //           created: req.query.startDate ? req.query.startDate : '2016-01-01'
+           //       },
+           //  }
+        }
    };
   
     Result
-    .find({created: {'$gte':  sDateResult, '$lte': eDateResult}})
+    .find()
     .populate('orders')
     .populate('patientReport')
     .populate('patientReport.locations')
     .populate('doctor')
     .filter(filter)
+    //.sort({ResultId: -1})
     .sort({tipomuestra: 1, tipomuestraDesc: 1, rSereal:1})
     .page(pagination, function(err,tempate){
       if (err) {
@@ -167,6 +218,61 @@ exports.listpage = function(req, res) {
       res.jsonp(result); // This object should now be populated accordingly.
     });
       
+    }
+    });
+};
+
+ exports.list = function(req, res) { 
+     var count = req.query.count || 25,
+         page = req.query.page || 1,
+         search = req.query.search,
+         sDateResult = req.query.sDateResult.replace(/['"]+/g, ''),
+         eDateResult = req.query.eDateResult.replace(/['"]+/g, ''),
+         ordering = req.query.ordering; 
+     
+     var filter = {
+       filters: { 
+           mandatory : {
+               contains : { 
+                      name: search
+            } 
+        }       
+      }
+     };
+
+     var pagination = {
+      start : (page - 1) * count,
+      count : count
+     };
+
+     // var sort ={};
+     // if(ordering === 'name'){
+     //  sort = {
+     //  sort: {
+     //    asc: 'name',
+     //  }
+     // };
+     // }
+
+     // if (ordering === '-name'){
+     //    sort = {
+     //      sort: {
+     //    desc: 'name',
+     //  }
+     // };   
+     // }
+     
+     Result
+    .find({created: {'$gte': sDateResult, '$lte': eDateResult}})
+    //.order(sort)
+    .page(pagination, function(err, car){
+      if (err) {
+        console.log(err);
+       return res.status(400).send({
+        message: getErrorMessage(err)
+      });
+    } else {
+       res.jsonp(car);
     }
     });
 };

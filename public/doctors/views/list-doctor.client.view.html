@@ -1,14 +1,16 @@
 <section data-ng-controller="doctorsController as doctorsCtrl" >
    <div class="container">
-       <div class="panel panel-primary">
+   <navegation-menu></navegation-menu>
+       <div class="panel panel-primary marginMenu">
            <div class="panel-heading">
            <div class="row">
                  <div class="col-md-12"><h1 class="panel-title"><i class="fa fa-list"></i> Maestro Doctor</h1></div>
            </div>
            </div> 
            <div class="row">
-           <div class="col-md-12 textRight divmarginAll">
+           <div class="col-md-12 text-center divmarginAll">
            <div>
+          
             <button type="submit" class="btn btn-large btn-primary text-center" ng-click="doctorsCtrl.modelCreate('lg')">
               <i class="fa fa-plus"></i>
              <br>Agregar Nuevo</button>

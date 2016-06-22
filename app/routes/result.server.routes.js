@@ -2,7 +2,7 @@
 'use strict';
 
 	var users = require('../../app/controllers/user.server.controller');
-	var result = require('../../app/controllers/result.server.min.js');
+	var result = require('../../app/controllers/result.server.controller.js');
 
 module.exports = function(app) {
 	// order Routes
@@ -30,6 +30,7 @@ module.exports = function(app) {
 		.post(result.getResultMaxByType);
 		
    app.route('/result/getList')
+       .get(result.list) 
 	   .post(result.getList);
 
    app.param('resultId', result.resultByID);

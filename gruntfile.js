@@ -16,8 +16,8 @@ module.exports = function(grunt) {
   'public/procedimientos/**/*.js',
   // 'public/orders/*.js',
   // 'public/orders/**/*.js',
-  'public/results/*.js',
-  'public/results/**/*.js',  
+  // 'public/results/*.js',
+  // 'public/results/**/*.js',  
   'public/locations/*.js',
   'public/locations/**/*.js',  
   '!public/**/tests/*.js'];

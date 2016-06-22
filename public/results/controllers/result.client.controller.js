@@ -103,6 +103,10 @@ resultModule.controller('resultController', [
   'resultServices',
   'OrderServices',
   'lodash',
+  '$q',
+  '$rootScope',
+  '$timeout',
+  'socketio',
  	function(
  	 $scope, 
  	 $http,
@@ -117,13 +121,101 @@ resultModule.controller('resultController', [
  	 $location,
    resultServices,
    OrderServices,
-   lodash
+   lodash,
+   $q,
+   $rootScope,
+   $timeout,
+   socketio
  		) {
+   socketio.on('result.created', function(result) {
+    $scope.services.filterResult();
+   });
+   
 
    $scope.services = resultServices;
    $scope.orders = OrderServices;
-   $scope.services.date.startDate = moment().subtract("days", 1);
-   $scope.services.date.endDate = moment();
+
+   $scope.printReport = function(){
+    $scope.orders.isPrinting = true;
+    var defer = $q.defer();
+    $scope.services.printReport().then(function(totalResult){
+      $scope.services.printReportList = [];
+      if(totalResult.results){
+           angular.forEach(totalResult.results, function(item){
+             $scope.services.printReportList.push(item);
+             $scope.services.totales.costo = parseInt($scope.services.totales.costo) + parseInt(item.costo ? item.costo: 0);
+             $scope.services.totales.pago = parseInt($scope.services.totales.pago) + parseInt(item.pago ? item.pago: 0);
+             $scope.services.totales.debe = parseInt($scope.services.totales.debe) + parseInt(item.debe ? item.debe: 0);
+             $scope.services.totales.seguro = parseInt($scope.services.totales.seguro) + parseInt(item.seguroId ? 1: 0);  
+           });
+        }
+        $timeout(function(){
+
+        $scope.orders.isPrinting = false;
+        }, 2000);
+
+        $timeout(function(){
+           var printSection = document.getElementById('printSection');
+            function printElement(elem) {
+                    printSection.innerHTML = '';
+                    //document.getElementById(attrs.printElementId);
+                     printSection.appendChild(elem);
+                     window.print();
+                    //location.reload(true);
+                }
+                if (!printSection) {
+                    printSection = document.createElement('div');
+                    printSection.id = 'printSection';  
+                    document.body.appendChild(printSection);
+                }else{
+                   printSection = document.createElement('div');
+                    printSection.id = 'printSection';  
+                    document.body.appendChild(printSection);
+                    printSection.innerHTML = '';
+                }
+                              // printSection.innerHTML = ''
+
+                 var elemToPrint = document.getElementById("printThisElement");
+       // //          //elemToPrint.innerHTML = document.getElementById('resultValue').value;
+       // //           // var formToHide = document.getElementById('createtemplateForm');
+       // //           // formToHide.classList.add('hide');
+                
+                if (elemToPrint) {
+                    printElement(elemToPrint);
+                   // formToHide.classList.remove('hide');
+                }
+        // var printSection = document.createElement('div');
+
+        
+        }, 2000);
+
+      
+       
+    });
+
+     
+     return defer.promise;
+   };
+
+    $scope.filterDoctor = function(val){
+          var data = {
+              lastName: val
+          };
+          var result = [];
+          var deferred =  $q.defer();
+
+          $http.post('/doctor/filter', data)
+              .success(function(response) {
+                  angular.forEach(response, function(card) {
+                      result.push(card);
+                  });
+                  return deferred.resolve(result);
+              })
+              .error(function(){
+                  /* error handling */
+              });
+          return deferred.promise;
+      };
 
     $scope.loadMore = function(newPage, oldPage){
        $scope.services.page = newPage;
@@ -131,17 +223,12 @@ resultModule.controller('resultController', [
     };
 
     $scope.resetSearchForm = function(){
-      $scope.services.date.startDate = moment().subtract("days", 1);
-      $scope.services.date.endDate = moment();
+      // $scope.services.date.startDate = moment;
+      // $scope.services.date.endDate = moment();
       $scope.services.resetForm();
     };
 
-    $scope.filterResult = function(){
-      $scope.services.filterResult();
-    };
-
       Notify.getMsg('newOrderPost', function(event, result){ 
-       console.log('posted');
         $scope.services.filterResult();
      });
 
@@ -158,6 +245,33 @@ resultModule.controller('resultController', [
         	endDate: endDate      	
         };
         getResultsPage(newPage, filter, setDateVariables());
+    };
+
+    $scope.onSelectPatient = function($item, $model, $label){
+      $scope.services.search.paciente = $item._id;
+      $scope.services.filterResult($item);
+    };
+
+     $scope.onSelectDoctor = function($item, $model, $label){
+      $scope.services.search.doctor = $item._id;
+      $scope.services.filterResult();
+    };
+
+    $scope.validatePatient = function(){
+       if($scope.services.Searchpaciente === ''){
+             $scope.services.search.paciente = '';
+             $scope.services.filterResult();
+
+       }
+    };
+
+     $scope.validateDoctor = function(){
+      console.log("nana");
+       if($scope.services.searchDoctor === ''){
+             $scope.services.search.doctor = '';
+             $scope.services.filterResult();
+
+       }
     };
 
     function setDateVariables(){
@@ -184,36 +298,39 @@ resultModule.controller('resultController', [
     })
     .then(function(result) {
       //console.log(result);
-       $scope.users = result.data.results;
-       $scope.totalUsers = result.data.total;
+      ///Logica Para Imprimir
+      ///Esta es la logica para imprimir los resultados
 
-      $http.get('/api/result', {
-        params: {
-        page: 1,
-        count: $scope.totalUsers,
-        filter: filterLetter,
-        startDate: startDate,
-        endDate: dateFilter.endDate
-      }
-    })
-    .then(function(totalResult) {
-      $scope.printReport = totalResult.data.results;
-      $scope.total = {
-          costo: 0,
-          pago : 0,
-          debe: 0,
-          seguro: 0
-      };  
 
-      for(var i = 0; i < totalResult.data.results.length; i++){
-        //console.log(totalResult.data.results[i].costo);
-            $scope.total.costo = parseInt($scope.total.costo) + parseInt(totalResult.data.results[i].costo ? totalResult.data.results[i].costo: 0);
-            $scope.total.pago = parseInt($scope.total.pago) + parseInt(totalResult.data.results[i].pago ? totalResult.data.results[i].pago: 0);
-            $scope.total.debe = parseInt($scope.total.debe) + parseInt(totalResult.data.results[i].debe ? totalResult.data.results[i].debe: 0);
-            $scope.total.seguro = parseInt($scope.total.seguro) + parseInt(totalResult.data.results[i].seguroId ? 1: 0);
-      }
-     });
+    //    $scope.users = result.data.results;
+    //    $scope.totalUsers = result.data.total;
 
+    //   $http.get('/api/result', {
+    //     params: {
+    //     page: 1,
+    //     count: $scope.totalUsers,
+    //     filter: filterLetter,
+    //     startDate: startDate,
+    //     endDate: dateFilter.endDate
+    //   }
+    // })
+    // .then(function(totalResult) {
+    //   $scope.printReport = totalResult.data.results;
+    //   $scope.total = {
+    //       costo: 0,
+    //       pago : 0,
+    //       debe: 0,
+    //       seguro: 0
+    //   };  
+
+    //   for(var i = 0; i < totalResult.data.results.length; i++){
+    //     //console.log(totalResult.data.results[i].costo);
+    //         $scope.total.costo = parseInt($scope.total.costo) + parseInt(totalResult.data.results[i].costo ? totalResult.data.results[i].costo: 0);
+    //         $scope.total.pago = parseInt($scope.total.pago) + parseInt(totalResult.data.results[i].pago ? totalResult.data.results[i].pago: 0);
+    //         $scope.total.debe = parseInt($scope.total.debe) + parseInt(totalResult.data.results[i].debe ? totalResult.data.results[i].debe: 0);
+    //         $scope.total.seguro = parseInt($scope.total.seguro) + parseInt(totalResult.data.results[i].seguroId ? 1: 0);
+    //   }
+    //  });
     });
     }
     
@@ -223,6 +340,7 @@ resultModule.controller('resultController', [
 
      $scope.setUpdate = function(proc){
        Notify.sendMsg('orderUpdate', {resultInfo: proc});
+       $location.path('/orders');
      };
 
      } 
@@ -267,11 +385,12 @@ resultModule.directive('ngPrint', function(){
 
 });
 
-resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Authentication', '$rootScope', function($q, $timeout, $http, Result, Authentication, $rootScope){
+resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Authentication', '$rootScope', 'OrderServices', function($q, $timeout, $http, Result, Authentication, $rootScope, OrderServices){
 
    var self = {
    'resultList' : [],
    'Results': [],
+   'printReportList':[],
    'search': {},
    'date': {},
    'params': {},
@@ -280,6 +399,7 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
    'notaResult': null,
    'tecnica': null,
    'hasMore': true,
+   'ordersServices': null,
    'page': 1,
    'total': 0,
    'count': 25,
@@ -290,11 +410,20 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
    'reportName': null,
    'papObservation': null,
    'loadResult': function(){
+    if(!OrderServices.filtrarCurrent){
+       self.date.startDate = moment().format('YYYY-MM-DD');
+       self.date.endDate = moment().format('YYYY-MM-DD');
+       self.params.search = {};
+     }else{
+      self.date.startDate = self.date.startDate ? moment(self.date.startDate).format('YYYY-MM-DD'): '';
+      self.date.endDate = self.date.endDate ? moment(self.date.endDate).format('YYYY-MM-DD') : ''
+    }
     var defer = $q.defer();
       self.params = {
         'page': self.page,
         'search': self.search,
-        'date': self.date,
+         startDate : self.date.startDate,
+         endDate: self.date.endDate,
         'ordering': self.ordering
       };
       Result.get(self.params, function(data){
@@ -305,28 +434,8 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
            angular.forEach(data.results, function(item){
                 self.Results.push(item);  
            });
-           self.paramsPrint = {
-              'page': 1,
-              'search': self.search,
-              'date': self.date,
-              'count': self.total
-           };
-        Result.get(self.paramsPrint, function(totalResult){
-           self.printReport = totalResult.results;
-           self.totales = {
-                costo: 0,
-                pago : 0,
-                debe: 0,
-                seguro: 0
-            };  
 
-        for(var i = 0; i < totalResult.results.length; i++){
-           self.totales.costo = parseInt(self.totales.costo) + parseInt(totalResult.results[i].costo ? totalResult.results[i].costo: 0);
-           self.totales.pago = parseInt(self.totales.pago) + parseInt(totalResult.results[i].pago ? totalResult.results[i].pago: 0);
-           self.totales.debe = parseInt(self.totales.debe) + parseInt(totalResult.results[i].debe ? totalResult.results[i].debe: 0);
-           self.totales.seguro = parseInt(self.totales.seguro) + parseInt(totalResult.results[i].seguroId ? 1: 0);
-      }
-        });
+           // self.printReport();
         }
         if(self.count >= data.total){
             self.hasMore = false;
@@ -377,6 +486,24 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
             }
           }
         },
+      'printReport': function(){
+         var defer = $q.defer();
+        self.paramsPrint = {
+              'page': 1,
+              'search': self.search,
+              'count': self.total
+           };
+        Result.get(self.paramsPrint, function(totalResult){
+           self.totales = {
+                costo: 0,
+                pago : 0,
+                debe: 0,
+                seguro: 0
+            };
+           defer.resolve(totalResult);
+        });
+          return defer.promise;
+      },
       'update': function(muestra){
         var defer = $q.defer();
          var updateResult = new Result({
@@ -397,8 +524,10 @@ resultModule.service('resultServices', ['$q','$timeout', '$http', 'Result', 'Aut
 
           return defer.promise;
           
-      },
-      'watchFilters': function () {
+      }, 'getDate' : function(param){
+          return param.getFullYear() + '-' +  ('0'+(param.getMonth() + 1)).slice(-2)+ '-' + ('0'+(param.getDate())).slice(-2);
+      
+      }, 'watchFilters': function () {
           $rootScope.$watch(function () {
             return self.search.paciente;
             }, function (newVal) {

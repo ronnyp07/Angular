@@ -39,11 +39,15 @@
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="margingdiv title-container">
-                        <input type="checkbox" ng-model="resultServices.resultado.Negativo" aria-label="Negativo">
+                     <i class="fa fa-check" ng-if="resultServices.resultado.Negativo"></i>
+                     <i ng-if="!resultServices.resultado.Negativo">_</i>
+                  <!--       <input type="checkbox" ng-model="resultServices.resultado.Negativo" aria-label="Negativo"> -->
                         Negativo
                     </div>
                     <div class="margingdiv details-container">
-                        <input type="checkbox" ng-model="resultServices.resultado.Inflamatorio" aria-label="Inflamatorio">
+                    <i class="fa fa-check" ng-if="resultServices.resultado.Inflamatorio"></i>
+                     <i ng-if="!resultServices.resultado.Inflamatorio">_</i>
+                      <!--   <input type="checkbox" ng-model="resultServices.resultado.Inflamatorio" aria-label="Inflamatorio"> -->
                         Inflamatorio
                     </div>
                 </div>
@@ -51,7 +55,9 @@
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="margingdiv title-container">
-                        <input type="checkbox" ng-model="resultServices.resultado.Citolitico" aria-label="Citolitico">
+                    <i class="fa fa-check" ng-if="resultServices.resultado.Citolitico"></i>
+                     <i ng-if="!resultServices.resultado.Citolitico">_</i>
+                        <!-- <input type="checkbox" ng-model="resultServices.resultado.Citolitico" aria-label="Citolitico"> -->
                         Citolitico
                     </div>
                     <div class="margingdiv details-container">

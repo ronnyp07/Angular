@@ -1,69 +1,65 @@
 <div ng-controller="resultListController">
  <div class="row">
   <div class="col-md-12">
-      <div class="row">
+      <div class="row" ng-if="orders.filtrarCurrent">
             <div class="col-sm-4">
                   <div class="input-group">
                   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-           <input date-range-picker   ng-change="filterResult()" class="form-control date-picker" type="text" ng-model="services.date"/>
+           <input date-range-picker   ng-change="services.filterResult()" class="form-control date-picker" type="text" ng-model="services.date"/>
            <span class="input-group-addon"><span class="glyphicon glyphicon-chevron-down"></span></span>
 
                    </div>
             </div>
           <div class="col-sm-4">
               <div class="controls">
-                <select data-ng-model="services.search.status" ng-change="filterResult()"  class="form-control"> <option value="" class="">-- Filtrar Estatus --</option><option value="Pendiente">Pendiente</option><option value="Listo">Listo</option></select>
+                <select data-ng-model="services.search.status" ng-change="services.filterResult()"  class="form-control"> <option value="" class="">-- Filtrar Estatus --</option><option value="Pendiente">Pendiente</option><option value="Listo">Listo</option></select>
                     </div>
               </div>
              <div class="col-sm-4">
             <div class="form-group">
-            <input ng-model="services.search.seguro" id="search" class="form-control" placeholder="Filtrar Seguro" >
+            <input ng-model="services.search.seguro" ng-change="services.filterResult()"  class="form-control" autocomplete="off" placeholder="Filtrar Seguro" >
             </div>
             </div>
 
         </div>
-        <div class="row">
+        <div class="row" ng-if="orders.filtrarCurrent">
+             <div class="col-sm-4">
+            <div class="form-group">
+           <input type="text" ng-model="services.Searchpaciente" placeholder="Filtrar Paciente" id="patientsFilter" typeahead="patient as patient.patientFirstName + ' ' + patient.patientLastName  for patient in orders.getPatientFilter($viewValue) | limitTo:8" 
+             typeahead-on-select="onSelectPatient($item, $model, $label)" 
+             autocomplete="off"
+             ng-change="validatePatient()"
+             typeahead-select-on-exact = "true"
+             typeahead-no-results="noResults" class="form-control">
+            </div>
+            </div>
             
-
-             <div class="col-sm-4">
+            <div class="col-sm-4">
             <div class="form-group">
-             <select ui-select2 id="selectedPatient" ng-model="services.search.paciente" id="patients" class="selec2Big"  name="patients"  data-placeholder="-- Filtrar Paciente --">
-                  <option value=""></option>
-                      <option ng-repeat="value in orders.patientList" value="{{value._id}}">{{value.patientFirstName}} {{value.patientLastName}} {{value.PatientCI.value}}</option>
-                  </select> 
+            <input type="text" ng-model="services.searchDoctor" placeholder="Filtrar Doctor" id="doctorFilter" typeahead="doctor as doctor.lastName + ' ' + doctor.firstName  for doctor in filterDoctor($viewValue) | limitTo:8" 
+            autocomplete="off" 
+             ng-change="validateDoctor()" 
+             typeahead-on-select="onSelectDoctor($item, $model, $label)" typeahead-no-results="noResults" class="form-control">
             </div>
             </div>
 
-             <div class="col-sm-4">
-            <div class="form-group">
-            <select ui-select2="select2Config" data-ng-model="services.search.doctor" id="doctor" class="selec2Big"    name="doctor" data-placeholder="-- Filtrar Doctor --" >
-              <option value=""></option>
-              <option ng-repeat="value in orders.doctorList" value="{{value._id}}">{{value.firstName}} {{value.lastName}}</option>
-             </select> 
-            </div>
-            </div>
-
-            <div class="col-sm-2 col-md-2">
+            <div class="col-sm-4 col-md-4">
             <div class="form-group">
             <input ng-model="services.search.sereal" id="search" class="form-control" placeholder="Filter text">
             </div>
             </div>
 
-            <div class="col-sm-2 col-md-2">
+    </div>
+      <div class="row" ng-if="orders.filtrarCurrent">
+            <div class="col-sm-12 col-md-12">
             <div class="form-group pull-right">
             <button ng-click="resetSearchForm()" class="btn btn-sm btn-warning "><i class="fa fa-refresh"></i> </button>
-            <button class="btn btn-sm btn-primary" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> </button>
+            <button class="btn btn-sm btn-primary" ng-click="printReport()"><i class="fa fa-print"></i> </button>
             </div>
             </div>
+    </div>
 
-
-
-           <!--  <div class="col-sm-6">
-                  <div class="form-group">
-                  <input date-range-picker   ng-change="dateChange(pagination.current, q)" class="form-control date-picker" type="text" ng-model="date" />
-                   </div>
-            </div> -->
-    </div>     
+    <ng-print text=""></ng-print>       
     <div class="row">
     <div class="col-sm-12">
        <table class="table table-striped">
@@ -158,7 +154,7 @@
                <td><span>{{services.totales.seguro }}</span></td>
               </tr>
             </tfoot>
-            <tr class="bodyTable pageBreak" ng-repeat="user in services.printReport">
+            <tr class="bodyTable pageBreak" ng-repeat="user in services.printReportList">
           <td>{{ user.rSereal }}</td>
           <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
            <td>{{user.doctor.firstName}} {{user.doctor.lastName}}</td>

@@ -1,25 +1,29 @@
 <section data-ng-controller="ordersController as orderCtrl" >
    <div class="container">
-       <div class="panel panel-info">
+    <navegation-menu></navegation-menu>
+       <div class="panel panel-info marginMenu">
+
            <div class="panel-heading">
+
            <div class="row">
                  <div class="col-md-12"><i class="glyphicon glyphicon-th-list"></i> Detalles Ordenes</div>
            </div>
            </div> 
-           <div class="row">
-          
-           </div>        
+          </br>
+          <div ng-if= "orders.isPrinting" class="loadsettings">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+          </div>   
            <div class="row">
            <div class="col-md-12 ">
 
-          <md-radio-group ng-model="data.group1">
+          <!-- <md-radio-group ng-model="data.group1">
           <md-radio-button  ng-click="order.$edit = false" value="Ordenes" class="md-primary">Ordenes</md-radio-button>
           <md-radio-button ng-click="order.$edit = true" value="Reportes"> Reportes </md-radio-button>
         </md-radio-group>
-
+ -->
            <div class="resultBody">
-           <order-list ng-if="!order.$edit"></order-list>
-           <result-list ng-if="order.$edit"></result-list>
+           <!-- <order-list ng-if="!order.$edit"></order-list> -->
+           <result-list ng-if= "!orders.isPrinting"></result-list>
            </div>
            </div>
            </div>       

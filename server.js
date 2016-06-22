@@ -7,9 +7,12 @@ var mongoose = require("./config/mongoose"),
 
 var  db = mongoose();
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 var passport = passport();
 
-
-app.listen(process.env.PORT || 3000);
+app.set('socketio', io);
+app.set('server', server);
+server.listen(process.env.PORT || 3000);
 module.exports = app;
 console.log("server is up");

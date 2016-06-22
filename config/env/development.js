@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://adminUser:123456@ds043062.mongolab.com:43062/heroku_vmz7zt2m',
+	//db: 'mongodb://adminUser:123456@ds043062.mongolab.com:43062/heroku_vmz7zt2m',
+	db:'mongodb://localhost:27017/test',
 	app: {
 		title: 'N - Development Environment'
 	},

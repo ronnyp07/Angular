@@ -1,0 +1,57 @@
+<div ng-controller="resultCurrentListController">
+ <div class="row">
+  <div class="col-md-12">     
+    <div class="row">
+    <div class="col-sm-12">
+       <table class="table table-striped">
+           <thead>
+                <th>#</th>
+                <th>Procs</th>
+                <th>Fecha Creacion</th>
+                <th>Paciente</th>
+                <th>Resultado</th>
+                <th>Costo</th>
+                <th>Pago</th>
+                <th>Debe</th>
+                <th>S.M</th>
+            </thead>
+            <tr dir-paginate="user in services.Results | itemsPerPage: services.count" current-page="services.page" total-items="services.total">
+            
+                    <td>{{ user.rSereal }}</td>
+                    <td>{{ user.tipomuestraDesc}}</td>
+                    <td>{{ user.created | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{user.patientReport.patientFirstName}} {{user.patientReport.patientLastName}}</td>
+                    <td data-title="'Estatus'" ><span ng-if="user.reportStatus == 'Pendiente'" class="label label-danger"> {{user.reportStatus}} </span>
+        <span ng-if="user.reportStatus == 'Listo'" class="label label-success"> {{user.reportStatus}} </span>
+       </td>
+       <td>{{user.costo | currency}}</td>
+       <td>{{user.pago | currency}}</td>
+       <td>{{user.debe | currency}}</td>
+       <td>{{user.seguroDesc}}</td>
+         <td style="width: 12%; padding-right: 0px;">
+        <div class="form-group pull-right">
+           <a class="btn btn-sm btn-info" title="Resultado" ng-click="setResult(user)">
+            <span class="glyphicon glyphicon-eye-open"></span><a/>
+             <a class="btn btn-sm btn-primary" title="Editar" ng-click="setUpdate(user)">
+            <i class="fa fa-eraser"></i><a/>         
+       </div>
+       </td>
+                </tr>
+        </table>
+
+    <dir-pagination-controls  on-page-change="loadMore(newPageNumber, oldPageNumer)">
+    </dir-pagination-controls>
+    <div ng-show="services.Results.length == 0">
+       <div class="alert alert-info">
+          <p class="text-center">
+            Ningun resultado encontrado
+          </p>
+       </div>
+   </div>
+
+
+    </div>   
+   </div>
+ </div><!-- End of the first Colunn-->
+</div><!-- End of the first Row-->
+</div>
